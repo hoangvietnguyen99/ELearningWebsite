@@ -153,6 +153,9 @@ dist
 # *.iml
 # *.ipr
 
+# Vscode
+.vscode
+
 # CMake
 cmake-build-*/
 
