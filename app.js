@@ -1,11 +1,12 @@
 const createError = require('http-errors');
 const express = require('express');
+const port = 8000;
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const pageRouter = require('./routes/pages')
+const adminRouter = require('./routes/admin')
 
 const app = express();
 
@@ -19,8 +20,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//router
+app.use('/', pageRouter);
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,4 +39,6 @@ app.use(function(err, req, res, next) {
 	res.render('error');
 });
 
-module.exports = app;
+app.listen(port, () => {
+	console.log(`Example app listening at http://localhost:${port}`)
+})
