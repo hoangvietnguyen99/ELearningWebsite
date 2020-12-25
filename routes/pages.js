@@ -3,8 +3,11 @@ const router = express.Router();
 
 //Index
 router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.render('clients/index', { layout: 'layoutclient.hbs' });
   });
+router.get('/detail', function(req, res, next) {
+  res.render('clients/DetailCourse', { layout: 'layoutclient.hbs' });
+});
 
 //User
 router.get('/user', function(req, res, next) {

@@ -4,6 +4,7 @@ const port = 8000;
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const exphbs  = require('express-handlebars');
 
 const pageRouter = require('./routes/pages')
 const adminRouter = require('./routes/admin')
@@ -11,8 +12,12 @@ const adminRouter = require('./routes/admin')
 const app = express();
 
 // view engine setup
+const hbs = exphbs.create({
+    extname: 'hbs',
+});
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
+app.engine("hbs", hbs.engine);
+app.set("view engine", "hbs");
 
 app.use(logger('dev'));
 app.use(express.json());
