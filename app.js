@@ -18,6 +18,7 @@ const hbs = exphbs.create({
 app.set('views', path.join(__dirname, 'views'));
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
+// end view set up
 
 app.use(logger('dev'));
 app.use(express.json());

@@ -1,0 +1,47 @@
+/*search css*/
+.search-row-custom{
+    align-items: flex-end;
+}
+.search-row-custom div div.form-group{
+    margin-bottom: 0;
+}
+.search-col-custom{
+    text-align: -webkit-right;
+}
+.search-group-custom{
+    display: flex;
+    max-width: fit-content;
+    margin-top: 2em;
+}
+
+.items-custom{
+    padding: 12px;
+}
+.left-items-custom{
+    flex-grow: 1;
+}
+
+/*search css*/
+
+
+/*table css*/
+.checkbox-custom{
+    width: 1%;
+}
+.name-custom{
+    width: 15%;
+}
+.order-id-custom, .date-custom, .total-custom, .view-detail-custom, .action-custom{
+    width: 10%;
+}
+.checkbox-custom, .order-id-custom, .total-custom, .view-detail-custom, .action-custom{
+    text-align: center;
+}
+/*table css*/
+
+/*modal css*/
+.modal-header{
+    background-color: #F8F8FB;
+    color: #495057;
+}
+/*modal css*/
