@@ -1,0 +1,127 @@
+ <div class="page-title-box">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h2 class="page-title">{{{title}}}</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">Welcome to Dashboard</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+  <!-- start table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row search-row-custom">
+                        {{!-- Menu Top Left --}}
+                        <div class="col-sm-6 text-left ">
+                            <div class="form-group">
+                                <label class="control-label">Role</label>
+                                <select name="visible" class="form-control select2">
+                                    <option value="1">Hidden</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        {{!-- end Menu Top Left --}}
+
+                        {{!-- Menu Top Right --}}
+                        <div class="col-sm-6 search-col-custom">
+                            <div class="search-box search-group-custom">
+                                <input type="text" class="form-control " placeholder="Search">
+                                <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                            </div>
+                        </div>
+                        {{!-- end Menu Top Right --}}
+                    </div>
+                    <div class="row items-custom">
+                        
+
+                        {{!-- Menu Right --}}
+                        <div class="right-items-custom">
+                            <a href="#" class="btn btn-success btn-rounded waves-effect mb-2"><i class="mdi mdi-plus mr-1"></i>Add Quick</a>
+                        </div>
+                        {{!-- end Menu Right --}}
+                    </div>
+                    <!-- end filter-->
+
+                    <!-- end filter-->
+                    <div class="table-responsive-sm">
+                        <table class="table table-light table-centered table-nowrap">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th class="checkbox-custom">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="check_all" onchange="checkAll(this)">
+                                            <label class="custom-control-label" for="check_all">&nbsp;</label>
+                                        </div>
+                                        {{!-- Attribute Column Data --}}
+                                            <th>
+                                                <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
+                                                <label for="check_id"></label>
+                                                ID
+                                            </th>
+                                            <th>
+                                                <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                                <label for="check_name"></label>
+                                                Role
+                                            </th>
+                                            <th>
+                                                <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                                <label for="check_name"></label>
+                                                Name
+                                            </th>
+                                            <th>
+                                                <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                                <label for="check_name"></label>
+                                                Email
+                                            </th>
+                                            <th>
+                                                <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                                <label for="check_name"></label>
+                                                Phone
+                                            </th>
+                                            <th>
+                                                <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                                <label for="check_name"></label>
+                                                Address
+                                            </th>
+                                            <th>Action</th>
+                                        {{!-- end Attribute Column Data --}}
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                {{#each users}}
+                                    <tr class="text-center" id='row_{{{id}}}'>
+                                        <td class="checkbox-custom  ">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" name="checkrow" value="{{{id}}}" class="custom-control-input delete-checkbox" id="checkbox">
+                                                <label class="custom-control-label" for="checkbox">&nbsp;</label>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">{{{id}}}</td>
+                                        <td class="text-center">{{{rolecode}}}</td>
+                                        <td class="text-center">{{{username}}}</td>
+                                        <td class="text-center">{{{email}}}</td>
+                                        <td class="text-center">{{{phone}}}</td>
+                                        <td class="text-center">{{{address}}}</td>
+                                        <td class=" text-center">
+                                            <a data-toggle="modal" data-target="#add-quick-modal" data-id={{{id}}} onclick="editSingle(this, '/admin/category/update/{{{id}}}'  ,'table-body' )" href="javascript:void(0);"<i class="mdi mdi-pencil font-size-12"></i></a>
+                                            <a href="javascript:void(0);" onclick="getOneObj(this)" data-id={{{id}}} data-url='/admin/category/delete' data-flag='1' <i class="mdi mdi-close font-size-12"></i></a>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+    <!-- end table -->
+{{!-- 
+   Add Quick Modal --}}
+    <div id="add-quick-modal" class="modal" tabindex="-1" role="dialog">
+    </div>
