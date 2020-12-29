@@ -14,3 +14,13 @@ exports.index = async (req, res, next) => {
         console.log(error) 
       }
 }
+
+exports.getAdd = async (req, res, next) => {
+  try {
+      res.render('admin/users/add', { 
+        layout: 'layoutadmin.hbs',
+      });
+    } catch(error){
+      console.log(error) 
+    }
+}

@@ -13,99 +13,47 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row search-row-custom">
-                        {{!-- Menu Top Left --}}
-                        <div class="col-sm-2 text-left ">
-                            <div class="form-group">
-                                <label class="control-label">Status</label>
-                                <select name="visible" class="form-control select2">
-                                    <option value="1">Hidden</option>
-                                </select>
+                    
+                    <div class="row">
+                        <div class="input-group col-md-6" style="margin:0px 0px 10px 0px;">
+                            <input type="text" class="form-control col-md-4" placeholder="Search">
+                            <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                        </div>
+                       
+                        <div class="col-sm-6" style="margin:0px 0px 10px 0px;">
+                            <div class="float-right">
+                                <a href="/admin/category/add" class="btn btn-success btn-rounded waves-effect"><i class="mdi mdi-plus mr-1"></i> New</a>
                             </div>
                         </div>
-                        <div class="col-sm-2 text-left ">
-                            <div class="form-group">
-                                <label class="control-label">Status</label>
-                                <select name="visible" class="form-control select2">
-                                    <option value="1">Hidden</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-2 text-left ">
-                            <div class="form-group">
-                                <label class="control-label">Status</label>
-                                <select name="visible" class="form-control select2">
-                                    <option value="1">Hidden</option>
-                                </select>
-                            </div>
-                        </div>
-                        {{!-- end Menu Top Left --}}
-
-                        {{!-- Menu Top Right --}}
-                        <div class="col-sm-6 search-col-custom">
-                            <div class="search-box search-group-custom">
-                                <input type="text" class="form-control " placeholder="Search">
-                                <a href="#" class="btn btn-primary btn-rounded">Search</a>
-                            </div>
-                        </div>
-                        {{!-- end Menu Top Right --}}
                     </div>
-                    <div class="row items-custom">
-                        {{!-- Menu Left --}}
-                            <div class="left-items-custom">
-                                <a class="btn btn-danger btn-rounded waves-effect waves-light mb-2 mr-2" data-url='/admin/category/delete' data-flag="all" onclick="getAllObj(this)">Delete</a>
-                                <a class="btn btn btn-outline-primary btn-rounded waves-effect waves-light mb-2 mr-2">Excel</a>
-                                <a data-type="pdf" class="btn btn btn-outline-warning btn-rounded waves-effect waves-light mb-2 mr-2">PDF</a>
-                            </div>
-                        {{!-- end Menu Left --}}
-
-                        {{!-- Menu Right --}}
-                        <div class="right-items-custom">
-                            <a data-toggle="modal" data-target="#add-quick-modal" href="" onclick="addQuick( this,'/admin/category/add', 'table-body' )"  class="btn btn-success btn-rounded waves-effect waves-light mb-2"><i class="mdi mdi-plus mr-1"></i>Add Quick</a>
-                        </div>
-                        {{!-- end Menu Right --}}
-                    </div>
-                    <!-- end filter-->
-
-                    <!-- end filter-->
+                    
                     <div class="table-responsive-sm">
                         <table class="table table-light table-centered table-nowrap">
                             <thead class="thead-light">
                                 <tr class="text-center">
-                                    <th class="checkbox-custom">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="check_all" onchange="checkAll(this)">
-                                            <label class="custom-control-label" for="check_all">&nbsp;</label>
-                                        </div>
-                                        {{!-- Attribute Column Data --}}
-                                            <th>
-                                                <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
-                                                <label for="check_id"></label>
-                                                ID
-                                            </th>
-                                            <th>
-                                                <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
-                                                <label for="check_name"></label>
-                                                Name
-                                            </th>
-                                            <th>Action</th>
-                                        {{!-- end Attribute Column Data --}}
+                                    {{!-- Attribute Column Data --}}
+                                        <th>
+                                            <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
+                                            <label for="check_id"></label>
+                                            ID
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Name
+                                        </th>
+                                        <th>Action</th>
+                                    {{!-- end Attribute Column Data --}}
                                 </tr>
                             </thead>
                             <tbody id="table-body">
                                 {{#each categories}}
                                     <tr class="text-center" id='row_{{{id}}}'>
-                                        <td class="checkbox-custom  ">
-                                            <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" name="checkrow" value="{{{id}}}" class="custom-control-input delete-checkbox" id="checkbox">
-                                                <label class="custom-control-label" for="checkbox">&nbsp;</label>
-                                            </div>
-                                        </td>
                                         <td class="text-center">{{{id}}}</td>
                                         <td class="text-center">{{{name}}}</td>
                                         <td class=" text-center">
-                                            <a data-toggle="modal" data-target="#add-quick-modal" data-id={{{id}}} onclick="editSingle(this, '/admin/category/update/{{{id}}}'  ,'table-body' )" href="javascript:void(0);"<i class="mdi mdi-pencil font-size-12"></i></a>
-                                            <a href="javascript:void(0);" onclick="getOneObj(this)" data-id={{{id}}} data-url='/admin/category/delete' data-flag='1' <i class="mdi mdi-close font-size-12"></i></a>
+                                            <a href="/admin/category/update/{{{id}}}"<i class="mdi mdi-pencil font-size-24"></i></a>
+                                           
                                         </td>
                                     </tr>
                                 {{/each}}

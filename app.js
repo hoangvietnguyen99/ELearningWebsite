@@ -5,6 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const exphbs  = require('express-handlebars');
+const bodyParser = require('body-parser')
 
 const pageRouter = require('./routes/pages')
 const adminRouter = require('./routes/admin')
@@ -20,9 +21,12 @@ app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 // end view set up
 
+// parse application/json
+app.use(bodyParser.json())
+
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
