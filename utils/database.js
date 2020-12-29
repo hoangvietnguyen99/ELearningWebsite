@@ -1,23 +1,17 @@
 const mysql = require('mysql')
+const util = require('util');
 var pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
-  database: 'elearning',
+    host: 'localhost',
+    user: 'root',
+    password: '123456',
+    database: 'elearning',
+    port:3307,
   connectionLimit: 50,
 })
+const pool_query = util.promisify(pool.query).bind(pool);
+
 module.exports = {
   load(sql){
-    return new Promise(
-      function(done, fail){
-        pool.query(sql, function (error, results, fields){
-          if(error)
-            fail(error)
-          else{
-            done(results)
-          }
-        })
-      }
-    )
+    return pool_query(sql);
   }
 }
