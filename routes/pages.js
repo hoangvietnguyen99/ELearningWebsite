@@ -3,15 +3,15 @@ const router = express.Router();
 
 //Index
 router.get('/', function(req, res, next) {
-    res.render('clients/index', { layout: 'layoutclient.hbs' });
-  });
+	res.render('clients/index', { layout: 'layoutclient.hbs' });
+});
 router.get('/detail', function(req, res, next) {
-  res.render('clients/DetailCourse', { layout: 'layoutclient.hbs' });
+	res.render('clients/DetailCourse', { layout: 'layoutclient.hbs' });
 });
 
 //User
 router.get('/user', function(req, res, next) {
-    res.send('respond with a resource');
+	res.send('respond with a resource');
 });
-  
+
 module.exports = router;
