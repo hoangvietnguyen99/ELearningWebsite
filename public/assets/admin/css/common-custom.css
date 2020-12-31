@@ -1,0 +1,75 @@
+.p-r-4{
+    padding-right: 4px;
+}
+.m-b-0{
+    margin-bottom: 0;
+}
+.m-t-0{
+    margin-top: 0;
+}
+
+/* set-theme is styling nothing, it's just avoid selecting wrong element when switch dark/light theme */
+.set-theme{
+}
+/* dark theme */
+.theme-body-dark{
+    background-color: #222736;
+}
+.theme-body-dark input, .theme-body-dark textarea, .theme-body-dark select{
+    background-color: #222736;
+    color: white;
+}
+.theme-body-dark, .theme-body-dark .page-title-box, .theme-body-dark .breadcrumb, .theme-body-dark .breadcrumb-item a:hover{
+    color: white;
+}
+.theme-body-dark .card, .theme-body-dark .modal-content{
+    background-color: #2a3142;
+}
+.theme-body-dark .card table, .theme-body-dark .modal-content .modal-header{
+    background-color: #2a3142;
+    color: white;;
+}
+.theme-body-dark .card table thead, .theme-body-dark .modal-content .modal-header{
+    background-color: #32394e;
+}
+.theme-body-dark .card table td{
+    border-top: 1px solid #343b51;
+}
+.theme-body-dark .card table td a{
+    color: white;
+}
+.theme-body-dark .card table td a:hover{
+    color: #6c757d;
+}
+.theme-body-dark .card table thead th{
+    border-bottom: 2px solid #343b51;
+    border-top: none;
+}
+
+.theme-dark{
+    background-color: #36394c;
+    color: white;
+}
+
+.theme-dark .notification-list .nav-link, .theme-dark .notification-list .noti-icon{
+    color: white;
+}
+
+.theme-side-dark{
+    background-color: #2a3142;
+}
+.theme-side-dark #sidebar-menu  ul  li a{
+    color: #8699AD;
+}
+/* light theme */
+.theme-body-light{
+    background-color: #f8f8fa;
+}
+.theme-light{
+    background-color: #f1f2f5;
+}
+.theme-side-light{
+    background-color: #ffffff;
+}
+/* end theme css */
+

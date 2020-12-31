@@ -6,7 +6,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const exphbs = require('express-handlebars');
+const exphbs  = require('express-handlebars');
+const bodyParser = require('body-parser')
 
 const pageRouter = require('./routes/pages')
 const adminRouter = require('./routes/admin')
@@ -20,10 +21,14 @@ const hbs = exphbs.create({
 app.set('views', path.join(__dirname, 'views'));
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
+// end view set up
+
+// parse application/json
+app.use(bodyParser.json())
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -32,12 +37,12 @@ app.use('/', pageRouter);
 app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
 	next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
 	// set locals, only providing error in development
 	res.locals.message = err.message;
 	res.locals.error = req.app.get('env') === 'development' ? err : {};
