@@ -17,32 +17,63 @@ router.get('/', async function (req, res) {
   });
 })
 
-router.post('/', async function (req, res) {
+router.post('/login', async function (req, res) {
   console.log(req.body);
 
-  return;
-  const user = await userModel.singleByUserName(req.body.username);
-  if (user === null) {
-    return res.render('auth/authentication', {
+  const isRegister = req.body.isRegister;
+
+  if (isRegister === 'on') {
+    res.render('auth/authentication', {
       layout: false,
-      err_message: 'Invalid username or password.'
+      isRegister: req.body.isRegister,
+      email: req.body.email,
+      password: req.body.password,
+      confirm: req.body.confirm
+    });
+  } else {
+    res.render('auth/authentication', {
+      layout: false,
+      email: req.body.email,
+      password: req.body.password,
     });
   }
 
-  const ret = bcrypt.compareSync(req.body.password, user.password);
-  if (ret === false) {
-    return res.render('auth/authentication', {
-      layout: false,
-      err_message: 'Invalid username or password.'
-    });
-  }
+  //
+  // return;
+  // const user = await userModel.singleByUserName(req.body.username);
+  // if (user === null) {
+  //   return res.render('auth/authentication', {
+  //     layout: false,
+  //     err_message: 'Invalid username or password.'
+  //   });
+  // }
+  //
+  // const ret = bcrypt.compareSync(req.body.password, user.password);
+  // if (ret === false) {
+  //   return res.render('auth/authentication', {
+  //     layout: false,
+  //     err_message: 'Invalid username or password.'
+  //   });
+  // }
+  //
+  // req.session.isAuth = true;
+  // req.session.authUser = user;
+  // // req.session.cart = [];
+  //
+  // let url = req.session.retUrl || '/';
+  // res.redirect(url);
+});
 
-  req.session.isAuth = true;
-  req.session.authUser = user;
-  // req.session.cart = [];
+router.post('/register', async function (req, res) {
+  console.log(req.body);
 
-  let url = req.session.retUrl || '/';
-  res.redirect(url);
+  res.redirect('userinfo');
+})
+
+router.get('/userinfo', async function (req, res) {
+  res.render('auth/userInformation', {
+    layout: false
+  });
 })
 
 // router.post('/logout', async function (req, res) {
