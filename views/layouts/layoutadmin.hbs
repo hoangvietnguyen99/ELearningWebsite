@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   {{> head_admin}}
+    {{> head_admin}}
 </head>
+
 <body id="cover" class="set-theme theme-body-light">
-<!-- Begin page -->
+    <!-- Begin page -->
     <div id="wrapper">
         <!-- start: header -->
         {{> header_admin}}
-         <!-- end: header -->
+        <!-- end: header -->
 
         <!-- start: sidebar -->
-            {{> nav_admin}}
-         <!-- end: sidebar -->
+        {{> nav_admin}}
+        <!-- end: sidebar -->
 
         <div class="content-page">
             <div class="content">
                 <div class="container-fluid">
                     <!--begin content-->
-                        {{{body}}}
-                     <!--end content-->
+                    {{{body}}}
+                    <!--end content-->
 
-                     <!-- start: Footer -->
-                        {{> bottom_admin}}
-                     <!-- end: Footer -->
+                    <!-- start: Footer -->
+                    {{> bottom_admin}}
+                    <!-- end: Footer -->
                 </div>
-            </div>    
-        </div>    
-        
+            </div>
+        </div>
+
 
     </div>
-    
 
 
-<!-- End page -->
+
+    <!-- End page -->
 
 
     <!-- jQuery  -->
@@ -54,44 +56,45 @@
     <script src="/assets/admin/js/blockUI.js"></script>
     <script src="/assets/admin/js/custom.js"></script>
     <script src="/assets/admin/js/handle-crud.js"></script>
-    
-    
+
+
     {{!-- script switch mode --}}
     <script>
-    $(document).ready(function () {
-        // init data to set theme
-        let data = {
-            timeOut: 0,
-            light: 'fa-cloud-sun',
-            dark: 'fa-cloud-moon'
-        }; // init data to set theme
-        let isAutoSwitchTheme = $('meta[name="is-switch-theme"]').attr('content') - '0';
-        console.log( isAutoSwitchTheme);
-        if (isAutoSwitchTheme){
-            let mins = 60; // Reset when storage is more than 20mins
-            let now = new Date();
-            let setupTime = localStorage.getItem('setupTime');
-            if (setupTime == null) {
-                localStorage.setItem('setupTime', now.getTime());
-                // set theme by time
-                setThemeByTime(now.getHours(), data);
-            } else {
-                // data expired, clear localStorage
-                if(now.getTime()-setupTime > mins*60*1000) {
-                    localStorage.clear();
+        $(document).ready(function () {
+            // init data to set theme
+            let data = {
+                timeOut: 0,
+                light: 'fa-cloud-sun',
+                dark: 'fa-cloud-moon'
+            }; // init data to set theme
+            let isAutoSwitchTheme = $('meta[name="is-switch-theme"]').attr('content') - '0';
+            console.log(isAutoSwitchTheme);
+            if (isAutoSwitchTheme) {
+                let mins = 60; // Reset when storage is more than 20mins
+                let now = new Date();
+                let setupTime = localStorage.getItem('setupTime');
+                if (setupTime == null) {
                     localStorage.setItem('setupTime', now.getTime());
                     // set theme by time
                     setThemeByTime(now.getHours(), data);
-                }else{
-                    initTheme(data);
+                } else {
+                    // data expired, clear localStorage
+                    if (now.getTime() - setupTime > mins * 60 * 1000) {
+                        localStorage.clear();
+                        localStorage.setItem('setupTime', now.getTime());
+                        // set theme by time
+                        setThemeByTime(now.getHours(), data);
+                    } else {
+                        initTheme(data);
+                    }
                 }
+                /// Reset when storage is more than 20mins
+            } else {
+                initTheme(data);
             }
-            /// Reset when storage is more than 20mins
-        }else{
-            initTheme(data);
-        }
-    });
-</script>
+        });
+    </script>
 
 </body>
+
 </html>
