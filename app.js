@@ -1,26 +1,19 @@
-<<<<<<< HEAD
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser')
-=======
 const createError = require('http-errors');
-const express = require('express');
 const port = 8000;
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
 const exphbs  = require('express-handlebars');
 
 const pageRouter = require('./routes/pages')
 const adminRouter = require('./routes/admin')
->>>>>>> parent of d616815... add 400 500 page
+
 
 const app = express();
 
 // view engine setup
-<<<<<<< HEAD
 require('./middlewares/view')(app);
 // end view set up
 
@@ -30,7 +23,7 @@ app.use(bodyParser.json())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-=======
+
 const hbs = exphbs.create({
     extname: 'hbs',
 });
@@ -41,16 +34,13 @@ app.set("view engine", "hbs");
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
->>>>>>> parent of d616815... add 400 500 page
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //router
-<<<<<<< HEAD
-require('./middlewares/route')(app);
+// require('./middlewares/route')(app);
 
-require('./middlewares/error')(app);
-=======
+// require('./middlewares/error')(app);
 app.use('/', pageRouter);
 app.use('/admin', adminRouter);
 
@@ -68,7 +58,6 @@ app.use(function(err, req, res, next) {
 	res.status(err.status || 500);
 	res.render('error');
 });
->>>>>>> parent of d616815... add 400 500 page
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`)
