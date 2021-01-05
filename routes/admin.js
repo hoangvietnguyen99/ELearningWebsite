@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const multer  = require('multer')
-const upload = multer({ dest: './upload' })
 const CategoryController = require('../controllers/admin/CategoryController')
 const UserController = require('../controllers/admin/UserController')
 
@@ -37,7 +35,11 @@ router.get('/user', async function(req, res, next) {
 router.get('/user/add', async function(req, res, next) {
   UserController.getAdd(req, res, next)
 });
+<<<<<<< HEAD
 router.post('/user/add', async function(req, res, next) {
   UserController.postAdd(req, res, next)
 });
 module.exports = router;
+=======
+module.exports = router;
+>>>>>>> parent of b0d02b2... oke
