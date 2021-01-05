@@ -35,8 +35,4 @@ router.get('/user', async function(req, res, next) {
 router.get('/user/add', async function(req, res, next) {
   UserController.getAdd(req, res, next)
 });
-router.post('/user/add', async function(req, res, next) {
-  UserController.postAdd(req, res, next)
-});
 module.exports = router;
-
