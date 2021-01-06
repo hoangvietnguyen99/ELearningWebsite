@@ -39,7 +39,7 @@ module.exports = {
 					if (newError) throw newError;
 					res.render('auth/authentication', {
 						layout: false,
-						isRegister: req.body.isRegister,
+						isRegister: true,
 						email: req.body.email,
 						password: req.body.password,
 						error: err
