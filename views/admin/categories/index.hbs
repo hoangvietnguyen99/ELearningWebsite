@@ -1,0 +1,72 @@
+ <div class="page-title-box">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h2 class="page-title">{{{title}}}</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">Welcome to Dashboard</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+  <!-- start table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    
+                    <div class="row">
+                        <div class="input-group col-md-6" style="margin:0px 0px 10px 0px;">
+                            <input type="text" class="form-control col-md-4" placeholder="Search">
+                            <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                        </div>
+                       
+                        <div class="col-sm-6" style="margin:0px 0px 10px 0px;">
+                            <div class="float-right">
+                                <a href="/admin/category/add" class="btn btn-success btn-rounded waves-effect"><i class="mdi mdi-plus mr-1"></i> New</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive-sm">
+                        <table class="table table-light table-centered table-nowrap">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    {{!-- Attribute Column Data --}}
+                                        <th>
+                                            <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
+                                            <label for="check_id"></label>
+                                            ID
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Name
+                                        </th>
+                                        <th>Action</th>
+                                    {{!-- end Attribute Column Data --}}
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                {{#each categories}}
+                                    <tr class="text-center" id='row_{{{id}}}'>
+                                        <td class="text-center">{{{id}}}</td>
+                                        <td class="text-center">{{{name}}}</td>
+                                        <td class=" text-center">
+                                            <a href="/admin/category/update/{{{id}}}"<i class="mdi mdi-pencil font-size-24"></i></a>
+                                           
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+    <!-- end table -->
+{{!-- 
+   Add Quick Modal --}}
+    <div id="add-quick-modal" class="modal" tabindex="-1" role="dialog">
+    </div>
