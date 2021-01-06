@@ -5,7 +5,7 @@ const AccountModel = require('../../models/Account.model')
 
 module.exports = {
 	register: (req, res) => {
-		const connection = database.createConnection();
+		const connection = database.getConnection();
 		connection.beginTransaction(async err => {
 			if (err) throw err;
 			try {
@@ -24,11 +24,11 @@ module.exports = {
 				newAccount = await AccountModel.add(newAccount, connection);
 				if (newAccount) {
 					connection.commit(newError => {
+						connection.release();
 						if (newError) throw newError;
 						req.session.isAuth = true;
 						req.session.authUser = newUser;
 						req.session.authAccount = newAccount;
-
 						let url = req.session.retUrl || '/';
 						res.redirect(url);
 					});
@@ -36,6 +36,7 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 				connection.rollback(newError => {
+					connection.release();
 					if (newError) throw newError;
 					res.render('auth/authentication', {
 						layout: false,
