@@ -1,0 +1,122 @@
+ <div class="page-title-box">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <h2 class="page-title">{{{title}}}</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">Welcome to Dashboard</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+  <!-- start table -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row search-row-custom">
+                        {{!-- Menu Top Left --}}
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">Role</label>
+                                <select name="visible" class="form-control select2">
+                                    <option value="1">Admin</option>
+                                    <option value="2">Teacher</option>
+                                    <option value="3">Student</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        {{!-- end Menu Top Left --}}
+
+                        {{!-- Menu Top Right --}}
+                        <div class="col-sm-6 ">
+                            <div class="search-box search-group-custom float-right">
+                                <input type="text" class="form-control " placeholder="Search">
+                                <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                            </div>
+                        </div>
+                        {{!-- end Menu Top Right --}}
+                    </div>
+                    <div style="margin: 10px 0px;">
+                        {{!-- Menu Right --}}
+                        <div class="float-right">
+                            <a href="#" class="btn btn-success btn-rounded waves-effect mb-2"><i class="mdi mdi-plus mr-1"></i>Add Quick</a>
+                        </div>
+                        {{!-- end Menu Right --}}
+                    </div>
+                    <!-- end filter-->
+
+                    <!-- end filter-->
+                    <div class="table-responsive-sm">
+                        <table class="table table-light table-centered table-nowrap">
+                            <thead class="thead-light">
+                                <tr class="text-center"> 
+                                    {{!-- Attribute Column Data --}}
+                                        <th>
+                                            <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
+                                            <label for="check_id"></label>
+                                            Profile
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Role
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Name
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Email
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Phone
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Address
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Status
+                                        </th>
+                                        <th>Action</th>
+                                    {{!-- end Attribute Column Data --}}
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                {{#each users}}
+                                    <tr class="text-center" id='row_{{{id}}}'>
+                                        <td class="text-center">{{{imagepath}}}</td>
+                                        <td class="text-center">{{{rolecode}}}</td>
+                                        <td class="text-center">{{{username}}}</td>
+                                        <td class="text-center">{{{email}}}</td>
+                                        <td class="text-center">{{{phone}}}</td>
+                                        <td class="text-center">{{{address}}}</td>
+                                        <td class="text-center">{{{statuscode}}}</td>
+                                        <td class=" text-center">
+                                            <a href="#"<i class="mdi mdi-pencil font-size-12"></i></a>
+                                        </td>
+                                    </tr>
+                                {{/each}}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end row -->
+    <!-- end table -->
+{{!-- 
+   Add Quick Modal --}}
+    <div id="add-quick-modal" class="modal" tabindex="-1" role="dialog">
+    </div>
