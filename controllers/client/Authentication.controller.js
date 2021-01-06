@@ -4,15 +4,15 @@ const database = require('../../utils/database');
 const AccountModel = require('../../models/Account.model')
 
 module.exports = {
-	register: (req, res) => {
-		const connection = database.getConnection();
+	register: async (req, res) => {
+		const connection = await database.getConnection();
 		connection.beginTransaction(async err => {
 			if (err) throw err;
 			try {
-				const account = AccountModel.singleByEmail(req.body.email);
+				const account = await AccountModel.singleByEmail(req.body.email);
 				if (account) throw `Existing email: ${req.body.email}`;
 				let newUser = {
-					firstName: ''
+					fullname: ''
 				}
 				newUser = await UserModel.add(newUser, connection);
 				if (!newUser) throw 'Can not add user.'
