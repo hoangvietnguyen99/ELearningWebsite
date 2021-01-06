@@ -2,17 +2,17 @@ const mysql = require('mysql')
 
 const pool = mysql.createPool({
 	host: process.env.DB_HOST || 'localhost',
-	port: process.env.DB_PORT || 3306,
-	user: process.env.DB_USER || 'root',
-	password: process.env.DB_PASS || 'hoathinh',
+	port: process.env.DB_PORT || 3308,
+	user: process.env.DB_USER || 'nntrung',
+	password: process.env.DB_PASS || '123456',
 	database: process.env.DB_NAME || 'elearning'
 });
 
 const createConnection = () => mysql.createConnection({
 	host: process.env.DB_HOST || 'localhost',
-	port: process.env.DB_PORT || 3306,
-	user: process.env.DB_USER || 'root',
-	password: process.env.DB_PASS,
+	port: process.env.DB_PORT || 3308,
+	user: process.env.DB_USER || 'nntrung',
+	password: process.env.DB_PASS || '123456',
 	database: process.env.DB_NAME || 'elearning'
 });
 
