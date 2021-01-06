@@ -1,20 +1,21 @@
 const mysql = require('mysql')
 
 const pool = mysql.createPool({
-	host: process.env.DB_HOST || 'localhost',
-	port: process.env.DB_PORT || 3308,
-	user: process.env.DB_USER || 'nntrung',
-	password: process.env.DB_PASS || '123456',
-	database: process.env.DB_NAME || 'elearning'
+	host: process.env.DB_HOST,
+	port: process.env.DB_PORT,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	database: process.env.DB_NAME,
 });
 
-const createConnection = () => mysql.createConnection({
-	host: process.env.DB_HOST || 'localhost',
-	port: process.env.DB_PORT || 3308,
-	user: process.env.DB_USER || 'nntrung',
-	password: process.env.DB_PASS || '123456',
-	database: process.env.DB_NAME || 'elearning'
-});
+const getConnection = function() {
+	return new Promise((resolve, reject) => {
+		pool.getConnection(((err, connection) => {
+			if (err) return reject(err);
+			return resolve(connection);
+		}))
+	});
+}
 
 module.exports = {
 	query(sql, connection) {
@@ -61,5 +62,5 @@ module.exports = {
 		)
 	},
 
-	createConnection
+	getConnection
 }

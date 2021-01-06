@@ -2,7 +2,13 @@
     <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
       tinymce.init({
-        selector: '#txtDes'
+        selector: '#txtDes',
+        height : 600,
+        plugins: 'paste image link autolink lists table media',
+        menubar: false,
+        toolbar: [
+        'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+        ],
       });
     </script>
 {{/section}}
