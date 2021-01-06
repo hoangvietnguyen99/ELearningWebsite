@@ -203,3 +203,69 @@ DROP INDEX `email` ;
 -------------------------------------------06/01/2021
 ALTER TABLE `elearning`.`users`
 CHANGE COLUMN `gender` `gender` VARCHAR(6) NULL DEFAULT 'MALE' ;
+
+ALTER TABLE `elearning`.`users`
+DROP FOREIGN KEY `users_statuses_fk`,
+DROP FOREIGN KEY `users_roles_fk`;
+ALTER TABLE `elearning`.`users`
+DROP COLUMN `imgpath`,
+DROP COLUMN `lastname`,
+DROP COLUMN `middlename`,
+DROP COLUMN `statusid`,
+DROP COLUMN `roleid`,
+CHANGE COLUMN `rolecode` `role` VARCHAR(15) NULL DEFAULT 'STUDENT' ,
+CHANGE COLUMN `statuscode` `status` VARCHAR(15) NULL DEFAULT 'AVAILABLE' ,
+CHANGE COLUMN `firstname` `fullname` VARCHAR(100) NULL DEFAULT NULL ,
+CHANGE COLUMN `address` `address` VARCHAR(500) NULL DEFAULT NULL ,
+DROP INDEX `users_statuses_fk` ,
+DROP INDEX `users_roles_fk` ;
+
+ALTER TABLE `elearning`.`categories`
+DROP COLUMN `imgpath`,
+DROP COLUMN `description`;
+;
+ALTER TABLE `elearning`.`courses`
+DROP FOREIGN KEY `courses_statuses_fk`;
+ALTER TABLE `elearning`.`courses`
+DROP COLUMN `imgpath`,
+DROP COLUMN `statusid`,
+DROP INDEX `courses_statuses_fk` ;
+;
+ALTER TABLE `elearning`.`fields`
+DROP COLUMN `imgpath`;
+
+ALTER TABLE `elearning`.`lessons`
+CHANGE COLUMN `videourl` `videourl` TEXT NULL DEFAULT NULL ;
+
+DROP TABLE `elearning`.`roles`;
+
+DROP TABLE `elearning`.`roles`;
+
+ALTER TABLE `elearning`.`discounts`
+CHANGE COLUMN `name` `code` VARCHAR(50) NULL DEFAULT NULL ;
+
+DROP TABLE `elearning`.`statuses`;
+
+DROP TABLE `elearning`.`statuses`;
+
+CREATE TABLE carts (
+	id INT AUTO_INCREMENT,
+    userid INT NOT NULL,
+    discount INT NULL,
+    ispaid TINYINT DEFAULT 0,
+    paiddate DATETIME,
+    method VARCHAR(50),
+    amount BIGINT DEFAULT 0,
+    discountamount BIGINT DEFAULT 0,
+    total BIGINT DEFAULT 0,
+    CONSTRAINT carts_pk PRIMARY KEY (id),
+    CONSTRAINT carts_users_fk FOREIGN KEY (userid) REFERENCES users (id)
+);
+
+CREATE TABLE carts_courses (
+    cartid INT NOT NULL,
+    courseid INT NOT NULL,
+    CONSTRAINT carts_courses_pk PRIMARY KEY (cartid, courseid),
+    CONSTRAINT carts_courses_fk_carts FOREIGN KEY (cartid) REFERENCES carts (id),
+    CONSTRAINT carts_courses_fk_courses FOREIGN KEY (courseid) REFERENCES courses (id)
+);

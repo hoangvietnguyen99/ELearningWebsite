@@ -28,7 +28,7 @@ module.exports = function (app) {
   // app.use('/admin/categories', require('../routes/category.route'));
   // app.use('/admin/products', require('../routes/product.route'));
 
-  app.use('/pages', require('../routes/pages'));
+  app.use('/', require('../routes/pages'));
   app.use('/auth', require('../routes/Authentication'));
   // app.use('/products', require('../routes/front/product.route'));
   // app.use('/cart', auth, require('../routes/front/cart.route'));
