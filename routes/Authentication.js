@@ -22,7 +22,7 @@ router.get('/', async function (req, res) {
   });
 })
 
-router.post('/register', Validator.register, function (req, res) {
+router.post('/register', Validator.register, async function (req, res) {
   const result = validationResult(req);
 
   if (!result.isEmpty()) return res.render('auth/authentication', {
@@ -41,7 +41,7 @@ router.post('/register', Validator.register, function (req, res) {
     error: 'Password confirm not match'
   });
 
-  AuthController.register(req, res);
+  await AuthController.register(req, res);
 });
 
 router.post('/login', Validator.login, async function (req, res) {
