@@ -7,7 +7,7 @@ const bodyParser = require('body-parser')
 const app = express();
 
 // view engine setup
-require('./middlewares/view')(app);
+require('./middlewares/View')(app);
 // end view set up
 
 // parse application/json
@@ -19,10 +19,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+require('./middlewares/Session')(app);
 //router
-require('./middlewares/route')(app);
+require('./middlewares/Routes')(app);
 
-require('./middlewares/error')(app);
+require('./middlewares/ErrorHandler')(app);
 
 module.exports = app;
 
