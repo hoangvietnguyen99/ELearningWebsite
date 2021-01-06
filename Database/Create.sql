@@ -199,3 +199,7 @@ ALTER TABLE `elearning`.`users`
 DROP COLUMN `email`,
 DROP INDEX `email` ;
 ;
+
+-------------------------------------------06/01/2021
+ALTER TABLE `elearning`.`users`
+CHANGE COLUMN `gender` `gender` VARCHAR(6) NULL DEFAULT 'MALE' ;

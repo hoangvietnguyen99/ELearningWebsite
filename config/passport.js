@@ -1,7 +1,7 @@
 const passport = require('passport');
-const {single} = require("../models/user");
-const {validPassword} = require("../models/account");
-const {singleByEmail} = require("../models/account");
+const {single} = require("../models/User.model");
+const {validPassword} = require("../models/Account.model");
+const {singleByEmail} = require("../models/Account.model");
 const LocalStrategy = require('passport-local').Strategy;
 
 /**

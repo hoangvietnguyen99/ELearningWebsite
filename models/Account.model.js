@@ -26,7 +26,7 @@ module.exports = {
 
   async add(entity, connection) {
     const result = await database.add(entity, TBL_ACCOUNTS, connection);
-    const rows = await database.query(`SELECT * FROM ${TBL_ACCOUNTS} WHERE id = ${result.insertId}`);
+    const rows = await database.query(`SELECT * FROM ${TBL_ACCOUNTS} WHERE id = ${result.insertId}`, connection);
     if (rows.length === 0) return null;
     else return rows[0];
   },
