@@ -1,4 +1,5 @@
 const express = require('express');
+const database = require("../utils/database");
 // const bcrypt = require('bcryptjs');
 // const moment = require('moment');
 
@@ -8,21 +9,26 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-  // if (req.headers.referer) {
-  //   req.session.retUrl = req.headers.referer;
-  // }
+  if (req.headers.referer) {
+    req.session.retUrl = req.headers.referer;
+  }
 
   res.render('auth/authentication', {
     layout: false
   });
 })
 
-router.post('/login', async function (req, res) {
+router.post('/', async function (req, res) {
   console.log(req.body);
-
   const isRegister = req.body.isRegister;
 
   if (isRegister === 'on') {
+    const connection = database.createConnection();
+    connection.beginTransaction(err => {
+      if (err) throw err;
+      // const
+    });
+
     res.render('auth/authentication', {
       layout: false,
       isRegister: req.body.isRegister,
@@ -63,18 +69,6 @@ router.post('/login', async function (req, res) {
   // let url = req.session.retUrl || '/';
   // res.redirect(url);
 });
-
-router.post('/register', async function (req, res) {
-  console.log(req.body);
-
-  res.redirect('userinfo');
-})
-
-router.get('/userinfo', async function (req, res) {
-  res.render('auth/userInformation', {
-    layout: false
-  });
-})
 
 // router.post('/logout', async function (req, res) {
 //   req.session.isAuth = false;

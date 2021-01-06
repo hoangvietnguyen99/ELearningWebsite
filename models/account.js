@@ -1,16 +1,16 @@
 const crypto = require('crypto');
 
-const db = require('../utils/db');
+const database = require('../utils/database');
 
 const TBL_ACCOUNTS = 'accounts';
 
 module.exports = {
   all() {
-    return db.load(`select * from ${TBL_ACCOUNTS}`);
+    return database.query(`select * from ${TBL_ACCOUNTS}`);
   },
 
   async single(id) {
-    const rows = await db.load(`select * from ${TBL_ACCOUNTS} where id = ${id}`);
+    const rows = await database.query(`select * from ${TBL_ACCOUNTS} where id = ${id}`);
     if (rows.length === 0)
       return null;
 
@@ -18,14 +18,17 @@ module.exports = {
   },
 
   async singleByEmail(email) {
-    const rows = await db.load(`select * from ${TBL_ACCOUNTS} where email = '${email}'`);
+    const rows = await database.query(`select * from ${TBL_ACCOUNTS} where email = '${email}'`);
     if (rows.length === 0)
       return null;
     return rows[0];
   },
 
-  add(entity) {
-    return db.add(entity, TBL_ACCOUNTS)
+  async add(entity, connection) {
+    const result = await database.add(entity, TBL_ACCOUNTS, connection);
+    const rows = await database.query(`SELECT * FROM ${TBL_ACCOUNTS} WHERE id = ${result.insertId}`);
+    if (rows.length === 0) return null;
+    else return rows[0];
   },
 
   /**

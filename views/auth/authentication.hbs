@@ -266,9 +266,12 @@
 
 <body>
 <h1>Let us know who you are!</h1>
+{{#each errors}}
+    <h2>error</h2>
+{{/each}}
 <div class="container {{#if isRegister}}right-panel-active{{/if}}" id="container">
     <div class="form-container sign-up-container">
-        <form action="auth/register" id="formRegister" method="POST">
+        <form id="formRegister" method="POST">
             <h1>Create Account</h1>
             <div class="social-container">
                 <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -279,13 +282,13 @@
             <span>or use your email for registration</span>
             <input type="email" placeholder="Email" name="email" value="{{#if email}}{{email}}{{/if}}"/>
             <input type="password" placeholder="Password" name="password" value="{{#if password}}{{password}}{{/if}}"/>
-            <input type="password" placeholder="Confirm password" name="confirm"
-                   value="{{#if confirm}}{{confirm}}{{/if}}"/>
+            <input type="password" placeholder="Confirm password" name="confirm"/>
+            <input type="checkbox" hidden name="isRegister" checked/>
             <button>Sign Up</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
-        <form action="auth/login" id="formLogin" method="POST">
+        <form id="formLogin" method="POST">
             <h1>Sign in</h1>
             <div class="social-container">
                 <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
@@ -327,7 +330,6 @@
         });
     </script>
 </div>
-<div>Error stack</div>
 </body>
 
 </html>

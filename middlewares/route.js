@@ -1,4 +1,5 @@
 const auth = require('./auth');
+const {Validator} = require("./validator");
 
 module.exports = function (app) {
   // app.get('/', function (req, res) {
@@ -27,7 +28,7 @@ module.exports = function (app) {
   // app.use('/admin/categories', require('../routes/category.route'));
   // app.use('/admin/products', require('../routes/product.route'));
 
-  app.use('/auth', require('../routes/authentication'));
+  app.use('/auth', [...Validator], require('../routes/auth'));
   // app.use('/products', require('../routes/front/product.route'));
   // app.use('/cart', auth, require('../routes/front/cart.route'));
 

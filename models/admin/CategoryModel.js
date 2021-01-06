@@ -3,13 +3,13 @@ const tableName = 'categories'
 
 module.exports = {
     all() {
-        return db.load(`select * from ${tableName}`)
+        return db.query(`select * from ${tableName}`)
     },
     add(entity) {
         db.add(entity, tableName)
     },
     async single(id) {
-        const rows = await db.load(`SELECT * FROM ${tableName} WHERE id = ${id}`)
+        const rows = await db.query(`SELECT * FROM ${tableName} WHERE id = ${id}`)
         if(rows.length === 0)
             return null;
 

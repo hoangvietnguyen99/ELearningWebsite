@@ -1,21 +1,25 @@
-const db = require('../utils/db');
+const database = require('../utils/database');
 
 const TBL_USERS = 'users';
 
 module.exports = {
   all() {
-    return db.load(`select * from ${TBL_USERS}`);
+    return database.query(`select * from ${TBL_USERS}`);
   },
 
   async single(id) {
-    const rows = await db.load(`select * from ${TBL_USERS} where id = ${id}`);
+    const rows = await database.query(`select * from ${TBL_USERS} where id = ${id}`);
     if (rows.length === 0)
       return null;
 
     return rows[0];
   },
 
-  add(entity) {
-    return db.add(entity, TBL_USERS)
+
+  async add(entity, connection) {
+    const result = await database.add(entity, TBL_USERS, connection);
+    const rows = await database.query(`SELECT * FROM ${TBL_USERS} WHERE id = ${result.insertId}`);
+    if (rows.length === 0) return null;
+    else return rows[0];
   }
 }
