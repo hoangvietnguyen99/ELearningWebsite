@@ -1012,6 +1012,7 @@ section > .container-fluid {
 @media only screen and (min-width: 901px) {
   .menuzord-menu > li > a {
     color: #fff;
+    margin-left: 15px;
   }
 }
 .menuzord-menu.dark > li > a {
