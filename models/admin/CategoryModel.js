@@ -17,7 +17,7 @@ module.exports = {
     },
     del(entity){
         const condition = {id: entity.id}
-        db.del(condition, tableName)
+        db.delete(condition, tableName)
     },
     update(entity){
         const condition = {id: entity.id};
