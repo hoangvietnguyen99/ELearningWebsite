@@ -1,7 +1,7 @@
-const UserModel = require("../../models/User.model");
+const UserModel = require("../../models/user.model");
 
 const database = require('../../utils/database');
-const AccountModel = require('../../models/Account.model')
+const AccountModel = require('../../models/account.model');
 
 module.exports = {
 	register: async (req, res) => {
@@ -23,7 +23,7 @@ module.exports = {
 				AccountModel.setPassword(req.body.password, newAccount);
 				newAccount = await AccountModel.add(newAccount, connection);
 				if (newAccount) {
-					connection.commit(newError => {
+					connection.commit(async newError => {
 						connection.release();
 						if (newError) throw newError;
 						req.session.isAuth = true;
@@ -76,7 +76,6 @@ module.exports = {
 		req.session.isAuth = false;
 		req.session.authAccount = null;
 		req.session.authUser = null;
-		req.session.cart = [];
 		res.redirect(req.headers.referer);
 	}
 }

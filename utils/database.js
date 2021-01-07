@@ -40,7 +40,7 @@ module.exports = {
 		)
 	},
 
-	del(condition, tableName, connection) {
+	delete(condition, tableName, connection) {
 		return new Promise((resolve, reject) => {
 				const thisConnection = connection || pool;
 				thisConnection.query(`delete from ${tableName} where ?`, condition, (error, results) => {
