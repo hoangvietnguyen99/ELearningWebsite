@@ -1,17 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const categoryModel = require('../models/client/categories.model');
-const accountModel = require('../models/client/account.model');
-const course_discountModel = require('../models/client/course_discount.model');
-const coursesModel = require('../models/client/courses.model');
-const discountsModel = require('../models/client/discounts.model');
-const field_courseModel = require('../models/client/field_course.model');
-const fieldsModel = require('../models/client/fields.model');
-const lessonsModel = require('../models/client/lessons.model');
-const ratingsModel = require('../models/client/ratings.model');
-const rolesModel = require('../models/client/roles.model');
-const statusesModel = require('../models/client/statuses.model');
-const user_courseModel = require('../models/client/user_course.model');
 const detailController = require('../controllers/client/detail.controller');
 
 //Index

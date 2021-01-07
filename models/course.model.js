@@ -5,6 +5,14 @@ const CartsCoursesModel = require('./carts_courses.model');
 const TBL_COURSES = 'courses';
 
 module.exports = {
+	async getAll(connection, pageIndex, pageSize) {
+		const query = `SELECT * FROM ${TBL_COURSES}`;
+		return await database.queryWithLimit(query, connection, pageIndex, pageSize);
+	},
+	async getAllAvailable(connection, pageIndex, pageSize) {
+		const query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`;
+		return await database.queryWithLimit(query, connection, pageIndex, pageSize);
+	},
 	async getById(id, connection) {
 		const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id}`;
 		const courses = await database.query(query, connection);
