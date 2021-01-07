@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const coursesModel = require('../../models/client/courses.model');
+const coursesModel = require('../../models/course.model');
 
 exports.getCourses  = async function(req,res,next ){ 
     const user = req.session.authUser;

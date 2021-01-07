@@ -6,7 +6,7 @@ module.exports = {
 	async getListCourseIdsByCartId(cartId, connection) {
 		const query = `SELECT courseid FROM ${TBL_CARTS_COURSES} WHERE cartid = ${cartId}`;
 		const rows = await database.query(query, connection);
-		console.log(rows);
+		// console.log(rows);
 		if (rows.length === 0) return [];
 		return rows;
 	},

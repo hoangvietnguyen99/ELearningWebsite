@@ -21,5 +21,20 @@ module.exports = {
 	async update(course, connection) {
 		const result = await database.update(course, {id: course.id}, TBL_COURSES,connection);
 		return result.changedRows;
-	}
+	},
+
+	async single(id) {
+        const rows = await database.query(`select * from ${TBL_COURSES} where id = ${id}`);
+        if (rows.length === 0)
+          return null;
+    
+        return rows[0];
+    },
+
+    async allByAuthor(authorID){
+        const rows = await database.query(`select * from ${TBL_COURSES} where author = ${authorID}`);
+        if (rows.length === 0)
+          return [];
+        return rows;
+    }
 }
