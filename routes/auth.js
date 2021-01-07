@@ -59,6 +59,10 @@ router.post('/login', Validator.login, async function (req, res) {
 
 router.post('/logout', async function (req, res) {
   AuthController.logout(req, res);
+});
+
+router.post('/facebook', (req, res, next) => {
+
 })
 
 // router.get('/register', async function (req, res) {
