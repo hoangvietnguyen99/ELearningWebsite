@@ -1,18 +1,16 @@
 const {validationResult} = require("express-validator");
-const AuthController = require("../controllers/client/Authentication.controller");
+const AuthController = require("../controllers/client/auth.controller");
 
 const express = require('express');
-const database = require("../utils/database");
+const {isNotAuth} = require("../middlewares/Authentication");
+const {isAuth} = require("../middlewares/Authentication");
 const {Validator} = require("../middlewares/Validator");
-// const bcrypt = require('bcryptjs');
-// const moment = require('moment');
-
-// const userModel = require('../../models/user.model');
-// const auth = require('../../middlewares/auth.mdw');
 
 const router = express.Router();
 
-router.get('/', async function (req, res) {
+const CartsCoursesModel = require("../models/carts_courses.model");
+
+router.get('/', isNotAuth, async function (req, res) {
   if (req.headers.referer) {
     req.session.retUrl = req.headers.referer;
   }
@@ -22,7 +20,7 @@ router.get('/', async function (req, res) {
   });
 })
 
-router.post('/register', Validator.register, async function (req, res) {
+router.post('/register', isNotAuth, Validator.register, async function (req, res) {
   const result = validationResult(req);
 
   if (!result.isEmpty()) return res.render('auth/authentication', {
@@ -44,7 +42,7 @@ router.post('/register', Validator.register, async function (req, res) {
   await AuthController.register(req, res);
 });
 
-router.post('/login', Validator.login, async function (req, res) {
+router.post('/login', isNotAuth, Validator.login, async function (req, res) {
   const result = validationResult(req);
 
   if (!result.isEmpty()) return res.render('auth/authentication', {
@@ -57,7 +55,7 @@ router.post('/login', Validator.login, async function (req, res) {
   await AuthController.login(req, res);
 });
 
-router.post('/logout', async function (req, res) {
+router.post('/logout', isAuth, async function (req, res) {
   AuthController.logout(req, res);
 });
 

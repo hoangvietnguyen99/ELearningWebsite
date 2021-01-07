@@ -16,8 +16,7 @@ module.exports =
   isTeacher: (req, res, next) => {
     return this.isAuth(req, res, function () {
       if (req.authUser.role !== 'TEACHER') {
-        req.session.retUrl = req.originalUrl;
-        return res.redirect(req.session.retUrl || '/');
+        return res.redirect(req.headers.referer || '/');
       }
       next();
     });
@@ -25,8 +24,7 @@ module.exports =
   isAdmin: (req, res, next) => {
     return this.isAuth(req, res, function () {
       if (req.authUser.role !== 'ADMIN') {
-        req.session.retUrl = req.originalUrl;
-        return res.redirect(req.session.retUrl || '/');
+        return res.redirect(req.headers.referer || '/');
       }
       next();
     });
