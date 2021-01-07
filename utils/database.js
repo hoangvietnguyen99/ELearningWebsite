@@ -18,6 +18,19 @@ const getConnection = function() {
 }
 
 module.exports = {
+	queryWithLimit(sql, connection, pageIndex, pageSize) {
+		pageIndex = pageIndex || 1;
+		pageSize = pageSize || 100;
+		return new Promise((resolve, reject) => {
+			const thisConnection = connection || pool;
+			const query = sql + ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`;
+			thisConnection.query(query, (error, results) => {
+				if (error) return reject(error);
+				return resolve(results);
+			});
+		});
+	},
+
 	query(sql, connection) {
 		return new Promise((resolve, reject) => {
 				const thisConnection = connection || pool;
