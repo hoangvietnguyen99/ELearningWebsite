@@ -39,6 +39,7 @@ router.post('/editor', function(req,res,next){
 });
 
 
+
 //User
 router.get('/user', function(req, res, next) {
 	res.send('respond with a resource');

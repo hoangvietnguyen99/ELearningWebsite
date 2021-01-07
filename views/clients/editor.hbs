@@ -1,30 +1,35 @@
 {{#section 'js'}}
-    <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-      tinymce.init({
+<script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
+    referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
         selector: '#txtDes',
-        height : 600,
+        height: 600,
         plugins: 'paste image link autolink lists table media',
         menubar: false,
         toolbar: [
-        'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
         ],
-      });
-    </script>
+    });
+</script>
 {{/section}}
-<form action= "" method="POST">
-    <div class="editor">
+<form action="" method="POST">
+    <div class="editor" style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
         <div class="form-group">
-            <label for = "txtDes">Description</label>
-            <textarea class = "form-control" name ="Des" id = "txtDes" cols="30" rows="10"></textarea>
+            <label for="txtDes">Description</label>
+            <textarea class="form-control" name="Des" id="txtDes" cols="30" rows="10"></textarea>
         </div>
     </div>
-    <div class="editor-footer">
-        <button type = 'submit' class="btn btn-primary">
-            <i class = "fa fa-check " aria-hidden="true"></i>
+    <div class="editor-footer" style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
+        <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+            <i class="fa fa-check " aria-hidden="true"></i>
             Save
         </button>
+
+         <button type='button' class="btn btn-primary" style="margin-left: 5px;">
+            <i class="fa fa-check " aria-hidden="true"></i>
+            Upload video
+        </button>
     </div>
+
 </form>
-
-

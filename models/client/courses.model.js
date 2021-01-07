@@ -15,4 +15,11 @@ module.exports = {
     
         return rows[0];
     },
+
+    async allByAuthor(authorID){
+        const rows = await database.query(`select * from ${TBL_COURSES} where author = ${authorID}`);
+        if (rows.length === 0)
+          return [];
+        return rows;
+    }
 }
