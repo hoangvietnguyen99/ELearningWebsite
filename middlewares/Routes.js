@@ -25,7 +25,7 @@ module.exports = function(app) {
     //   });
     // });
 
-    // app.use('/admin/categories', require('../routes/category.route'));
+    app.use('/admin', require('../routes/admin'));
     // app.use('/admin/products', require('../routes/product.route'));
 
     app.use('/', require('../routes/pages'));
