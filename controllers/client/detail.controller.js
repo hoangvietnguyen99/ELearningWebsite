@@ -13,6 +13,7 @@ exports.getCourses  = async function(req,res,next ){
         course : course,
         user : user,
         lesson: lessons,
-        empty: course.length == 0
+        empty: course.length == 0,
+        isAuthor: res.locals.authUser.id === course.author
     });
-};
+}

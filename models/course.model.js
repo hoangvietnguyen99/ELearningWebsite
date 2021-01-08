@@ -1,4 +1,5 @@
 const database = require('../utils/database');
+const { addOne } = require('./carts_courses.model');
 
 const CartsCoursesModel = require('./carts_courses.model');
 
@@ -44,5 +45,13 @@ module.exports = {
         if (rows.length === 0)
           return [];
         return rows;
-    }
+	},
+	
+	async addOne(course){
+		const result = await database.add(course,TBL_COURSES);
+		const rows = await database.query(`select * from ${TBL_COURSES} WHERE id = ${result.insertId}`);
+		if (rows.length === 0)
+          return null;
+		return rows[0];
+	}
 }

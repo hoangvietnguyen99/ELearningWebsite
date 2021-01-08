@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const coursesModel = require('../../models/course.model');
 const multer = require('multer');
+const db = require('../../utils/database');
+const courseModel = require('../../models/course.model');
 
 exports.getCourses  = async function(req,res,next ){ 
     const user = req.session.authUser;
@@ -13,7 +15,7 @@ exports.getCourses  = async function(req,res,next ){
     });
 };
 
-exports.addImage =  function(req,res,next ){ 
+exports.addImage =  function(req,res,next ){
     const storage = multer.diskStorage({
 		destination: function (req, file, cb) {
 		  cb(null, './public/assets/client/images/courses')
@@ -28,7 +30,22 @@ exports.addImage =  function(req,res,next ){
 		if (err) {
 			console.log('Error load');
 		} else {
-			res.render('clients/editor', { layout: 'layoutclient.hbs' });
+			res.redirect('/teacher/courses');
 		}
 	  });
+};
+
+exports.addCourse =  async function(req,res,next){
+    const author = req.session.authUser.id;
+    const {name,number,price,Des} = req.body;
+    const course = {
+        name: name,
+        author: author,
+        lessonscount: number,
+        price: price,
+        description: Des
+    }
+    const result = await courseModel.addOne(course);
+    if(result !== null)
+    res.redirect('/teacher/courses');
 };

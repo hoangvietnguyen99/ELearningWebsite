@@ -7,9 +7,7 @@ const multer = require('multer');
 router.get('/', function(req, res, next) {
 	res.render('clients/index', { layout: 'layoutclient.hbs' });
 });
-router.get('/detail/:id', async function(req, res, next) {
-  detailController.getCourses(req,res,next);
-});
+
 router.get('/categories', function(req, res, next) {
 	res.render('clients/categories', { layout: 'layoutclient.hbs' });
 });
