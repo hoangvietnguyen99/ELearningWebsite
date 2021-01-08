@@ -9,7 +9,8 @@ exports.index = async(req, res, next) => {
         res.render('admin/fields/index', {
             layout: 'layoutadmin.hbs',
             fields: rows,
-            empty: rows.length === 0
+            empty: rows.length === 0,
+            title: 'Field'
         });
     } catch (error) {
         console.log(error)
@@ -20,7 +21,8 @@ exports.getAdd = async(req, res, next) => {
     const categories = await CategoryModel.all()
     res.render('admin/fields/add', {
         layout: 'layoutadmin.hbs',
-        categories: categories
+        categories: categories,
+        title: 'Add Field'
     });
 }
 
@@ -41,7 +43,8 @@ exports.getUpdate = async(req, res, next) => {
     res.render('admin/fields/update', {
         layout: 'layoutadmin.hbs',
         field: field,
-        categories: categories
+        categories: categories,
+        title: 'Update Field'
     });
 }
 

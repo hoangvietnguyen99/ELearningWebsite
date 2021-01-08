@@ -3,6 +3,7 @@ const router = express.Router();
 const CategoryController = require('../controllers/admin/CategoryController')
 const FieldController = require('../controllers/admin/FieldController')
 const UserController = require('../controllers/admin/UserController')
+const CourseController = require('../controllers/admin/CourseController')
 
 //Index
 router.get('/', function(req, res, next) {
@@ -58,5 +59,13 @@ router.get('/user/update/:id', async function(req, res, next) {
 });
 router.post('/user/update', async function(req, res, next) {
     UserController.postUpdate(req, res, next)
+});
+
+//Course
+router.get('/course', async function(req, res, next) {
+    CourseController.index(req, res, next)
+});
+router.get('/course/approve/:id', async function(req, res, next) {
+    CourseController.approve(req, res, next)
 });
 module.exports = router;
