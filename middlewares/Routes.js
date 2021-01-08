@@ -1,5 +1,4 @@
-const auth = require('./Authentication');
-const {Auth} = require("./Validator");
+const {isTeacher, isAuth} = require('./Authentication');
 
 module.exports = function (app) {
   // app.get('/', function (req, res) {
@@ -29,7 +28,7 @@ module.exports = function (app) {
   // app.use('/admin/products', require('../routes/product.route'));
 
   app.use('/', require('../routes/pages'));
-  app.use('/teacher', require('../routes/teacher'));
+  app.use('/teacher', isAuth, isTeacher, require('../routes/teacher'));
   app.use('/auth', require('../routes/auth'));
   app.use('/courses', require('../routes/courses'));
   // app.use('/products', require('../routes/front/product.route'));
