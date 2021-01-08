@@ -20,5 +20,13 @@ module.exports = {
     const rows = await database.query(`SELECT * FROM ${TBL_USERS} WHERE id = ${result.insertId}`, connection);
     if (rows.length === 0) return null;
     else return rows[0];
+  },
+
+  async getNameAuthor(author) {
+    const rows = await database.query(`select * from ${TBL_USERS} where id = ${author}`);
+    if (rows.length === 0)
+      return null;
+
+    return rows[0];
   }
 }

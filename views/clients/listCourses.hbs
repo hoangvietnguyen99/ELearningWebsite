@@ -1,0 +1,138 @@
+{{#section 'js'}}
+<script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
+  referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#txtDes',
+    height: 600,
+    plugins: 'paste image link autolink lists table media',
+    menubar: false,
+    toolbar: [
+      'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+    ],
+  });
+
+  $(document).on("click", ".edit", function () {
+     var name = $(this).data('name');
+     var number = $(this).data('number');
+     var price = $(this).data('price');
+     var description = $(this).data('Des');
+     $(".modal-body #name").val(name);
+     $(".modal-body #number").val(number);
+     $(".modal-body #price").val(price);
+     $(".modal-body #Des").val(description);
+});
+</script>
+{{/section}}
+{{#if empty}}
+<p>No courses found</p>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">add</button>
+{{else}}
+
+<div class="course-table" style="margin: 20px;">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Upload Date</th>
+        <th scope="col">Last update Date</th>
+        <th scope="col">View</th>
+        <th scope="col">Number lessons</th>
+        <th scope="col">Quantity purchased</th>
+        <th scope="col">Number of reviews</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Statuscode</th>
+        <th scope="col">Price</th>
+        <th scope="col">Aprroved</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each courses}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.uploaddate}}</td>
+        <td>{{this.lastupdatedat}}</td>
+        <td>{{this.viewscount}}</td>
+        <td>{{this.lessonscount}}</td>
+        <td>{{this.getscount}}</td>
+        <td>{{this.ratingscount}}</td>
+        <td>{{this.rating}}</td>
+        <td>{{this.statuscode}}</td>
+        <td>{{this.price}}</td>
+
+        <td>
+          {{#if this.approvedby}}
+          <a href="#">
+            <image src="/assets/client/images/icon/approve.png" style="width: 40px; margin-left: 15px;">
+          </a>
+          {{/if}}
+        </td>
+
+        <td>
+          <a class="edit" href="#exampleModal" data-toggle="modal" data-id="{{this.id}}" data-name="{{this.name}}" data-number="{{this.lessonscount}}" data-price="{{this.price}}" data-Des="{{this.description}}">
+            <image src="/assets/client/images/icon/edit.png" style="width: 40px;">
+          </a>
+
+          <a href="#">
+            <image src="/assets/client/images/icon/del.png" style="width: 40px;">
+          </a>
+
+          <a href="#">
+            <image src="/assets/client/images/icon/open.png" style="width: 40px;">
+          </a>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">add</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="POST">
+            <div class="editor" style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="input" name = "name" id="name" placeholder="ex: Python online..." style="width: 100%;" value = ""> <br><br>
+
+                <div>
+                  <div style="display: inline-block; margin-right: 10px">
+                    <label for="name">Number lessons</label>
+                    <input type="input" name = "number" id="number" placeholder="ex: 40" style="width: 100%;" value = ""><br><br>
+                  </div>
+
+                  <div style="float: right;">
+                    <label for="name">Price</label>
+                    <input type="input" name = "price" id="price" placeholder="ex: 20" style="width: 100%; " value = ""><br><br>
+                  </div>
+                </div>
+
+                <label for="txtDes">Description</label>
+                <textarea class="form-control" name="Des" id="Des" cols="30" rows="10" value = ""></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{/if}}

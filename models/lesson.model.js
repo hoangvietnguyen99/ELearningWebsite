@@ -1,4 +1,4 @@
-const database = require('../../utils/database');
+const database = require('../utils/database');
 
 const TBL_LESSONS = 'lessons';
 
@@ -21,5 +21,17 @@ module.exports = {
           return null;
     
         return rows[0];
+    },
+    
+    async updateLesson(lessonID,courseID,txtDes){
+      const rows = await database.query(`update ${TBL_LESSONS} set description = ${txtDes} where id = ${lessonID} and courseid = ${courseID}`);
+      if (rows.length === 0)
+          return null;
+    
+        return rows[0];
+    },
+
+    async add(courseID,txtDes,videoURL){
+      const rows = await database.query(`insert into ${TBL_LESSONS}(courseid,description,videourl) values(${courseID}, ${txtDes},${videoURL}`);
     }
 }
