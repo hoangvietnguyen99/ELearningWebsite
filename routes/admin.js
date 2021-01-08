@@ -53,7 +53,4 @@ router.post('/field/delete', async function(req, res, next) {
 router.get('/user', async function(req, res, next) {
     UserController.index(req, res, next)
 });
-router.get('/user/add', async function(req, res, next) {
-    UserController.getAdd(req, res, next)
-});
 module.exports = router;
