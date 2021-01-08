@@ -10,18 +10,21 @@ module.exports = {
     },
     async single(id) {
         const rows = await db.query(`SELECT * FROM ${tableName} WHERE id = ${id}`)
-        if(rows.length === 0)
+        if (rows.length === 0)
             return null;
 
         return rows[0]
     },
-    del(entity){
-        const condition = {id: entity.id}
+    del(entity) {
+        const condition = { id: entity.id }
         db.delete(condition, tableName)
     },
-    update(entity){
-        const condition = {id: entity.id};
+    update(entity) {
+        const condition = { id: entity.id };
         delete entity.id
         db.update(entity, condition, tableName)
+    },
+    except(id) {
+        return db.query(`SELECT * FROM ${tableName} WHERE ID != ${id}`)
     }
 }
