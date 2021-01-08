@@ -1,6 +1,7 @@
 const database = require('../utils/database');
 const CourseModel = require("./course.model");
 const CartsCoursesModel = require("./carts_courses.model");
+const UserModel = require("./user.model");
 
 const TBL_CARTS = 'carts';
 
@@ -27,14 +28,54 @@ module.exports = {
 		if (!thisCourse) return 0;
 		const added = await CartsCoursesModel.addOne(thisCart.id, courseId, connection);
 		if (!added) return 0;
-		thisCourse.getscount++;
-		let changedRows = await CourseModel.update(thisCourse, connection);
-		if (!changedRows) return 0;
 		thisCart.amount += thisCourse.price;
 		thisCart.total += thisCourse.price;
-		changedRows = await this.update(thisCart, connection);
+		let changedRows = await this.update(thisCart, connection);
 		if (!changedRows) return 0;
 		return thisCart;
+	},
+	async removeCourse(userId, courseId, connection) {
+		const thisCart = await this.getByUserId(userId, connection);
+		const found = thisCart.courses.find(course => course.id === courseId);
+		if (!found) return 0;
+		const removed = await CartsCoursesModel.removeOne(thisCart.id, courseId, connection);
+		if (!removed) return 0;
+		thisCart.amount -= found.price;
+		thisCart.total -= found.price;
+		let changedRows = await this.update(thisCart, connection);
+		if (!changedRows) return 0;
+		return thisCart;
+	},
+	/**
+	 * Checkout cart, return true or false
+	 * @param userId
+	 * @param connection
+	 * @returns {Promise<boolean>}
+	 */
+	async checkOut(userId, connection) {
+		const thisCart = await this.getById(userId, connection);
+		if (thisCart.courses.length === 0) return false;
+		const thisUser = await UserModel.getById(userId);
+		thisUser.purchasedcount += thisCart.courses.length;
+		thisUser.totalmoneyspend += thisCart.total;
+		for (const course of thisCart.courses) {
+			const author = await UserModel.getById(course.author, connection);
+			author.totalmoneyearn += course.price;
+			course.getscount++;
+			const result = await Promise.all([
+				UserModel.update(author, connection),
+				CourseModel.update(course, connection)
+			]);
+			if (result.includes(0)) return false;
+		}
+		thisCart.paiddate = new Date();
+		thisCart.ispaid = 1;
+		delete thisCart.courses;
+		const result = await Promise.all([
+			this.update(thisCart, connection),
+			UserModel.update(thisUser, connection)
+		]);
+		return !result.includes(0);
 	},
 	/**
 	 * Create new cart for user by userid, return that cart or null
