@@ -4,5 +4,17 @@ const tableName = 'users'
 module.exports = {
     all() {
         return db.query(`SELECT * from ${tableName}`)
-    }
+    },
+    async single(id) {
+        const rows = await db.query(`SELECT * FROM ${tableName} WHERE id = ${id}`)
+        if (rows.length === 0)
+            return null;
+
+        return rows[0]
+    },
+    update(entity) {
+        const condition = { id: entity.id };
+        delete entity.id
+        db.update(entity, condition, tableName)
+    },
 }

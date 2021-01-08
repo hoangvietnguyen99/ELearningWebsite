@@ -14,3 +14,21 @@ exports.index = async(req, res, next) => {
         console.log(error)
     }
 }
+
+exports.getUpdate = async(req, res, next) => {
+    const user = await UserModel.single(req.params.id)
+    if (user === null) {
+        return res.redirect('/admin/user')
+    }
+
+    res.render('admin/users/update', {
+        layout: 'layoutadmin.hbs',
+        user: user,
+    });
+}
+
+exports.postUpdate = async(req, res, next) => {
+    // console.log(req.body)
+    const ret = await UserModel.update(req.body);
+    res.redirect('/admin/user')
+}
