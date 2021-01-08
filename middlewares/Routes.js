@@ -25,11 +25,13 @@ module.exports = function(app) {
     //   });
     // });
 
-    app.use('/admin', require('../routes/admin'));
+    // app.use('/admin/categories', require('../routes/category.route'));
     // app.use('/admin/products', require('../routes/product.route'));
 
     app.use('/', require('../routes/pages'));
-    app.use('/auth', require('../routes/Authentication'));
+    app.use('/teacher', require('../routes/teacher'));
+    app.use('/auth', require('../routes/auth'));
+    app.use('/courses', require('../routes/courses'));
     // app.use('/products', require('../routes/front/product.route'));
     // app.use('/cart', auth, require('../routes/front/cart.route'));
 
