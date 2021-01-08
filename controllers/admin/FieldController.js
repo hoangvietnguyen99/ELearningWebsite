@@ -46,7 +46,6 @@ exports.getUpdate = async(req, res, next) => {
 }
 
 exports.postUpdate = async(req, res, next) => {
-    console.log(req.body)
     const ret = await FieldModel.update(req.body);
     res.redirect('/admin/field')
 }
