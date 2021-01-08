@@ -3,17 +3,17 @@ const router = express.Router();
 const coursesModel = require('../../models/course.model');
 const multer = require('multer');
 
-exports.getCourses  = async function(req,res,next ){ 
+exports.getCourses  = async function(req,res,next ){
     const user = req.session.authUser;
     const courses = await coursesModel.allByAuthor(user.id);
-    res.render('clients/listCourses', { 
+    res.render('clients/listCourses', {
         layout: 'layoutclient.hbs',
         courses : courses,
         empty: courses.length == 0
     });
 };
 
-exports.addImage =  function(req,res,next ){ 
+exports.addImage =  function(req,res,next ){
     const storage = multer.diskStorage({
 		destination: function (req, file, cb) {
 		  cb(null, './public/assets/client/images/courses')

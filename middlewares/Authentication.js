@@ -7,7 +7,7 @@ module.exports =
 			}
 			next();
 		},
-		isNotAuth: (req, res, next) => {
+		isNotAuth(req, res, next) {
 			if (req.session.isAuth === true) {
 				return res.redirect(req.headers.referer || '/');
 			}
@@ -19,7 +19,7 @@ module.exports =
 			}
 			next();
 		},
-		isAdmin: (req, res, next) => {
+		isAdmin(req, res, next) {
 			if (req.session.authUser.role !== 'ADMIN') {
 				return res.redirect(req.headers.referer || '/');
 			}
