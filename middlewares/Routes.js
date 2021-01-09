@@ -1,4 +1,4 @@
-const { isTeacher, isAuth } = require('./Authentication');
+const { isTeacher, isAuth, isAdmin } = require('./Authentication');
 
 module.exports = function(app) {
     // app.get('/', function (req, res) {
@@ -24,7 +24,7 @@ module.exports = function(app) {
     //   });
     // });
 
-    app.use('/admin', require('../routes/admin'));
+    app.use('/admin', isAuth, isAdmin, require('../routes/admin'));
     // app.use('/admin/products', require('../routes/product.route'));
 
     app.use('/', require('../routes/pages'));
