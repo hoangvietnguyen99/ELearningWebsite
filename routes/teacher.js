@@ -13,5 +13,6 @@ router.route('/courses/:id')
 .get()
 .post(teacherController.addImage)
 .put()
+.delete(teacherController.deleteCourse)
 
 module.exports = router;

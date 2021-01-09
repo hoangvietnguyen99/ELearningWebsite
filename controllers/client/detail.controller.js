@@ -5,9 +5,10 @@ const userModel = require('../../models/user.model');
 const lessonsModel = require('../../models/lesson.model');
 
 exports.getCourses  = async function(req,res,next ){ 
-    const course = await coursesModel.single(req.params.id);
+    const course = await coursesModel.getById(req.params.id);
     const user = await userModel.getNameAuthor(course.author);
-    const lessons = await lessonsModel.getLessons(course.id);
+    const lessons = await lessonsModel.getAllByCourseId(course.id);
+    console.log(lessons);
     res.render('clients/DetailCourse', { 
         layout: 'layoutclient.hbs',
         course : course,

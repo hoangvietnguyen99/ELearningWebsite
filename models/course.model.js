@@ -28,30 +28,33 @@ module.exports = {
 		}));
 	},
 	async update(course, connection) {
-		const result = await database.update(course, {id: course.id}, TBL_COURSES,connection);
+		const result = await database.update(course, {id: course.id}, TBL_COURSES, connection);
 		return result.changedRows;
 	},
 
-	async single(id) {
-        const rows = await database.query(`select * from ${TBL_COURSES} where id = ${id}`);
-        if (rows.length === 0)
-          return null;
-    
-        return rows[0];
-    },
-
-    async allByAuthor(authorID){
-        const rows = await database.query(`select * from ${TBL_COURSES} where author = ${authorID}`);
-        if (rows.length === 0)
-          return [];
-        return rows;
-	},
-	
 	async addOne(course){
 		const result = await database.add(course,TBL_COURSES);
 		const rows = await database.query(`select * from ${TBL_COURSES} WHERE id = ${result.insertId}`);
 		if (rows.length === 0)
           return null;
 		return rows[0];
-	}
+	},
+	async allByAuthor(authorID) {
+		const rows = await database.query(`select * from ${TBL_COURSES} where author = ${authorID}`);
+		if (rows.length === 0)
+			return [];
+		return rows;
+	},
+	async getCountAvailable(connection) {
+		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`, connection);
+	},
+	async getCount(connection) {
+		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
+	},
+
+	async delete(course) {
+		console.log('AAAAAAAAAAAA');
+		const result = await database.delete({id: course.id}, TBL_COURSES);
+		return result.changedRows;
+	},
 }

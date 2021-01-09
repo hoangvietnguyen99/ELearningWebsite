@@ -23,10 +23,13 @@ app.use(cookieParser());
 require('./middlewares/Session')(app);
 
 require('./middlewares/Local')(app);
+
 //router
 require('./middlewares/Routes')(app);
 
 require('./middlewares/ErrorHandler')(app);
+
+
 
 module.exports = app;
 

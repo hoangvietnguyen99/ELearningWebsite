@@ -15,4 +15,5 @@ module.exports = {
 		const query = `SELECT courseid FROM ${TBL_FIELD_COURSE} WHERE fieldid = ${fieldId}`;
 		return await database.query(query, connection);
 	}
+	
 }

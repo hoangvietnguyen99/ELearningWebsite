@@ -3,19 +3,9 @@
   referrerpolicy="origin"></script>
 <script>
   tinymce.init({
-    selector: '#txtDes_1',
+    editor_selector : 'txtDes',
     height: 600,
-    plugins: 'paste image link autolink lists table media',
-    menubar: false,
-    toolbar: [
-      'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
-    ],
-  });
-</script>
-<script>
-  tinymce.init({
-    selector: '#txtDes_2',
-    height: 600,
+    mode : "specific_textareas",
     plugins: 'paste image link autolink lists table media',
     menubar: false,
     toolbar: [
@@ -82,8 +72,8 @@
                         </div>
                       </div>
 
-                      <label for="txtDes_1">Description</label>
-                      <textarea class="form-control" name="Des" id="txtDes_1" cols="30" rows="10" value=""></textarea>
+                      <label for="txtDesCourse">Description</label>
+                      <textarea class="txtDes" name="Des" id="txtDesCourse" cols="30" rows="10" value=""></textarea>
                     </div>
                   </div>
                 </form>
@@ -152,14 +142,33 @@
           <video width="320" height="240" controls>
             <source src="/assets/client/videos/python.webm" type="video/webm" />
           </video>
-          {{lesson.description}}
           <h4 class="title">Course Outline</h4>
           <div class="content">
             <ul class="course_list">
+              {{#if lesson.length}}
+              {{#each lesson}}
               <li class="justify-content-between align-items-center d-flex">
-                <p>Introduction Lesson</p>
-                <a class="btn_2 text-uppercase" href="#">View Details</a>
+                <p>{{this.title}}</p>
+                <div class="row">
+                  <div class="collapse multi-collapse" id="collapseExample{{this.id}}">
+                    {{#if this.description}}
+                    <div class="card card-body">
+                      <table style="width:100%; border: 1px solid black;">
+                        <th>
+                          {{{this.description}}}
+                        </th>
+                      </table>
+                    </div>
+                    {{/if}}
+                  </div>
+                </div>
+                <a class="btn_2 text-uppercase" data-toggle="collapse" href="#collapseExample{{this.id}}" role="button"
+                  aria-expanded="false" aria-controls="collapseExample{{lesson.id}}">View Details</a>
               </li>
+              {{/each}}
+              {{else}}
+              <p>No lesson</p>
+              {{/if}}
             </ul>
           </div>
         </div>
@@ -318,7 +327,9 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal" style="margin-top:20px">Add</button>
+    {{#if isAuthor}}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal"
+      style="margin-top:20px">Add</button>
     <!-- Modal of edit-->
     <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
       aria-hidden="true">
@@ -331,7 +342,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="" method="POST">
+            <form action="/courses/{{course.id}}/lessons" method="POST">
               <div class="lesson" style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
                 <div class="form-group">
                   <label for="name">Title</label>
@@ -339,8 +350,8 @@
                     style="width: 100%;">
                   <br><br>
 
-                  <label for="txtDes_2">Description</label>
-                  <textarea class="form-control" name="Des" id="txtDes_2" cols="30" rows="10" value=""></textarea>
+                  <label for="txtDesLesson">Description</label>
+                  <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10" value=""></textarea>
                 </div>
               </div>
               <div class="modal-footer">
@@ -352,5 +363,6 @@
         </div>
       </div>
     </div>
+    {{/if}}
 </section>
 {{/if}}

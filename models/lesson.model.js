@@ -3,35 +3,24 @@ const database = require('../utils/database');
 const TBL_LESSONS = 'lessons';
 
 module.exports = {
-    all(){
-        return database.query(`select * from ${TBL_LESSONS}`);
-    },
+	async getAllByCourseId(courseId, connection) {
+		return await database.query(`select * from ${TBL_LESSONS} WHERE courseid = ${courseId}`, connection);
+	},
 
-    async single(id) {
-        const rows = await database.query(`select * from ${TBL_LESSONS} where id = ${id}`);
-        if (rows.length === 0)
-          return null;
-    
-        return rows[0];
-    },
+	async updateLesson(lesson, connection) {
+		const result = await database.update(lesson, {id: lesson.id}, TBL_LESSONS, connection);
+		return result.changedRows;
+	},
 
-    async getLessons(couseID){
-        const rows = await database.query(`select * from ${TBL_LESSONS} where courseid = ${couseID}`);
-        if (rows.length === 0)
-          return null;
-    
-        return rows[0];
-    },
-    
-    async updateLesson(lessonID,courseID,txtDes){
-      const rows = await database.query(`update ${TBL_LESSONS} set description = ${txtDes} where id = ${lessonID} and courseid = ${courseID}`);
-      if (rows.length === 0)
-          return null;
-    
-        return rows[0];
-    },
+	async addOneByCourseId(lesson, connection) {
+	  const result = await database.add(lesson, TBL_LESSONS, connection);
+	  const rows = await database.query(`SELECT * FROM ${TBL_LESSONS} WHERE id = ${result.insertId}`, connection);
+	  if (rows.length === 0) return null;
+	  return rows[0];
+  },
 
-    async add(courseID,txtDes,videoURL){
-      const rows = await database.query(`insert into ${TBL_LESSONS}(courseid,description,videourl) values(${courseID}, ${txtDes},${videoURL}`);
-    }
+  async removeLesson(lessonId, connection) {
+	  const result = await database.delete({id: lessonId}, TBL_LESSONS, connection);
+	  return result.affectedRows;
+  }
 }
