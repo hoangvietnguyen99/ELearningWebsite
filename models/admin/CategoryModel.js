@@ -26,5 +26,8 @@ module.exports = {
     },
     except(id) {
         return db.query(`SELECT * FROM ${tableName} WHERE ID != ${id}`)
+    },
+    fields(id) {
+        return db.query(`SELECT * FROM ${tableName} join fields on ${tableName}.id = fields.categoryid where ${tableName}.id = ${id}`)
     }
 }

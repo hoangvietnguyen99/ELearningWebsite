@@ -1,13 +1,31 @@
-<form style="margin-top: 100px;" method="POST">
-  <div class="form-group">
-    <label for="inputName">Name</label>
-    <input type="text" class="form-control" name="name" id="inputName" aria-describedby="emailHelp" placeholder="Enter name">
+<div class="page-title-box">
+  <div class="row align-items-center">
+    <div class="col-sm-6">
+      <h2 class="page-title">{{{title}}}</h2>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Welcome to Dashboard</li>
+      </ol>
+    </div>
   </div>
-  <button type="button" class="btn btn-success" aria-label="Left Align"
-    onclick="window.location.href='/admin/category'"  
-  >
-    <span class="glyphicon glyphicon-align-left" aria-hidden="true">Back to List</span>
-  </button>
-  <button type="submit" class="btn btn-primary">Add</button>
-</form>
-
+</div>
+<!-- start table -->
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <form method="POST">
+          <div class="form-group">
+            <label for="inputName">Name</label>
+            <input type="text" class="form-control" name="name" id="inputName" aria-describedby="emailHelp"
+              placeholder="Enter name">
+          </div>
+          <button type="button" class="btn btn-success" aria-label="Left Align"
+            onclick="window.location.href='/admin/category'">
+            <span class="glyphicon glyphicon-align-left" aria-hidden="true">Back to List</span>
+          </button>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
