@@ -13,55 +13,25 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row search-row-custom">
-                        {{!-- Menu Top Left --}}
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label class="control-label">Role</label>
-                                <select name="visible" class="form-control select2">
-                                    <option value="1">Admin</option>
-                                    <option value="2">Teacher</option>
-                                    <option value="3">Student</option>
-                                </select>
-                            </div>
+                    
+                    <div class="row">
+                        <div class="input-group col-md-6" style="margin:0px 0px 10px 0px;">
+                            <input type="text" class="form-control col-md-4" placeholder="Search">
+                            <a href="#" class="btn btn-primary btn-rounded">Search</a>
                         </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-2"></div>
-                        {{!-- end Menu Top Left --}}
-
-                        {{!-- Menu Top Right --}}
-                        <div class="col-sm-6 ">
-                            <div class="search-box search-group-custom float-right">
-                                <input type="text" class="form-control " placeholder="Search">
-                                <a href="#" class="btn btn-primary btn-rounded">Search</a>
-                            </div>
-                        </div>
-                        {{!-- end Menu Top Right --}}
+                       
+                        
                     </div>
-                    <div style="margin: 10px 0px;">
-                        {{!-- Menu Right --}}
-                        {{!-- <div class="float-right">
-                            <a href="#" class="btn btn-success btn-rounded waves-effect mb-2"><i class="mdi mdi-plus mr-1"></i>Add Quick</a>
-                        </div> --}}
-                        {{!-- end Menu Right --}}
-                    </div>
-                    <!-- end filter-->
-
-                    <!-- end filter-->
+                    
                     <div class="table-responsive-sm">
                         <table class="table table-light table-centered table-nowrap">
                             <thead class="thead-light">
-                                <tr class="text-center"> 
+                                <tr class="text-center">
                                     {{!-- Attribute Column Data --}}
                                         <th>
                                             <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
                                             <label for="check_id"></label>
-                                            Id
-                                        </th>
-                                        <th>
-                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
-                                            <label for="check_name"></label>
-                                            Role
+                                            ID
                                         </th>
                                         <th>
                                             <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
@@ -71,40 +41,45 @@
                                         <th>
                                             <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
                                             <label for="check_name"></label>
-                                            Gender
-                                        </th>
-                                        <th>
-                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
-                                            <label for="check_name"></label>
-                                            Phone
-                                        </th>
-                                        <th>
-                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
-                                            <label for="check_name"></label>
-                                            Address
+                                            Author
                                         </th>
                                         <th>
                                             <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
                                             <label for="check_name"></label>
                                             Status
                                         </th>
-                                        <th>Action</th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Approved By
+                                        </th>
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Price
+                                        </th>
+                                        
                                     {{!-- end Attribute Column Data --}}
                                 </tr>
                             </thead>
                             <tbody id="table-body">
-                                {{#each users}}
+                                {{#each courses}}
                                     <tr class="text-center" id='row_{{{id}}}'>
                                         <td class="text-center">{{{id}}}</td>
-                                        <td class="text-center">{{{role}}}</td>
-                                        <td class="text-center">{{{fullname}}}</td>
-                                        <td class="text-center">{{{gender}}}</td>
-                                        <td class="text-center">{{{phone}}}</td>
-                                        <td class="text-center">{{{address}}}</td>
-                                        <td class="text-center">{{{status}}}</td>
-                                        <td class=" text-center">
-                                            <a href="/admin/user/update/{{{id}}}"<i class="mdi mdi-pencil font-size-12"></i></a>
-                                        </td>
+                                        <td class="text-center">{{{name}}}</td>
+                                        <td class="text-center">{{{authorname}}}</td>
+                                        <td class="text-center">{{{statuscode}}}</td>
+                                        {{#if approvedbyid}}
+                                            <td class="text-center">{{{approvedbyname}}}</td>
+                                        {{else}}
+                                            <td>
+                                                <button style="border-radius: 12%;" type="button" class="btn btn-success"
+                                                    onclick="window.location.href='/admin/course/approve/{{{id}}}'"
+                                                >Approve</button>
+                                            </td>
+                                        {{/if}}
+                                        <td class="text-center">{{{price}}}</td>
+
                                     </tr>
                                 {{/each}}
                                 
@@ -116,3 +91,7 @@
         </div>
     </div><!-- end row -->
     <!-- end table -->
+{{!-- 
+   Add Quick Modal --}}
+    <div id="add-quick-modal" class="modal" tabindex="-1" role="dialog">
+    </div>
