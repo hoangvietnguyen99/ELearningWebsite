@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserModel = require('../../models/admin/UserModel')
-const CourseModel = require('../../models/admin/UserModel')
+const CourseModel = require('../../models/admin/CourseModel')
 
 exports.index = async(req, res, next) => {
     try {
@@ -37,12 +37,10 @@ exports.postUpdate = async(req, res, next) => {
 }
 
 exports.approve = async(req, res, next) => {
-    // console.log(req.body)
-    req.session.userid = 19
-    var data = {}
-    data.id = req.params.id
-    if (req.session.userid) {
-        data.approvedby = req.session.userid
+    if (req.session.authUser.id) {
+        var data = {}
+        data.id = req.params.id
+        data.approvedby = req.session.authUser.id
         const ret = await UserModel.update(data);
     }
 

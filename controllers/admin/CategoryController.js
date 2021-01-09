@@ -49,6 +49,10 @@ exports.postUpdate = async(req, res, next) => {
 }
 
 exports.delete = async(req, res, next) => {
-    const ret = await CategoryModel.del(req.body);
+    var fields = await CategoryModel.fields(req.body.id)
+    if (fields.length > 0)
+        console.log("This Category already has Field and cannot be deleted")
+    else
+        var ret = await CategoryModel.del(req.body);
     res.redirect('/admin/category')
 }

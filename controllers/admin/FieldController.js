@@ -54,6 +54,10 @@ exports.postUpdate = async(req, res, next) => {
 }
 
 exports.delete = async(req, res, next) => {
-    const ret = await FieldModel.del(req.body);
+    const courses = await FieldModel.courses(req.body.id)
+    if (courses.length === 0)
+        console.log("This Field already has Course and cannot be deleted")
+    else
+        var ret = await FieldModel.del(req.body);
     res.redirect('/admin/field')
 }

@@ -27,5 +27,7 @@ module.exports = {
         delete entity.id
         db.update(entity, condition, tableName)
     },
-
+    courses(id) {
+        return db.query(`SELECT * FROM field_course join courses on field_course.courseid = courses.id where fieldid = ${id}`)
+    }
 }
