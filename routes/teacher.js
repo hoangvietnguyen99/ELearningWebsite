@@ -13,7 +13,6 @@ router.route('/courses')
 router.route('/courses/:id')
 .get()
 .post(teacherController.addImage)
-.post(teacherController.updateCourse)
 .delete(teacherController.deleteCourse)
 .put()
 

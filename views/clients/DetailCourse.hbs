@@ -15,6 +15,7 @@
 </script>
 <script>
   $('a.edit').on('click', function () {
+    let id = $(this).attr('data-id');
     let name = $(this).attr('data-name');
     let number = $(this).attr('data-number');
     let price = $(this).attr('data-price');
@@ -54,12 +55,12 @@
     <div class="row">
       <div class="col-lg-8 course_details_left">
         {{#if isAuthor}}
-        <a class="edit" href="#editModal" data-toggle="modal" data-name="{{course.name}}"
+        <a class="edit" href="#editModal" data-toggle="modal" datd-id = "{{course.id}}"data-name="{{course.name}}"
           data-number="{{course.lessonscount}}" data-price={{course.price}} data-des="{{course.description}}">
           Edit <image src="/assets/client/images/icon/edit.png" style="width: 50px;">
         </a>
 
-        <!-- Modal of edit-->
+        <!-- Modal of edit Course-->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
           aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -71,7 +72,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form action="" method="POST" id="edit-form">
+                <form action="/courses/{{course.id}}/edit" method="POST" id="edit-form">
                   <div class="editor" style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
                     <div class="form-group">
                       <label for="name">Name</label>
@@ -96,12 +97,13 @@
                       <textarea class="txtDes" name="Des" id="txtDesCourse" cols="30" rows="10" value=""></textarea>
                     </div>
                   </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                  </div>
                 </form>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-              </div>
+              
             </div>
           </div>
         </div>
@@ -113,55 +115,22 @@
             onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
         </div>
         <div class="content_wrapper">
-          <h4 class="title_top">Objectives</h4>
+          <h4 class="title_top">Description</h4>
           <div class="content">
-            When you enter into any new area of science, you almost always find yourself with a
-            baffling new language of
-            technical terms to learn before you can converse with the experts. This is certainly
-            true in astronomy both in
-            terms of terms that refer to the cosmos and terms that describe the tools of the trade,
-            the most prevalent
-            being the telescope.
-            <br>
-            <br>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-            ut aliquip ex ea
-            commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum. Lorem ipsum dolor sit
-            amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum.
-          </div>
-          <h4 class="title">Eligibility</h4>
-          <div class="content">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-            ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
-            <br>
-            <br>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-            ut aliquip ex ea
-            commodoconsequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum. Lorem ipsum dolor sit
-            amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat. Duis aute
-            irure dolor in reprehenderit in voluptate velit esse cillum.
+            {{#if course.description}}
+              <div style = "background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                {{{course.description}}}
+              </div>
+            {{else}}
+              <p>No decription</p>
+              
+            {{/if}}
           </div>
 
-          {{!-- VIDEO --}}
+          {{!-- VIDEO
           <video width="320" height="240" controls>
             <source src="/assets/client/videos/python.webm" type="video/webm" />
-          </video>
+          </video> --}}
           <h4 class="title">Course Outline</h4>
           <div class="content">
             <ul class="course_list">
@@ -184,10 +153,15 @@
                 </div>
                 <a class="btn_2 text-uppercase" data-toggle="collapse" href="#collapseExample{{this.id}}" role="button"
                   aria-expanded="false" aria-controls="collapseExample{{lesson.id}}">View Details</a>
+                  
               </li>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal"
+                  style="margin-left:10px; margin-bottom: 50px;">Add</button>
               {{/each}}
               {{else}}
               <p>No lesson</p>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal"
+               >Add</button>
               {{/if}}
             </ul>
           </div>
@@ -348,9 +322,8 @@
       </div>
     </div>
     {{#if isAuthor}}
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal"
-      style="margin-top:20px">Add</button>
-    <!-- Modal of edit-->
+    
+    <!-- Modal of add lesson-->
     <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">

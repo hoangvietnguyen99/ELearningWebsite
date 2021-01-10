@@ -17,3 +17,21 @@ exports.getCourses  = async function(req,res,next ){
         isAuthor: res.locals.authUser.id === course.author
     });
 }
+
+exports.updateCourse = async function(req,res,next){
+    
+    const author = req.session.authUser.id;
+    const {name,number,price,Des,selection} = req.body;
+    const course = {
+        id: req.params.id,
+        name: name,
+        author: author,
+        lessonscount: number,
+        price: price,
+        description: Des
+    }
+    console.log(req.params.id);
+    const result = await coursesModel.update(course);
+    if(result !== null)
+    res.redirect('/courses/' + req.params.id);
+}
