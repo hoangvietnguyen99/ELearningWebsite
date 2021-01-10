@@ -52,9 +52,9 @@ module.exports = {
 		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
 	},
 
-	async delete(course) {
-		console.log('AAAAAAAAAAAA');
-		const result = await database.delete({id: course.id}, TBL_COURSES);
-		return result.changedRows;
-	},
+	async removeCourse(courseId, connection) {
+		console.log("AAAAAAAA");
+		const result = await database.delete({id: courseId}, TBL_COURSES, connection);
+		return result.affectedRows;
+	}
 }

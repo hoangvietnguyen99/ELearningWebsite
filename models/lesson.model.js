@@ -19,8 +19,8 @@ module.exports = {
 	  return rows[0];
   },
 
-  async removeLesson(lessonId, connection) {
-	  const result = await database.delete({id: lessonId}, TBL_LESSONS, connection);
-	  return result.affectedRows;
-  }
+	async removeLesson(lessonId, connection) {
+		const result = await database.delete({id: lessonId}, TBL_LESSONS, connection);
+		return result.affectedRows;
+	}
 }

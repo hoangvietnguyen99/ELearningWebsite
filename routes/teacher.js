@@ -12,7 +12,8 @@ router.route('/courses')
 router.route('/courses/:id')
 .get()
 .post(teacherController.addImage)
+.post(teacherController.deleteCourse)
 .put()
-.delete(teacherController.deleteCourse)
+
 
 module.exports = router;
