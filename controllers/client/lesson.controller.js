@@ -16,3 +16,11 @@ exports.addLesson =  async function(req,res,next){
     if(result !== null)
     res.redirect('/courses/' + courseID);
 };
+
+exports.deleteLesson =  async function(req,res,next){
+    const lessonID = req.params.lid;
+    const courseID = req.params.id;
+    const result = await lessonsModel.removeLesson(lessonID);
+    if(result !== null)
+    res.redirect('/courses/' + courseID);
+};

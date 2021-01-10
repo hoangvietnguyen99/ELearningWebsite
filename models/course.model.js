@@ -53,7 +53,6 @@ module.exports = {
 	},
 
 	async removeCourse(courseId, connection) {
-		console.log("AAAAAAAA");
 		const result = await database.delete({id: courseId}, TBL_COURSES, connection);
 		return result.affectedRows;
 	}

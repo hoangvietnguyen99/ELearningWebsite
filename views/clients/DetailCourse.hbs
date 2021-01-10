@@ -25,6 +25,26 @@
     $('#edit-form #des').attr('value', `${des}`);
   });
 </script>
+<script>
+   $('a.delete-lesson').on('click', function () {
+    let id = $(this).attr('data-id');
+    let coureID = $(this).attr('data-course'); 
+    $.ajax({
+            type: 'DELETE',
+            url: '/courses/' + coureID + '/lessons/' + id,
+            data: id,
+            success: function(data){
+              console.log(data);
+              $('window').location.href = '/courses/' + coureID;
+            },
+            error: function(err){
+                console.log(err);
+            }
+
+        });
+   
+  });
+</script>
 {{/section}}
 {{#if empty}}
 <p>Khóa học không tồn tại</p>
@@ -148,19 +168,19 @@
               {{#if lesson.length}}
               {{#each lesson}}
               <li class="justify-content-between align-items-center d-flex">
-                <p>{{this.title}}</p>
-                <div class="row">
+                <p style="padding-left: 20px;">{{this.title}}</p>
+                <div class="row" style = "display: flex;text-align: center; align-items: center;">
+                  
                   <div class="collapse multi-collapse" id="collapseExample{{this.id}}">
                     {{#if this.description}}
-                    <div class="card card-body">
-                      <table style="width:100%; border: 1px solid black;">
-                        <th>
-                          {{{this.description}}}
-                        </th>
-                      </table>
+                    <div style = "background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                        {{{this.description}}}
                     </div>
                     {{/if}}
                   </div>
+                    <a class="delete-lesson" href=""  data-id="{{this.id}}" data-course = "{{this.courseid}}" style= "margin-left: 350px">
+                    <image src="/assets/client/images/icon/del.png" style="width: 30px;">
+                    </a>
                 </div>
                 <a class="btn_2 text-uppercase" data-toggle="collapse" href="#collapseExample{{this.id}}" role="button"
                   aria-expanded="false" aria-controls="collapseExample{{lesson.id}}">View Details</a>
