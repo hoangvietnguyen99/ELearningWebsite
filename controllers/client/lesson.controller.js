@@ -24,3 +24,19 @@ exports.deleteLesson =  async function(req,res,next){
     if(result !== null)
     res.redirect('/courses/' + courseID);
 };
+
+exports.editLesson =  async function(req,res,next){
+    const lessonID = req.params.lid;
+    const courseID = req.params.id;
+    const {title,des} = req.body;
+    lesson = {
+        title,
+        description :des,
+        id: lessonID,
+        courseid: courseID
+    }
+    console.log(lesson);
+    const result = await lessonsModel.updateLesson(lesson);
+    if(result !== null)
+    res.redirect('/courses/' + courseID);
+};

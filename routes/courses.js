@@ -18,4 +18,7 @@ router.route('/:id/lessons')
 router.route('/:id/lessons/:lid')
 .delete(lessonController.deleteLesson)
 
+router.route('/:id/lessons/:lid/edit')
+.post(lessonController.editLesson)
+
 module.exports = router;
