@@ -43,8 +43,20 @@
 <script>
    $('a.delete-course').on('click', function () {
     let id = $(this).attr('data-id');
-    $('#delete-form').attr('action', `/teacher/courses/${id}`);
-    
+    $.ajax({
+            type: 'DELETE',
+            url: '/teacher/courses/'+ id,
+            data: id,
+            success: function(data){
+              console.log(data);
+              $('window').location.href = '/teacher/courses';
+            },
+            error: function(err){
+                console.log(err);
+            }
+
+        });
+   
   });
 </script>
 <script>
@@ -112,7 +124,7 @@
         <td>
 
 
-          <a class="delete-course" href="#delModal" data-toggle="modal" data-id="{{this.id}}" role="button">
+          <a class="delete-course" href="/teacher/courses"  data-id="{{this.id}}">
             <image src="/assets/client/images/icon/del.png" style="width: 30px;">
           </a>
 
@@ -228,7 +240,7 @@
 </div>
 
 <!-- Modal of delete-->
-<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
+{{!-- <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -240,7 +252,7 @@
       <div class="modal-body">
         <form action="" method="POST" id="delete-form">
           <h3>Are you sure about delete ?</h3>
-          <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+          <button id = "btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
             <i class="fa fa-check " aria-hidden="true"></i>
             Delete
           </button>
@@ -251,5 +263,5 @@
   </div>
 </div>
 </div>
-</div>
+</div> --}}
 {{/if}}

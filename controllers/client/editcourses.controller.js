@@ -58,5 +58,6 @@ exports.deleteCourse = async function(req,res,next){
   console.log(req.params.id);
   const result = await courseModel.removeCourse(req.params.id);
   if(result !== null)
+  //res.send({status: true, url: "/teacher/courses"});
   res.redirect('/teacher/courses');
 };

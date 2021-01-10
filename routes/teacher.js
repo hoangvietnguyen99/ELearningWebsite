@@ -9,10 +9,11 @@ router.route('/courses')
 .get(teacherController.getCourses)
 .post(teacherController.addCourse)
 
+
 router.route('/courses/:id')
 .get()
 .post(teacherController.addImage)
-.post(teacherController.deleteCourse)
+.delete(teacherController.deleteCourse)
 .put()
 
 
