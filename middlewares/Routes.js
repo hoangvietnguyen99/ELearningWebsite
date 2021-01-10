@@ -24,7 +24,7 @@ module.exports = function(app) {
     //   });
     // });
 
-    app.use('/admin', isAuth, isAdmin, require('../routes/admin'));
+    app.use('/admin', isAuth, require('../routes/admin'));
     // app.use('/admin/products', require('../routes/product.route'));
 
     app.use('/', require('../routes/pages'));
