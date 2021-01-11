@@ -1,4 +1,5 @@
 const database = require('../utils/database');
+const { addOne } = require('./carts_courses.model');
 
 const CartsCoursesModel = require('./carts_courses.model');
 
@@ -30,11 +31,12 @@ module.exports = {
 		const result = await database.update(course, {id: course.id}, TBL_COURSES, connection);
 		return result.changedRows;
 	},
-	async single(id) {
-		const rows = await database.query(`select * from ${TBL_COURSES} where id = ${id}`);
-		if (rows.length === 0)
-			return null;
 
+	async addOne(course){
+		const result = await database.add(course,TBL_COURSES);
+		const rows = await database.query(`select * from ${TBL_COURSES} WHERE id = ${result.insertId}`);
+		if (rows.length === 0)
+          return null;
 		return rows[0];
 	},
 	async allByAuthor(authorID) {
@@ -48,5 +50,10 @@ module.exports = {
 	},
 	async getCount(connection) {
 		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
+	},
+
+	async removeCourse(courseId, connection) {
+		const result = await database.delete({id: courseId}, TBL_COURSES, connection);
+		return result.affectedRows;
 	}
 }
