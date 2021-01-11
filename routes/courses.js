@@ -9,9 +9,6 @@ router.route('/')
 router.route('/:id')
 	.get(detailController.getCourses)
 	
-router.route('/:id/edit')
-	.post(detailController.updateCourse)
-
 router.route('/:id/lessons')
 	.post(lessonController.addLesson)
 

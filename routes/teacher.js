@@ -5,10 +5,6 @@ const {isTeacher} = require('../middlewares/Authentication');
 const detailController = require('../controllers/client/detail.controller');
 
 // router.get('/editcourses',isTeacher,teacherController.getCourses);
-router.route('/courses')
-.get(teacherController.getCourses)
-.post(teacherController.addCourse)
-
 
 router.route('/courses/:id')
 .get()
@@ -16,5 +12,11 @@ router.route('/courses/:id')
 .delete(teacherController.deleteCourse)
 .put()
 
+router.route('/courses')
+.get(teacherController.getCourses)
+.post(teacherController.addCourse)
 
+router.route('/courses/:id/edit')
+    .post(teacherController.updateCourse)
+    
 module.exports = router;

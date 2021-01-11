@@ -4,7 +4,7 @@ const multer = require('multer');
 const db = require('../../utils/database');
 const courseModel = require('../../models/course.model');
 const fieldModel = require('../../models/field.model');
-const fieldCourseModel = require('../../models/field_course.model');
+const field_courseModel = require('../../models/field_course.model');
 
 exports.getCourses  = async function(req,res,next ){
     const user = req.session.authUser;
@@ -41,6 +41,7 @@ exports.addImage =  function(req,res,next ){
 exports.addCourse =  async function(req,res,next){
     const author = req.session.authUser.id;
     const {name,number,price,Des,selection} = req.body;
+    
     const course = {
         name: name,
         author: author,
@@ -49,15 +50,38 @@ exports.addCourse =  async function(req,res,next){
         description: Des
     }
     const result = await courseModel.addOne(course);
+    console.log(selection);
+    for(let i = 0 ;i< selection.length;i++){
+      const resu = await field_courseModel.addOne(selection[i],result.id);
+    }
     if(result !== null)
     res.redirect('/teacher/courses');
 };
 
-exports.deleteCourse = async function(req,res,next){
-  console.log("BBBBBB");
+exports.deleteCourse = async function(req,res){
   console.log(req.params.id);
+  const field = await field_courseModel.removeByCourseID(req.params.id);
   const result = await courseModel.removeCourse(req.params.id);
   if(result !== null)
-  //res.send({status: true, url: "/teacher/courses"});
-  res.redirect('/teacher/courses');
+  //res.json({status: true, url: "/teacher/courses"});
+  return res.redirect('/teacher/courses');
+  //res.send('OK');
 };
+
+exports.updateCourse = async function(req,res,next){
+    
+  const author = req.session.authUser.id;
+  const {name,number,price,Des,selection} = req.body;
+  const course = {
+      id: req.params.id,
+      name: name,
+      author: author,
+      lessonscount: number,
+      price: price,
+      description: Des
+  }
+  console.log(req.params.id);
+  const result = await courseModel.update(course);
+  if(result !== null)
+  res.redirect('/teacher/courses/');
+}

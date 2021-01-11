@@ -13,7 +13,7 @@
     ],
   });
 </script>
-<script>
+{{!-- <script>
   $('a.edit').on('click', function () {
     let id = $(this).attr('data-id');
     let name = $(this).attr('data-name');
@@ -25,7 +25,7 @@
     $('#edit-form #price').attr('value', `${price}`);
     tinymce.get('des').setContent(des);
   });
-</script>
+</script> --}}
 <script>
   $('a.edit-lesson').on('click', function () {
     let id = $(this).attr('data-id');
@@ -35,7 +35,7 @@
     tinymce.get('des-edit').setContent(des);
   });
 </script>
-<script>
+{{!-- <script>
   $('a.delete-lesson').on('click', function () {
     let id = $(this).attr('data-id');
     let coureID = $(this).attr('data-course');
@@ -54,6 +54,14 @@
     });
 
   });
+</script> --}}
+<script>
+  $('a.delete-lesson').on('click', function () {
+    let id = $(this).attr('data-id');
+    let coureID = $(this).attr('data-course');
+    $('#delete-form').attr('action', `/courses/${coureID}/lessons/${id}?_method=DELETE`);
+
+  });
 </script>
 {{/section}}
 {{#if empty}}
@@ -63,61 +71,6 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 course_details_left">
-        {{#if isAuthor}}
-        <a class="edit" href="#editModal" data-toggle="modal" datd-id="{{course.id}}" data-name="{{course.name}}"
-          data-number="{{course.lessonscount}}" data-price={{course.price}} data-des="{{course.description}}">
-          Edit <image src="/assets/client/images/icon/edit.png" style="width: 50px;">
-        </a>
-
-        <!-- Modal of edit Course-->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <form action="/courses/{{course.id}}/edit" method="POST" id="edit-form">
-                  <div class="editor" style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                    <div class="form-group">
-                      <label for="name">Name</label>
-                      <input type="input" name="name" id="name" placeholder="ex: Python online..." style="width: 100%;">
-                      <br><br>
-
-                      <div>
-                        <div style="display: inline-block; margin-right: 10px">
-                          <label for="name">Number lessons</label>
-                          <input type="input" name="number" id="number" placeholder="ex: 40" style="width: 100%;"
-                            value=""><br><br>
-                        </div>
-
-                        <div style="float: right;">
-                          <label for="name">Price</label>
-                          <input type="input" name="price" id="price" placeholder="ex: 20" style="width: 100%; "
-                            value=""><br><br>
-                        </div>
-                      </div>
-
-                      <label for="txtDesCourse">Description</label>
-                      <textarea class="txtDes" name="Des" id="des" cols="30" rows="10" value=""></textarea>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                  </div>
-                </form>
-              </div>
-
-            </div>
-          </div>
-        </div>
-
-        {{/if}}
         <h1>{{course.name}}</h1>
         <div class="main_image">
           <img class="img-fluid" src="/assets/client/images/courses/{{course.id}}.png" alt="course image"
@@ -168,7 +121,7 @@
                     <image src="/assets/client/images/icon/edit.png" style="width: 30px;">
                   </a>
 
-                <a class="delete-lesson" href="" data-id="{{this.id}}" data-course="{{this.courseid}}"
+                <a class="delete-lesson" href="#delLessonModal" data-toggle="modal" data-id="{{this.id}}" data-course="{{this.courseid}}"
                     style="margin-left: 20px">
                     <image src="/assets/client/images/icon/del.png" style="width: 30px;">
                 </a>
@@ -234,147 +187,55 @@
             <li>
               <a class="justify-content-between d-flex" href="#">
                 <p>Course Fee </p>
-                <span>$230</span>
+                <span>{{course.price}}$</span>
               </a>
             </li>
             <li>
               <a class="justify-content-between d-flex" href="#">
-                <p>Available Seats </p>
-                <span>15</span>
+                <p>Update day</p>
+                <span>{{course.uploaddate}}</span>
               </a>
             </li>
             <li>
               <a class="justify-content-between d-flex" href="#">
-                <p>Schedule </p>
-                <span>2.00 pm to 4.00 pm</span>
+                <p>Last Update</p>
+                <span>{{course.lastupdate}}</span>
+              </a>
+            </li>
+            <li>
+              <a class="justify-content-between d-flex" href="#">
+                <p>Quantity purchased</p>
+                <span>{{course.getscount}}</span>
+              </a>
+            </li>
+            <li>
+              <a class="justify-content-between d-flex" href="#">
+                <p>View</p>
+                <span>{{course.viewscount}}</span>
+              </a>
+            </li>
+            <li>
+              <a class="justify-content-between d-flex" href="#">
+                <p>Number lessons</p>
+                <span>{{course.lessonscount}}</span>
+              </a>
+            </li>
+            <li>
+              <a class="justify-content-between d-flex" href="#">
+                <p>Number of reviews</p>
+                <span>{{course.ratingscount}}</span>
+              </a>
+            </li>
+            <li>
+              <a class="justify-content-between d-flex" href="#">
+                <p>Rating</p>
+                <span>{{course.rating}}</span>
               </a>
             </li>
           </ul>
           <a href="#" class="btn_1 d-block">Enroll the course</a>
         </div>
-        <h4 class="title">Reviews</h4>
-        <div class="content">
-          <div class="review-top row pt-40">
-            <div class="col-lg-12">
-              <h6 class="mb-15">Provide Your Rating</h6>
-              <div class="d-flex flex-row reviews justify-content-between">
-                <span>Quality</span>
-                <div class="rating">
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                </div>
-                <span>Outstanding</span>
-              </div>
-              <div class="d-flex flex-row reviews justify-content-between">
-                <span>Puncuality</span>
-                <div class="rating">
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                </div>
-                <span>Outstanding</span>
-              </div>
-              <div class="d-flex flex-row reviews justify-content-between">
-                <span>Quality</span>
-                <div class="rating">
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                  <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                </div>
-                <span>Outstanding</span>
-              </div>
-            </div>
-          </div>
-          <div class="feedeback">
-            <h6>Your Feedback</h6>
-            <textarea name="feedback" class="form-control" cols="10" rows="10"></textarea>
-            <div class="mt-10 text-right">
-              <a href="#" class="btn_1">Read more</a>
-            </div>
-          </div>
-          <div class="comments-area mb-30">
-            <div class="comment-list">
-              <div class="single-comment single-reviews justify-content-between d-flex">
-                <div class="user justify-content-between d-flex">
-                  <div class="thumb">
-                    <img src="/assets/client/images/cource/cource_1.png" alt="">
-                  </div>
-                  <div class="desc">
-                    <h5><a href="#">Emilly Blunt</a>
-                    </h5>
-                    <div class="rating">
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                    </div>
-                    <p class="comment">
-                      Blessed made of meat doesn't lights doesn't was dominion and sea earth
-                      form
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="comment-list">
-              <div class="single-comment single-reviews justify-content-between d-flex">
-                <div class="user justify-content-between d-flex">
-                  <div class="thumb">
-                    <img src="/assets/client/images/cource/cource_2.png" alt="">
-                  </div>
-                  <div class="desc">
-                    <h5><a href="#">Elsie Cunningham</a>
-                    </h5>
-                    <div class="rating">
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                    </div>
-                    <p class="comment">
-                      Blessed made of meat doesn't lights doesn't was dominion and sea earth
-                      form
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="comment-list">
-              <div class="single-comment single-reviews justify-content-between d-flex">
-                <div class="user justify-content-between d-flex">
-                  <div class="thumb">
-                    <img src="/assets/client/images/cource/cource_3.png" alt="">
-                  </div>
-                  <div class="desc">
-                    <h5><a href="#">Maria Luna</a>
-                    </h5>
-                    <div class="rating">
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                      <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                    </div>
-                    <p class="comment">
-                      Blessed made of meat doesn't lights doesn't was dominion and sea earth
-                      form
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </div> 
     </div>
     {{#if isAuthor}}
 
@@ -412,6 +273,30 @@
       </div>
     </div>
 
+    <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog" aria-labelledby="delLessonModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST" id="delete-form">
+          <h3>Are you sure about delete ?</h3>
+          <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
+            <i class="fa fa-check " aria-hidden="true"></i>
+            Delete
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
     {{/if}}
 </section>
 {{/if}}

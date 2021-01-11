@@ -13,6 +13,7 @@ exports.addLesson =  async function(req,res,next){
         description: Des
     }
     const result = await lessonsModel.addOneByCourseId(lesson);
+    
     if(result !== null)
     res.redirect('/courses/' + courseID);
 };
