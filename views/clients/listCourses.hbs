@@ -36,6 +36,7 @@
     </script>
     <script>
         $('a.edit').on('click', function () {
+            let id = $(this).attr('data-id'); 
             let name = $(this).attr('data-name');
             let number = $(this).attr('data-number');
             let price = $(this).attr('data-price');
@@ -45,6 +46,7 @@
             $('#number').attr('value', `${number}`);
             $('#price').attr('value', `${price}`);
             tinymce.get('des').setContent(des);
+            $('#edit-form').attr('action', `/teacher/courses/${id}/edit`);
         });
     </script>
 
@@ -159,7 +161,8 @@
                     </td>
 
                     <td>
-                        <a class="edit" href="#editModal" data-toggle="modal" datd-id="{{course.id}}"
+                        <a class="edit" href="#editModal" data-toggle="modal" 
+                           data-id="{{course.id}}"
                            data-name="{{course.name}}"
                            data-number="{{course.lessonscount}}" data-price={{course.price}}
                            data-des="{{course.description}}">
@@ -192,7 +195,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="/teacher/courses/{{course.id}}/edit" method="POST" id="edit-form">
+                                <form action="" method="POST" id="edit-form">
                                     <div class="editor"
                                          style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
                                         <div class="form-group">
@@ -205,7 +208,7 @@
                                             <div class="select" style="z-index: 1000;">
                                                 <select name="selection" id="edit-choice" placeholder="Choise Field"
                                                         multiple>
-                                                    {{#each fields as |field|}}
+                                                    {{#each ../fields as |field|}}
                                                         <option value="{{field.id}}">{{field.name}}</option>
                                                     {{/each}}
                                                 </select>
