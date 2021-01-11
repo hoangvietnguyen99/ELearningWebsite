@@ -1,302 +1,324 @@
 {{#section 'js'}}
-<script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
-  referrerpolicy="origin"></script>
-<script>
-  tinymce.init({
-    editor_selector: 'txtDes',
-    height: 600,
-    mode: "specific_textareas",
-    plugins: 'paste image link autolink lists table media',
-    menubar: false,
-    toolbar: [
-      'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
-    ],
-  });
-</script>
-{{!-- <script>
-  $('a.edit').on('click', function () {
-    let id = $(this).attr('data-id');
-    let name = $(this).attr('data-name');
-    let number = $(this).attr('data-number');
-    let price = $(this).attr('data-price');
-    let des = $(this).attr('data-des');
-    $('#edit-form #name').attr('value', `${name}`);
-    $('#edit-form #number').attr('value', `${number}`);
-    $('#edit-form #price').attr('value', `${price}`);
-    tinymce.get('des').setContent(des);
-  });
-</script> --}}
-<script>
-  $('a.edit-lesson').on('click', function () {
-    let id = $(this).attr('data-id');
-    let title = $(this).attr('data-title');
-    let des = $(this).attr('data-des');
-    $('#edit-lesson #title-edit').attr('value', `${title}`);
-    tinymce.get('des-edit').setContent(des);
-  });
-</script>
-{{!-- <script>
-  $('a.delete-lesson').on('click', function () {
-    let id = $(this).attr('data-id');
-    let coureID = $(this).attr('data-course');
-    $.ajax({
-      type: 'DELETE',
-      url: '/courses/' + coureID + '/lessons/' + id,
-      data: id,
-      success: function (data) {
-        console.log(data);
-        $('window').location.href = '/courses/' + coureID;
-      },
-      error: function (err) {
-        console.log(err);
-      }
+    <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
+            referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            editor_selector: 'txtDes',
+            height: 600,
+            mode: "specific_textareas",
+            plugins: 'paste image link autolink lists table media',
+            menubar: false,
+            toolbar: [
+                'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            ],
+        });
+    </script>
+    {{!-- <script>
+	  $('a.edit').on('click', function () {
+		let id = $(this).attr('data-id');
+		let name = $(this).attr('data-name');
+		let number = $(this).attr('data-number');
+		let price = $(this).attr('data-price');
+		let des = $(this).attr('data-des');
+		$('#edit-form #name').attr('value', `${name}`);
+		$('#edit-form #number').attr('value', `${number}`);
+		$('#edit-form #price').attr('value', `${price}`);
+		tinymce.get('des').setContent(des);
+	  });
+	</script> --}}
+    <script>
+        $('a.edit-lesson').on('click', function () {
+            let id = $(this).attr('data-id');
+            let title = $(this).attr('data-title');
+            let des = $(this).attr('data-des');
+            $('#edit-lesson #title-edit').attr('value', `${title}`);
+            tinymce.get('des-edit').setContent(des);
+        });
+    </script>
+    {{!-- <script>
+	  $('a.delete-lesson').on('click', function () {
+		let id = $(this).attr('data-id');
+		let coureID = $(this).attr('data-course');
+		$.ajax({
+		  type: 'DELETE',
+		  url: '/courses/' + coureID + '/lessons/' + id,
+		  data: id,
+		  success: function (data) {
+			console.log(data);
+			$('window').location.href = '/courses/' + coureID;
+		  },
+		  error: function (err) {
+			console.log(err);
+		  }
 
-    });
+		});
 
-  });
-</script> --}}
-<script>
-  $('a.delete-lesson').on('click', function () {
-    let id = $(this).attr('data-id');
-    let coureID = $(this).attr('data-course');
-    $('#delete-form').attr('action', `/courses/${coureID}/lessons/${id}?_method=DELETE`);
+	  });
+	</script> --}}
+    <script>
+        $('a.delete-lesson').on('click', function () {
+            let id = $(this).attr('data-id');
+            let coureID = $(this).attr('data-course');
+            $('#delete-form').attr('action', `/courses/${coureID}/lessons/${id}?_method=DELETE`);
 
-  });
-</script>
+        });
+    </script>
 {{/section}}
 {{#if empty}}
-<p>Khóa học không tồn tại</p>
+    <p>Khóa học không tồn tại</p>
 {{else}}
-<section class="course_details_area section_padding">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 course_details_left">
-        <h1>{{course.name}}</h1>
-        <div class="main_image">
-          <img class="img-fluid" src="/assets/client/images/courses/{{course.id}}.png" alt="course image"
-            onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
-        </div>
-        <div class="content_wrapper">
-          <h4 class="title_top">Description</h4>
-          <div class="content">
-            {{#if course.description}}
-            <div
-              style="background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
-              {{{course.description}}}
+    <section class="course_details_area section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 course_details_left">
+                <h1>{{course.name}}</h1>
+                <div class="main_image">
+                    <img class="img-fluid" src="/assets/client/images/courses/{{course.id}}.png" alt="course image"
+                         onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
+                </div>
+                <div class="content_wrapper">
+                    <h4 class="title_top">Description</h4>
+                    <div class="content">
+                        {{#if course.description}}
+                            <div
+                                    style="background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                                {{{course.description}}}
+                            </div>
+                        {{else}}
+                            <p>No decription</p>
+
+                        {{/if}}
+                    </div>
+
+                    {{!-- VIDEO
+					<video width="320" height="240" controls>
+					  <source src="/assets/client/videos/python.webm" type="video/webm" />
+					</video> --}}
+                    <h4 class="title">Course Outline</h4>
+                    <div class="content">
+                        <ul class="course_list">
+                            {{#if lesson.length}}
+                                {{#each lesson}}
+                                    <li class="justify-content-between align-items-center d-flex">
+                                        <p style="padding-left: 20px;">{{this.title}}</p>
+                                        <div class="row" style="display: flex;text-align: center; align-items: center;">
+                                            {{#if this.description}}
+                                                <div class="collapse multi-collapse" id="collapseExample{{this.id}}">
+
+                                                    <div
+                                                            style="background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                                                        {{{this.description}}}
+                                                    </div>
+
+                                                </div>
+                                            {{/if}}
+
+                                        </div>
+                                        <a class="btn_2 text-uppercase" data-toggle="collapse"
+                                           href="#collapseExample{{this.id}}" role="button"
+                                           aria-expanded="false" aria-controls="collapseExample{{lesson.id}}">View
+                                            Details</a>
+                                        <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
+                                           data-id="{{this.id}}"
+                                           data-title="{{this.title}}" data-des="{{this.description}}"
+                                           style="margin-left: 20px">
+                                            <img src="/assets/client/images/icon/edit.png" style="width: 30px;"/>
+                                        </a>
+
+
+                                        <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
+                                           data-id="{{this.id}}" data-course="{{this.courseid}}"
+                                           style="margin-left: 20px">
+                                            <img src="/assets/client/images/icon/del.png" style="width: 30px;">
+                                        </a>
+
+
+                                    </li>
+
+                                    <!-- Modal of edit lesson-->
+                                    <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="lessonEditModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="/courses/{{this.courseid}}/lessons/{{this.id}}/edit"
+                                                          method="POST" id="edit-lesson">
+                                                        <div class="lesson"
+                                                             style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                                            <div class="form-group">
+                                                                <label for="title-edit">Title</label>
+                                                                <input type="input" name="title" id="title-edit"
+                                                                       placeholder="ex: Introduction lesson"
+                                                                       style="width: 100%;" value="">
+                                                                <br><br>
+
+                                                                <label for="des-edit">Description</label>
+                                                                <textarea class="txtDes" name="des" id="des-edit"
+                                                                          cols="30" rows="10"
+                                                                          value=""></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save changes
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#lessonModal"
+                                        style="margin-left:10px; margin-bottom: 50px;">Add
+                                </button>
+                            {{else}}
+                                <p>No lesson</p>
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                        data-target="#lessonModal">Add
+                                </button>
+                            {{/if}}
+                        </ul>
+                    </div>
+                </div>
             </div>
-            {{else}}
-            <p>No decription</p>
-
-            {{/if}}
-          </div>
-
-          {{!-- VIDEO
-          <video width="320" height="240" controls>
-            <source src="/assets/client/videos/python.webm" type="video/webm" />
-          </video> --}}
-          <h4 class="title">Course Outline</h4>
-          <div class="content">
-            <ul class="course_list">
-              {{#if lesson.length}}
-              {{#each lesson}}
-              <li class="justify-content-between align-items-center d-flex">
-                <p style="padding-left: 20px;">{{this.title}}</p>
-                <div class="row" style="display: flex;text-align: center; align-items: center;">
-                  {{#if this.description}}
-                  <div class="collapse multi-collapse" id="collapseExample{{this.id}}">
-
-                    <div
-                      style="background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
-                      {{{this.description}}}
-                    </div>
-
-                  </div>
-                  {{/if}}
-                  
+            <div class="col-lg-4 right-contents">
+                <div class="sidebar_top">
+                    <ul>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Trainer’s Name</p>
+                                <span class="color">{{user.fullname}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Course Fee </p>
+                                <span>{{course.price}}$</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Update day</p>
+                                <span>{{course.uploaddate}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Last Update</p>
+                                <span>{{course.lastupdate}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Quantity purchased</p>
+                                <span>{{course.getscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>View</p>
+                                <span>{{course.viewscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Number lessons</p>
+                                <span>{{course.lessonscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Number of reviews</p>
+                                <span>{{course.ratingscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Rating</p>
+                                <span>{{course.rating}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="#" class="btn_1 d-block">Enroll the course</a>
                 </div>
-                 <a class="btn_2 text-uppercase" data-toggle="collapse" href="#collapseExample{{this.id}}" role="button"
-                  aria-expanded="false" aria-controls="collapseExample{{lesson.id}}">View Details</a>
-                <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal" data-id="{{this.id}}"
-                    data-title="{{this.title}}" data-des="{{this.description}}" style="margin-left: 20px">
-                    <image src="/assets/client/images/icon/edit.png" style="width: 30px;">
-                  </a>
+            </div>
+        </div>
+        {{#if isAuthor}}
 
-                <a class="delete-lesson" href="#delLessonModal" data-toggle="modal" data-id="{{this.id}}" data-course="{{this.courseid}}"
-                    style="margin-left: 20px">
-                    <image src="/assets/client/images/icon/del.png" style="width: 30px;">
-                </a>
-               
-
-              </li>
-
-              <!-- Modal of edit lesson-->
-              <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
-                aria-labelledby="lessonEditModalLabel" aria-hidden="true">
+            <!-- Modal of add lesson-->
+            <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form action="/courses/{{this.courseid}}/lessons/{{this.id}}/edit" method="POST" id="edit-lesson">
-                        <div class="lesson"
-                          style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                          <div class="form-group">
-                            <label for="title-edit">Title</label>
-                            <input type="input" name="title" id="title-edit" placeholder="ex: Introduction lesson"
-                              style="width: 100%;" value="">
-                            <br><br>
-
-                            <label for="des-edit">Description</label>
-                            <textarea class="txtDes" name="des" id="des-edit" cols="30" rows="10"
-                              value=""></textarea>
-                          </div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="lessonModalLabel">Input Course</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        <div class="modal-body">
+                            <form action="/courses/{{course.id}}/lessons" method="POST">
+                                <div class="lesson"
+                                     style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                    <div class="form-group">
+                                        <label for="name">Title</label>
+                                        <input type="input" name="title" id="title"
+                                               placeholder="ex: Introduction lesson" style="width: 100%;"
+                                               value="">
+                                        <br><br>
+
+                                        <label for="txtDesLesson">Description</label>
+                                        <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
+                                                  value=""></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
                         </div>
-                      </form>
                     </div>
-                  </div>
                 </div>
-              </div>
-              {{/each}}
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal"
-                style="margin-left:10px; margin-bottom: 50px;">Add</button>
-              {{else}}
-              <p>No lesson</p>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal">Add</button>
-              {{/if}}
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4 right-contents">
-        <div class="sidebar_top">
-          <ul>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Trainer’s Name</p>
-                <span class="color">{{user.fullname}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Course Fee </p>
-                <span>{{course.price}}$</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Update day</p>
-                <span>{{course.uploaddate}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Last Update</p>
-                <span>{{course.lastupdate}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Quantity purchased</p>
-                <span>{{course.getscount}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>View</p>
-                <span>{{course.viewscount}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Number lessons</p>
-                <span>{{course.lessonscount}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Number of reviews</p>
-                <span>{{course.ratingscount}}</span>
-              </a>
-            </li>
-            <li>
-              <a class="justify-content-between d-flex" href="#">
-                <p>Rating</p>
-                <span>{{course.rating}}</span>
-              </a>
-            </li>
-          </ul>
-          <a href="#" class="btn_1 d-block">Enroll the course</a>
-        </div>
-      </div> 
-    </div>
-    {{#if isAuthor}}
+            </div>
 
-    <!-- Modal of add lesson-->
-    <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="lessonModalLabel">Input Course</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form action="/courses/{{course.id}}/lessons" method="POST">
-              <div class="lesson" style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                <div class="form-group">
-                  <label for="name">Title</label>
-                  <input type="input" name="title" id="title" placeholder="ex: Introduction lesson" style="width: 100%;"
-                    value="">
-                  <br><br>
+            <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
+                 aria-labelledby="delLessonModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST" id="delete-form">
+                                <h3>Are you sure about delete ?</h3>
+                                <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
+                                    <i class="fa fa-check " aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
 
-                  <label for="txtDesLesson">Description</label>
-                  <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10" value=""></textarea>
+                    </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog" aria-labelledby="delLessonModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="POST" id="delete-form">
-          <h3>Are you sure about delete ?</h3>
-          <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-            <i class="fa fa-check " aria-hidden="true"></i>
-            Delete
-          </button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-    {{/if}}
-</section>
+            </div>
+        {{/if}}
+    </section>
 {{/if}}

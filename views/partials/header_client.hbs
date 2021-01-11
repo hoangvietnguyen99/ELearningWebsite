@@ -4,14 +4,6 @@
             <div class="col-md-4">
                 <div class="widget no-border m-0">
                     <ul class="list-inline font-13 sm-text-center mt-5">
-                        <li>
-                            <a class="text-white" href="#">FAQ</a>
-                        </li>
-                        <li class="text-white">|</li>
-                        <li>
-                            <a class="text-white" href="#">Help Desk</a>
-                        </li>
-                        <li class="text-white">|</li>
                         {{#if isAuth}}
                             <form id="frmLogout" method="POST" action="/auth/logout" hidden></form>
                             <li>
@@ -75,8 +67,9 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                <form action="/cart/courses/"></form>
                                                 <div class="cart-btn text-right">
-                                                    <a class="btn btn-theme-colored btn-xs" href="shop-cart.html"> View
+                                                    <a class="btn btn-theme-colored btn-xs" href="javascript: $()"> View
                                                         cart</a>
                                                     <a class="btn btn-dark btn-xs" href="shop-checkout.html"> Checkout</a>
                                                 </div>
@@ -108,15 +101,6 @@
                         </li>
                     </ul>
                 </div>
-                <div class="widget no-border m-0 mr-15 pull-right flip sm-pull-none sm-text-center">
-                    <ul class="styled-icons icon-circled icon-sm pull-right flip sm-pull-none sm-text-center mt-sm-15">
-                        <li><a href="#"><i class="fa fa-facebook text-white"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter text-white"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus text-white"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram text-white"></i></a></li>
-                        <li><a href="#"><i class="fa fa-linkedin text-white"></i></a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -126,30 +110,8 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-5">
                 <div class="widget no-border m-0">
-                    <a class="menuzord-brand pull-left flip xs-pull-center mb-15" href="javascript:void(0)"><img
+                    <a class="menuzord-brand pull-left flip xs-pull-center mb-15" href="/"><img
                             src="/assets/client/images/logo-wide.png" alt=""></a>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4">
-                <div class="widget no-border pull-right sm-pull-none sm-text-center mt-10 mb-10 m-0">
-                    <ul class="list-inline">
-                        <li><i class="fa fa-phone-square text-theme-colored font-36 mt-5 sm-display-block"></i></li>
-                        <li>
-                            <a href="#" class="font-12 text-gray text-uppercase">Call us today!</a>
-                            <h5 class="font-14 m-0"> +(012) 345 6789</h5>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-3">
-                <div class="widget no-border pull-right sm-pull-none sm-text-center mt-10 mb-10 m-0">
-                    <ul class="list-inline">
-                        <li><i class="fa fa-clock-o text-theme-colored font-36 mt-5 sm-display-block"></i></li>
-                        <li>
-                            <a href="#" class="font-12 text-gray text-uppercase">We are open!</a>
-                            <h5 class="font-13 text-black m-0"> Mon-Fri 8:00-16:00</h5>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>

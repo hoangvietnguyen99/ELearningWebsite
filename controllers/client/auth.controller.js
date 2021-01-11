@@ -54,7 +54,7 @@ module.exports = {
 			const thisAccount = await AccountModel.singleByEmail(req.body.email);
 			if (!thisAccount) throw `Invalid email or password.`;
 			if (!AccountModel.validPassword(req.body.password, thisAccount)) throw 'Invalid email or password.';
-			const thisUser = await UserModel.single(thisAccount.userid);
+			const thisUser = await UserModel.getById(thisAccount.userid);
 			if (!thisUser) throw 'Invalid email or password.'
 			req.session.isAuth = true;
 			req.session.authUser = thisUser;
