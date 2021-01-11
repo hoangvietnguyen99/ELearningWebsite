@@ -151,7 +151,7 @@
         <td>
           {{#if course.approvedby}}
           <a href="#">
-            <image src="/assets/client/images/icon/approve.png" style="width: 30px; margin-left: 15px;">
+            <img src="/assets/client/images/icon/approve.png" style="width: 30px; margin-left: 15px;">
           </a>
           {{/if}}
         </td>
@@ -159,19 +159,19 @@
         <td>
           <a class="edit" href="#editModal" data-toggle="modal" datd-id="{{course.id}}" data-name="{{course.name}}"
             data-number="{{course.lessonscount}}" data-price={{course.price}} data-des="{{course.description}}">
-            <image src="/assets/client/images/icon/edit.png" style="width: 30px;">
+            <img src="/assets/client/images/icon/edit.png" style="width: 30px;">
           </a>
 
           <a class="delete-course" href="#delModal" data-toggle="modal" data-id="{{course.id}}">
-            <image src="/assets/client/images/icon/del.png" style="width: 30px;">
+            <img src="/assets/client/images/icon/del.png" style="width: 30px;">
           </a>
 
           <a href="/courses/{{course.id}}">
-            <image src="/assets/client/images/icon/open.png" style="width: 30px;">
+            <img src="/assets/client/images/icon/open.png" style="width: 30px;">
           </a>
 
           <a class="add-image" href="#imageModal" data-toggle="modal" data-id="{{course.id}}" role="button">
-            <image src="/assets/client/images/icon/image.png" style="width: 30px;">
+            <img src="/assets/client/images/icon/image.png" style="width: 30px;">
           </a>
         </td>
       </tr>
@@ -198,7 +198,7 @@
                     <div class="select" style="z-index: 1000;">
                       <select name="selection" id="edit-choice" placeholder="Choise Field" multiple>
                         {{#each fields as |field|}}
-                        <option value="{{field.id}}">{{field.name}}</option>
+                        <option valu  e="{{field.id}}">{{field.name}}</option>
                         {{/each}}
                       </select>
                     </div>
