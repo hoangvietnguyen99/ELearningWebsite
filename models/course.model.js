@@ -1,4 +1,5 @@
 const database = require('../utils/database');
+const { addOne } = require('./carts_courses.model');
 
 const CartsCoursesModel = require('./carts_courses.model');
 
@@ -10,8 +11,7 @@ module.exports = {
 		return await database.queryWithLimit(query, connection, pageIndex, pageSize);
 	},
 	async getAllAvailable(connection, pageIndex, pageSize) {
-		// const query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`;
-		const query = `SELECT * FROM ${TBL_COURSES}`;
+		const query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`;
 		return await database.queryWithLimit(query, connection, pageIndex, pageSize);
 	},
 	async getById(id, connection) {
@@ -31,11 +31,12 @@ module.exports = {
 		const result = await database.update(course, {id: course.id}, TBL_COURSES, connection);
 		return result.changedRows;
 	},
-	async single(id) {
-		const rows = await database.query(`select * from ${TBL_COURSES} where id = ${id}`);
-		if (rows.length === 0)
-			return null;
 
+	async addOne(course){
+		const result = await database.add(course,TBL_COURSES);
+		const rows = await database.query(`select * from ${TBL_COURSES} WHERE id = ${result.insertId}`);
+		if (rows.length === 0)
+          return null;
 		return rows[0];
 	},
 	async allByAuthor(authorID) {
@@ -49,10 +50,5 @@ module.exports = {
 	},
 	async getCount(connection) {
 		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
-	},
-	async getCoursesByIds(ids, connection) {
-		return await Promise.all(ids.map(async id => {
-			return await this.getById(id, connection);
-		}));
 	}
 }

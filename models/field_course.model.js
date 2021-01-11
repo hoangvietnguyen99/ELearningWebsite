@@ -14,5 +14,10 @@ module.exports = {
 	async getListCourseIdsByFieldId(fieldId, connection) {
 		const query = `SELECT courseid FROM ${TBL_FIELD_COURSE} WHERE fieldid = ${fieldId}`;
 		return await database.query(query, connection);
-	}
+	},
+	async removeByCourseID(courseId, connection) {
+		const result = await database.delete({courseid: courseId}, TBL_FIELD_COURSE, connection);
+		return result.affectedRows;
+	}, 
+	
 }
