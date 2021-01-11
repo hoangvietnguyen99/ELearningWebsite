@@ -1,7 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const detailController = require('../controllers/client/detail.controller');
-const multer = require('multer');
 
 //Index
 router.get('/', function(req, res, next) {

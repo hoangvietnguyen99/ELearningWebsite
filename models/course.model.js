@@ -50,5 +50,10 @@ module.exports = {
 	},
 	async getCount(connection) {
 		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
+	},
+	async getCoursesByIds(ids, connection) {
+		return await Promise.all(ids.map(async id => {
+			return await this.getById(id, connection);
+		}));
 	}
 }

@@ -1,18 +1,16 @@
 const courseModel = require('../../models/course.model');
-const CourseModel = require('../../models/course.model');
 const userModel = require('../../models/user.model');
 const database = require('../../utils/database');
-
+const lessonModel = require('../../models/lesson.model');
 module.exports = {
 	async getAllAvailable(req, res) {
 		const pageIndex = req.query.pageIndex || 1;
 		const pageSize = req.query.pageSize || 20;
 		const field = req.query.field;
 		const [count, courses] = await Promise.all([
-			await CourseModel.getCountAvailable(),
-			await CourseModel.getAllAvailable(null, pageIndex, pageSize)
+			await courseModel.getCountAvailable(),
+			await courseModel.getAllAvailable(null, pageIndex, pageSize)
 		]);
-		console.log(courses);
 		res.render('clients/courses', {
 			layout: 'layoutclient',
 			courses,
@@ -38,6 +36,20 @@ module.exports = {
 					res.redirect('/courses/' + thisCourse.id);
 				});
 			}
+		});
+	},
+
+	async getCourses(req,res,next ){
+		const course = await courseModel.getById(req.params.id);
+		const user = await userModel.getById(course.author);
+		const lessons = await lessonModel.getAllByCourseId(course.id);
+		res.render('clients/DetailCourse', {
+			layout: 'layoutclient.hbs',
+			course : course,
+			user : user,
+			lesson: lessons,
+			empty: course.length == 0,
+			isAuthor: res.locals.authUser.id === course.author
 		});
 	}
 }

@@ -1,16 +1,17 @@
 const express = require('express');
 const router = express.Router();
 
-const CourseController = require('../controllers/client/course.controller');
+const courseController = require('../controllers/client/course.controller');
+const lessonController = require('../controllers/client/lesson.controller');
 
 router.route('/')
-	.get(CourseController.getAllAvailable);
+	.get(courseController.getAllAvailable);
 
 router.route('/:id')
-	.get(detailController.getCourses)
+	.get(courseController.getCourses)
 
 router.route('/:courseid/reviews')
-	.post(CourseController.addReview);
+	.post(courseController.addReview);
 
 router.route('/:id/lessons')
 	.post(lessonController.addLesson)

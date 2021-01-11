@@ -25,9 +25,9 @@ module.exports = function(app) {
     // });
     app.use('/', require('../routes/pages'));
 
-    app.use('/admin', isAuth, isAdmin, require('../routes/admin'));
+    app.use('/admin', isAuth, require('../routes/admin'));
     // app.use('/admin/products', require('../routes/product.route'));
-    app.use('/teacher', isAuth, isTeacher, require('../routes/teacher'));
+    app.use('/teacher', isAuth, require('../routes/teacher'));
     app.use('/auth', require('../routes/auth'));
     app.use('/courses', require('../routes/courses'));
     app.use('/cart', isAuth, require('../routes/cart'));
