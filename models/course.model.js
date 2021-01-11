@@ -32,6 +32,11 @@ module.exports = {
 		return result.changedRows;
 	},
 
+	async remove(condition, connection) {
+		const result = await database.delete(condition, TBL_COURSES, connection);
+		return result.affectedRows;
+	},
+
 	async addOne(course){
 		const result = await database.add(course,TBL_COURSES);
 		const rows = await database.query(`select * from ${TBL_COURSES} WHERE id = ${result.insertId}`);
@@ -50,5 +55,10 @@ module.exports = {
 	},
 	async getCount(connection) {
 		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
+	},
+	async getCoursesByIds(ids, connection) {
+		return await Promise.all(ids.map(async id => {
+			return await this.getById(id, connection);
+		}));
 	}
 }

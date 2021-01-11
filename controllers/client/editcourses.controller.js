@@ -1,7 +1,4 @@
-const express = require('express');
-const router = express.Router();
 const multer = require('multer');
-const db = require('../../utils/database');
 const courseModel = require('../../models/course.model');
 const fieldModel = require('../../models/field.model');
 const field_courseModel = require('../../models/field_course.model');
@@ -41,7 +38,7 @@ exports.addImage =  function(req,res,next ){
 exports.addCourse =  async function(req,res,next){
     const author = req.session.authUser.id;
     const {name,number,price,Des,selection} = req.body;
-    
+
     const course = {
         name: name,
         author: author,
@@ -61,7 +58,7 @@ exports.addCourse =  async function(req,res,next){
 exports.deleteCourse = async function(req,res){
   console.log(req.params.id);
   const field = await field_courseModel.removeByCourseID(req.params.id);
-  const result = await courseModel.removeCourse(req.params.id);
+  const result = await courseModel.remove([{id: req.params.id}, {statuscode: 'UNAVAILABLE'}]);
   if(result !== null)
   //res.json({status: true, url: "/teacher/courses"});
   return res.redirect('/teacher/courses');
@@ -69,7 +66,7 @@ exports.deleteCourse = async function(req,res){
 };
 
 exports.updateCourse = async function(req,res,next){
-    
+
   const author = req.session.authUser.id;
   const {name,number,price,Des,selection} = req.body;
   const course = {
