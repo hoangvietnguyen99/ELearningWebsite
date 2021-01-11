@@ -1,21 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const detailController = require('../controllers/client/detail.controller');
-const lessonController = require('../controllers/client/lesson.controller');
+
+const CourseController = require('../controllers/client/course.controller');
 
 router.route('/')
-	.get()
+	.get(CourseController.getAllAvailable);
 
 router.route('/:id')
 	.get(detailController.getCourses)
-	
+
+router.route('/:courseid/reviews')
+	.post(CourseController.addReview);
+
 router.route('/:id/lessons')
 	.post(lessonController.addLesson)
 
 router.route('/:id/lessons/:lid')
-.delete(lessonController.deleteLesson)
+	.delete(lessonController.deleteLesson)
 
 router.route('/:id/lessons/:lid/edit')
-.post(lessonController.editLesson)
+	.post(lessonController.editLesson)
 
 module.exports = router;
