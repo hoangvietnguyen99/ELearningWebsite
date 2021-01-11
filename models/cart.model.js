@@ -2,27 +2,26 @@ const database = require('../utils/database');
 const CourseModel = require("./course.model");
 const CartsCoursesModel = require("./carts_courses.model");
 const UserModel = require("./user.model");
+const courseModel = require('./course.model');
+const user_courseModel = require('./user_course.model');
 
 const TBL_CARTS = 'carts';
 
 module.exports = {
-	async getById(id, connection) {
-		let result = await database.query(`SELECT * FROM ${TBL_CARTS} WHERE id = ${id}`, connection);
-		if (result.length === 0) return null
-		result[0].courses = await CourseModel.getAllByCartId(result[0].id, connection);
-		return result[0];
-	},
 	async getByUserId(userId, connection) {
 		let result = await database.query(`SELECT * FROM ${TBL_CARTS} WHERE userid = ${userId} AND ispaid = 0`, connection);
 		if (result.length === 0) {
 			return await this.createOneByUserId(userId, connection);
 		}
-		result[0].courses = await CourseModel.getAllByCartId(result[0].id, connection);
+		result[0].courses = await this.getAllCourses(result[0].id);
 		return result[0];
 	},
 	async addCourse(userId, courseId, connection) {
 		const thisCart = await this.getByUserId(userId, connection);
-		const found = thisCart.courses.find(course => course.id === courseId);
+		const usersExistingCourseIds = await user_courseModel.getCourseIdsByUserId(userId, connection);
+		let found = usersExistingCourseIds.find(id => id === courseId);
+		if (found) return 0;
+		found = thisCart.courses.find(course => course.id === courseId);
 		if (found) return 0;
 		const thisCourse = await CourseModel.getById(courseId, connection);
 		if (!thisCourse) return 0;
@@ -32,7 +31,7 @@ module.exports = {
 		thisCart.total += thisCourse.price;
 		let changedRows = await this.update(thisCart, connection);
 		if (!changedRows) return 0;
-		return thisCart;
+		return this.getByUserId(userId, connection);
 	},
 	async removeCourse(userId, courseId, connection) {
 		const thisCart = await this.getByUserId(userId, connection);
@@ -44,7 +43,7 @@ module.exports = {
 		thisCart.total -= found.price;
 		let changedRows = await this.update(thisCart, connection);
 		if (!changedRows) return 0;
-		return thisCart;
+		return this.getByUserId(userId, connection);
 	},
 	/**
 	 * Checkout cart, return true or false
@@ -53,22 +52,30 @@ module.exports = {
 	 * @returns {Promise<boolean>}
 	 */
 	async checkOut(userId, connection) {
-		const thisCart = await this.getById(userId, connection);
+		const thisCart = await this.getByUserId(userId, connection);
 		if (thisCart.courses.length === 0) return false;
 		const thisUser = await UserModel.getById(userId);
 		thisUser.purchasedcount += thisCart.courses.length;
 		thisUser.totalmoneyspend += thisCart.total;
+		const paidDate = new Date();
 		for (const course of thisCart.courses) {
 			const author = await UserModel.getById(course.author, connection);
 			author.totalmoneyearn += course.price;
 			course.getscount++;
+			const userCourseDTO = {
+				userid: userId,
+				courseid: course.id,
+				purchasedat: paidDate,
+				amount: course.price
+			};
 			const result = await Promise.all([
+				user_courseModel.addOne(userCourseDTO, connection),
 				UserModel.update(author, connection),
 				CourseModel.update(course, connection)
 			]);
 			if (result.includes(0)) return false;
 		}
-		thisCart.paiddate = new Date();
+		thisCart.paiddate = paidDate;
 		thisCart.ispaid = 1;
 		delete thisCart.courses;
 		const result = await Promise.all([
@@ -96,5 +103,9 @@ module.exports = {
 		delete thisCart.courses;
 		const result = await database.update(thisCart, {id: cart.id}, TBL_CARTS, connection);
 		return result.changedRows;
+	},
+	async getAllCourses(cartId, connection) {
+		const courseIds = await CartsCoursesModel.getListCourseIdsByCartId(cartId, connection);
+		return await courseModel.getCoursesByIds(courseIds);
 	}
 }

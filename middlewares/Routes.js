@@ -23,11 +23,10 @@ module.exports = function(app) {
     //     data: { visible: visible }
     //   });
     // });
+    app.use('/', require('../routes/pages'));
 
     app.use('/admin', isAuth, isAdmin, require('../routes/admin'));
     // app.use('/admin/products', require('../routes/product.route'));
-
-    app.use('/', require('../routes/pages'));
     app.use('/teacher', isAuth, isTeacher, require('../routes/teacher'));
     app.use('/auth', require('../routes/auth'));
     app.use('/courses', require('../routes/courses'));

@@ -1,4 +1,7 @@
 const database = require('../utils/database');
+const { getAllCourses } = require('./cart.model');
+const courseModel = require('./course.model');
+const user_courseModel = require('./user_course.model');
 
 const TBL_USERS = 'users';
 
@@ -26,5 +29,15 @@ module.exports = {
 	async delete(userId, connection) {
 		const result = await database.delete({id: userId}, TBL_USERS,connection);
 		return result.affectedRows;
+	},
+
+	async getAllCourses(userId, connection) {
+		const courseIds = await user_courseModel.getCourseIdsByUserId(userId, connection);
+		return await courseModel.getCoursesByIds(courseIds, connection);
+	},
+
+	async hasCourseIdCheck(userId, courseId, connection) {
+		const courseIds = await user_courseModel.getCourseIdsByUserId(userId, connection);
+		return courseIds.includes(courseId);
 	}
 }

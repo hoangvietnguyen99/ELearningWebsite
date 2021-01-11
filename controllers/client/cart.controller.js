@@ -31,5 +31,13 @@ module.exports = {
 	},
 	async checkOut(req, res) {
 
+	},
+
+	async getCart(req, res) {
+		const thisCart = CartModel.getByUserId(req.session.authUser.id);
+		res.render('clients/cart', {
+			layout: 'layoutclient',
+			cart: thisCart
+		});
 	}
 }
