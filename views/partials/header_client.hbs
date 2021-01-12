@@ -7,7 +7,7 @@
                         {{#if isAuth}}
                             <form id="frmLogout" method="POST" action="/auth/logout" hidden></form>
                             <li>
-                                <a class="text-white" href="#">{{authAccount.email}}</a>
+                                <a class="text-white" href="/user/{{authUser.id}}">{{authUser.fullname}}</a>
                             </li>
                             <li class="text-white">|</li>
                             <li>
