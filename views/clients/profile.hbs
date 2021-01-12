@@ -41,13 +41,18 @@
             </div>
             <div class="form-group">
                 <i class="fa fa-money" aria-hidden="true" style="font-size: 1.2rem;"> Total spend</i>
-            
                 <span><b>: {{user.totalmoneyspend}}</b></span>
             </div>
 
-            {{#if idTeacher}}
-                
+            {{#if isTeacher}}
+                <i class="fa fa-book" aria-hidden="true" style="font-size: 1.2rem;"> Total uploaded</i>
+                <span><b>: {{user.uploadedcount}}</b></span>
+                <div class="form-group">
+                <i class="fas fa-money-bill" aria-hidden="true" style="font-size: 1.2rem;"> Total earn</i>
+                <span><b>: {{user.totalmoneyearn}}</b></span>
+            </div>
             {{/if}}
+            
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
