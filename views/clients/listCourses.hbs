@@ -35,43 +35,52 @@
         });
     </script>
     <script>
-       $('a.edit').on('click', function () {
-            let id = $(this).attr('data-id'); 
+        $('a.edit').on('click', function () {
+            let id = $(this).attr('data-id');
             let name = $(this).attr('data-name');
             let number = $(this).attr('data-number');
             let price = $(this).attr('data-price');
             let des = $(this).attr('data-des');
-            let fieldids = $(this).attr('data-fieldids').split(',');
-            const tempfields = [];
+            const fieldids = $(this).attr('data-fieldids').split(',');
+            let tempfields = [];
+            const thisDiv = $("#fieldSelect");
+            thisDiv.empty();
             {{#each fields as |field|}}
                 tempfields.push({
                     id: {{field.id}},
                     name: "{{field.name}}"
                 });
             {{/each}}
-            
-            console.log(tempfields);
-            fieldids = fieldids.map(id => {
-                return tempfields.find(item => item.id == id);
-            })
-            console.log(fieldids);
-            for(let i of fieldids){
-                console.log(i);
-                $('#edit-choice').append(`<option value=${i.id} selected>${i.name}</option>`);
+            tempfields = tempfields.map(item => {
+                const found = fieldids.find(id => id == item.id);
+                item.selected = !!found;
+                return item;
+            });
+            thisDiv.append(`<select name="selection" id="edit-choice" placeholder="Choise Field"
+                    multiple>
+            </select>`);
+
+            for (let item of tempfields) {
+            	if (item.selected) {
+                    $('#edit-choice').append(`<option value=${item.id} selected>${item.name}</option>`);
+                } else {
+                    $('#edit-choice').append(`<option value=${item.id}>${item.name}</option>`);
+                }
             }
-             var multipleCancelButton = new Choices('#edit-choice', {
+
+            new Choices('#edit-choice', {
                 removeItemButton: true,
                 maxItemCount: 10,
                 searchResultLimit: 10,
                 renderChoiceLimit: 10,
             });
-    
+
             $('#name').attr('value', `${name}`);
             $('#number').attr('value', `${number}`);
             $('#price').attr('value', `${price}`);
             tinymce.get('des').setContent(des);
             //$('#edit-choice').append('')
-            $('#edit-form').attr('action', `/teacher/courses/${id}/edit`);
+            $('#edit-form').attr('action', `/teacher/courses/${id}?_method=PUT`);
         });
     </script>
 
@@ -89,51 +98,34 @@
 
         });
     </script>
-    
-	{{!-- <script>
+
+    {{!-- <script>
 	 $('#edit-choice').on('change',function(){
 
-        alert('value '+$('#edit-choice').val())
-    //console.log('text '+$('#edit-choice').text())
-    //console.log('index '+$('#edit-choice').index())
+		alert('value '+$('#edit-choice').val())
+	//console.log('text '+$('#edit-choice').text())
+	//console.log('index '+$('#edit-choice').index())
 
-    })
+	})
 	</script> --}}
 
     <script>
         $(document).ready(function () {
-
             var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
                 removeItemButton: true,
                 maxItemCount: 10,
                 searchResultLimit: 10,
                 renderChoiceLimit: 10,
             });
-
-
         });
     </script>
-    <script>
-        $(document).ready(function () {
-
-            var multipleCancelButton = new Choices('#edit-choice', {
-                removeItemButton: true,
-                maxItemCount: 10,
-                searchResultLimit: 10,
-                renderChoiceLimit: 10,
-            });
-
-
-        });
-    </script>
-
 {{/section}}
 {{#if empty}}
     <p>No courses found</p>
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</button>
 {{else}}
-    
+
     <div class="course-table" style="margin: 20px;">
         <table class="table table-striped">
             <thead>
@@ -177,7 +169,7 @@
                     </td>
 
                     <td>
-                        <a class="edit" href="#editModal" data-toggle="modal" 
+                        <a class="edit" href="#editModal" data-toggle="modal"
                            data-id="{{course.id}}"
                            data-name="{{course.name}}"
                            data-number="{{course.lessonscount}}" data-price="{{course.price}}"
@@ -200,68 +192,7 @@
                     </td>
                 </tr>
                 <!-- Modal of edit Course-->
-                <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-                     aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Edit</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="POST" id="edit-form">
-                                    <div class="editor"
-                                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                        <div class="form-group">
-                                            <label for="name">Name</label>
-                                            <input type="text" name="name" id="name" placeholder="ex: Python online..."
-                                                   style="width: 100%;">
-                                            <br><br>
 
-                                            <label for="edit-choice">Field</label>
-                                            <div class="select" style="z-index: 1000;">
-                                                <select name="selection" id="edit-choice" placeholder="Choise Field"
-                                                        multiple>
-                                                    {{#each ../fields as |field|}}
-                                                        <option value="{{field.id}}">{{field.name}}</option>
-                                                    {{/each}}
-                                                </select>
-                                            </div>
-
-                                            <div>
-                                                <div style="display: inline-block; margin-right: 10px">
-                                                    <label for="number">Number of lessons</label><input type="input" name="number"
-                                                                                       id="number" placeholder="ex: 40"
-                                                                                       style="width: 100%;"
-                                                                                       value=""><br><br>
-                                                </div>
-
-                                                <div style="float: right;">
-                                                    <label for="price">Price</label>
-                                                    <input type="text" name="price" id="price" placeholder="ex: 20"
-                                                           style="width: 100%; "
-                                                           value=""><br><br>
-                                                </div>
-                                            </div>
-
-                                            <label for="des">Description</label>
-                                            <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
-                                                      ></textarea>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                        </button>
-                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
             {{/each}}
             </tbody>
         </table>
@@ -324,13 +255,72 @@
                             Delete
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
                     </form>
                 </div>
             </div>
         </div>
     </div>
 {{/if}}
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" id="edit-form">
+                    <div class="editor"
+                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" placeholder="ex: Python online..."
+                                   style="width: 100%;">
+                            <br><br>
+
+                            <label for="edit-choice">Field</label>
+                            <div class="select" id="fieldSelect" style="z-index: 1000;">
+
+                            </div>
+
+                            <div>
+                                <div style="display: inline-block; margin-right: 10px">
+                                    <label for="number">Number of lessons</label><input type="input"
+                                                                                        name="number"
+                                                                                        id="number"
+                                                                                        placeholder="ex: 40"
+                                                                                        style="width: 100%;"
+                                                                                        value=""><br><br>
+                                </div>
+
+                                <div style="float: right;">
+                                    <label for="price">Price</label>
+                                    <input type="text" name="price" id="price" placeholder="ex: 20"
+                                           style="width: 100%; "
+                                           value=""><br><br>
+                                </div>
+                            </div>
+
+                            <label for="des">Description</label>
+                            <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- Modal of addCourse-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
