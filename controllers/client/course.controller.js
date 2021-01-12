@@ -43,6 +43,7 @@ module.exports = {
 		const course = await courseModel.getById(req.params.id);
 		const user = await userModel.getById(course.author);
 		const lessons = await lessonModel.getAllByCourseId(course.id);
+		console.log(lessons);
 		res.render('clients/DetailCourse', {
 			layout: 'layoutclient.hbs',
 			course : course,

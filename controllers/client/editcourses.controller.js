@@ -38,7 +38,7 @@ exports.addImage =  function(req,res,next ){
 exports.addCourse =  async function(req,res,next){
     const author = req.session.authUser.id;
     const {name,number,price,Des,selection} = req.body;
-
+    console.log(req.body);
     const course = {
         name: name,
         author: author,
@@ -68,7 +68,7 @@ exports.deleteCourse = async function(req,res){
 exports.updateCourse = async function(req,res,next){
 
   const author = req.session.authUser.id;
-  const {name,number,price,Des,selection} = req.body;
+  const {name,number,price,Des} = req.body;
   const course = {
       id: req.params.id,
       name: name,
@@ -77,7 +77,10 @@ exports.updateCourse = async function(req,res,next){
       price: price,
       description: Des
   }
-  console.log(req.params.id);
+ //const field_course = field_courseModel.getListFieldByCourseID(req.params.id)
+  // for(let i = 0 ;i< selection.length;i++){
+  //   const resu = await field_courseModel.updateOne(selection[i],result.id);
+  // }
   const result = await courseModel.update(course);
   if(result !== null)
   res.redirect('/teacher/courses/');
