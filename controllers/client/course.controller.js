@@ -7,19 +7,27 @@ const reviewModel = require('../../models/review.model');
 
 module.exports = {
 	async getAllAvailable(req, res) {
-		const pageIndex = req.query.pageIndex || 1;
-		const pageSize = req.query.pageSize || 20;
-		const field = req.query.field;
-		const [count, courses] = await Promise.all([
+		let pageIndex = req.query.pageIndex || 1;
+		const userId = req.session.authUser ? req.session.authUser.id : null;
+		if (pageIndex == 0) pageIndex = 1;
+		const pageSize = req.query.pageSize || 12;
+		// const field = req.query.field;
+		const [count, courses, userCourseIds] = await Promise.all([
 			await courseModel.getCountAvailable(),
-			await courseModel.getAllAvailable(null, pageIndex, pageSize)
+			await courseModel.getAllAvailable(null, pageIndex, pageSize),
+			userId ? await user_courseModel.getCourseIdsByUserId(userId) : []
 		]);
+		const totalPages = Math.ceil(count / pageSize);
 		res.render('clients/courses', {
 			layout: 'layoutclient',
 			data: {
 				courses,
 				title: 'Tất cả khóa học',
-				count
+				count,
+				pageIndex,
+				pageSize,
+				totalPages,
+				userCourseIds
 			}
 		});
 	},

@@ -51,10 +51,10 @@ module.exports = {
 		return rows;
 	},
 	async getCountAvailable(connection) {
-		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`, connection);
+		return (await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`, connection))[0]['COUNT(*)'];
 	},
 	async getCount(connection) {
-		return await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection);
+		return (await database.query(`SELECT COUNT(*) FROM ${TBL_COURSES}`, connection))[0]['COUNT(*)'];
 	},
 	async getCoursesByIds(ids, connection) {
 		return await Promise.all(ids.map(async id => {
