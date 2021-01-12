@@ -35,17 +35,42 @@
         });
     </script>
     <script>
-        $('a.edit').on('click', function () {
+       $('a.edit').on('click', function () {
             let id = $(this).attr('data-id'); 
             let name = $(this).attr('data-name');
             let number = $(this).attr('data-number');
             let price = $(this).attr('data-price');
             let des = $(this).attr('data-des');
-
+            let fieldids = $(this).attr('data-fieldids').split(',');
+            const tempfields = [];
+            {{#each fields as |field|}}
+                tempfields.push({
+                    id: {{field.id}},
+                    name: "{{field.name}}"
+                });
+            {{/each}}
+            
+            console.log(tempfields);
+            fieldids = fieldids.map(id => {
+                return tempfields.find(item => item.id == id);
+            })
+            console.log(fieldids);
+            for(let i of fieldids){
+                console.log(i);
+                $('#edit-choice').append(`<option value=${i.id} selected>${i.name}</option>`);
+            }
+             var multipleCancelButton = new Choices('#edit-choice', {
+                removeItemButton: true,
+                maxItemCount: 10,
+                searchResultLimit: 10,
+                renderChoiceLimit: 10,
+            });
+    
             $('#name').attr('value', `${name}`);
             $('#number').attr('value', `${number}`);
             $('#price').attr('value', `${price}`);
             tinymce.get('des').setContent(des);
+            //$('#edit-choice').append('')
             $('#edit-form').attr('action', `/teacher/courses/${id}/edit`);
         });
     </script>
@@ -64,24 +89,15 @@
 
         });
     </script>
-    {{!--
-	<script>
-	  $('a.delete-course').on('click', function () {
-		let id = $(this).attr('data-id');
-		$.ajax({
-		  type: 'DELETE',
-		  url: '/teacher/courses/' + id,
-		  data: id,
-		  success: function (data) {
-			console.log(data);
-			//window.location.href = '/teacher/courses/'
-		  },
-		  error: function (err) {
-			console.log(err);
-		  }
-		});
+    
+	{{!-- <script>
+	 $('#edit-choice').on('change',function(){
 
-	  });
+        alert('value '+$('#edit-choice').val())
+    //console.log('text '+$('#edit-choice').text())
+    //console.log('index '+$('#edit-choice').index())
+
+    })
 	</script> --}}
 
     <script>
@@ -117,7 +133,7 @@
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</button>
 {{else}}
-
+    
     <div class="course-table" style="margin: 20px;">
         <table class="table table-striped">
             <thead>
@@ -164,8 +180,8 @@
                         <a class="edit" href="#editModal" data-toggle="modal" 
                            data-id="{{course.id}}"
                            data-name="{{course.name}}"
-                           data-number="{{course.lessonscount}}" data-price={{course.price}}
-                           data-des="{{course.description}}">
+                           data-number="{{course.lessonscount}}" data-price="{{course.price}}"
+                           data-des="{{course.description}}" data-fieldids="{{course.fieldIds}}">
                             <img src="/assets/client/images/icon/edit.png" style="width: 30px;">
                         </a>
 

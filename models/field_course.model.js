@@ -23,7 +23,7 @@ module.exports = {
 		const result = await database.update([{fieldid: fieldId}, {courseid: courseId}], TBL_FIELD_COURSE, connection);
 		return result.affectedRows;
 	},
-	async getListFieldByCourseID(couresID,connection){
+	async getListFieldIDByCourseID(couresID,connection){
 		const query = `SELECT fieldid FROM ${TBL_FIELD_COURSE} WHERE courseid = ${couresID}`;
 		return await database.query(query, connection);
 	}

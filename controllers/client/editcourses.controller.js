@@ -7,6 +7,14 @@ exports.getCourses  = async function(req,res,next ){
     const user = req.session.authUser;
     const courses = await courseModel.allByAuthor(user.id);
     const fields  = await fieldModel.getAll();
+    await Promise.all(courses.map(async course => {
+      let fieldIds = await field_courseModel.getListFieldIDByCourseID(course.id);
+      fieldIds = fieldIds.map(item => {
+        return item.fieldid;
+      })
+      course.fieldIds = fieldIds;
+      return course;
+    }));
     res.render('clients/listCourses', {
         layout: 'layoutclient.hbs',
         courses : courses,
@@ -38,7 +46,6 @@ exports.addImage =  function(req,res,next ){
 exports.addCourse =  async function(req,res,next){
     const author = req.session.authUser.id;
     const {name,number,price,Des,selection} = req.body;
-    console.log(req.body);
     const course = {
         name: name,
         author: author,
@@ -46,8 +53,8 @@ exports.addCourse =  async function(req,res,next){
         price: price,
         description: Des
     }
-    const result = await courseModel.addOne(course);
     console.log(selection);
+    const result = await courseModel.addOne(course);
     for(let i = 0 ;i< selection.length;i++){
       const resu = await field_courseModel.addOne(selection[i],result.id);
     }
@@ -69,6 +76,7 @@ exports.updateCourse = async function(req,res,next){
 
   const author = req.session.authUser.id;
   const {name,number,price,Des} = req.body;
+  console.log(req.body);
   const course = {
       id: req.params.id,
       name: name,
@@ -81,7 +89,7 @@ exports.updateCourse = async function(req,res,next){
   // for(let i = 0 ;i< selection.length;i++){
   //   const resu = await field_courseModel.updateOne(selection[i],result.id);
   // }
-  const result = await courseModel.update(course);
-  if(result !== null)
-  res.redirect('/teacher/courses/');
+  // const result = await courseModel.update(course);
+  // if(result !== null)
+  // res.redirect('/teacher/courses/');
 }
