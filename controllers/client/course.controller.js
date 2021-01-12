@@ -3,31 +3,37 @@ const userModel = require('../../models/user.model');
 const database = require('../../utils/database');
 const lessonModel = require('../../models/lesson.model');
 const user_courseModel = require('../../models/user_course.model');
+const field_courseModel = require('../../models/field_course.model')
 const reviewModel = require('../../models/review.model');
+const fieldModel = require('../../models/field.model');
 
 module.exports = {
 	async getAllAvailable(req, res) {
 		let pageIndex = req.query.pageIndex || 1;
+		const field = req.query.fieldid ? await fieldModel.getById(req.query.fieldid) : null;
 		const userId = req.session.authUser ? req.session.authUser.id : null;
 		if (pageIndex == 0) pageIndex = 1;
 		const pageSize = req.query.pageSize || 12;
-		// const field = req.query.field;
-		const [count, courses, userCourseIds] = await Promise.all([
-			await courseModel.getCountAvailable(),
-			await courseModel.getAllAvailable(null, pageIndex, pageSize),
-			userId ? await user_courseModel.getCourseIdsByUserId(userId) : []
+		let [count, courses, userCourseIds, uploadIds] = await Promise.all([
+			field ? 0 : courseModel.getCountAvailable(),
+			field ? courseModel.getAvailableCoursesByIds(await field_courseModel.getListCourseIdsByFieldId(field.id)) : courseModel.getAllAvailable(null, pageIndex, pageSize),
+			userId ? user_courseModel.getCourseIdsByUserId(userId) : [],
+			courseModel.getCourseIdsByAuthorId(userId)
 		]);
+		if (field) count = courses.length;
 		const totalPages = Math.ceil(count / pageSize);
 		res.render('clients/courses', {
 			layout: 'layoutclient',
 			data: {
-				courses,
-				title: 'Tất cả khóa học',
+				courses: field ? courses.slice(pageSize*(pageIndex - 1),pageSize*pageIndex) : courses,
+				title: field ? field.name : null,
+				fieldId: field ? field.id : null,
 				count,
 				pageIndex,
 				pageSize,
 				totalPages,
-				userCourseIds
+				userCourseIds,
+				uploadIds
 			}
 		});
 	},

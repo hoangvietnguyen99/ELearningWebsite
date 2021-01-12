@@ -31,12 +31,10 @@ module.exports = {
 		const result = await database.update(course, {id: course.id}, TBL_COURSES, connection);
 		return result.changedRows;
 	},
-
 	async remove(condition, connection) {
 		const result = await database.delete(condition, TBL_COURSES, connection);
 		return result.affectedRows;
 	},
-
 	async addOne(course){
 		const result = await database.add(course,TBL_COURSES);
 		const rows = await database.query(`select * from ${TBL_COURSES} WHERE id = ${result.insertId}`);
@@ -60,5 +58,12 @@ module.exports = {
 		return await Promise.all(ids.map(async id => {
 			return await this.getById(id, connection);
 		}));
+	},
+	async getAvailableCoursesByIds(ids, connection) {
+		return (await this.getCoursesByIds(ids, connection)).filter(course => course.statuscode = 'AVAILABLE');
+	},
+	async getCourseIdsByAuthorId(authorId, connection) {
+		const query = `SELECT id FROM ${TBL_COURSES} WHERE ?`;
+		return (await database.queryWithCondition(query, {author: authorId}, connection)).map(item => item.id);
 	}
 }
