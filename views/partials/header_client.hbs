@@ -7,7 +7,7 @@
                         {{#if isAuth}}
                             <form id="frmLogout" method="POST" action="/auth/logout" hidden></form>
                             <li>
-                                <a class="text-white" href="#">{{authAccount.email}}</a>
+                                <a class="text-white" href="/user/{{authUser.id}}">{{authUser.fullname}}</a>
                             </li>
                             <li class="text-white">|</li>
                             <li>
@@ -33,17 +33,21 @@
                                         <li>
                                             <!-- dropdown cart -->
                                             <div class="dropdown-cart">
+                                                <form id="removeFromCartHeader"
+                                                      action="/cart?_method=DELETE" method="POST" hidden>
+                                                    <input type="text" name="courseid" id="courseid">
+                                                </form>
                                                 <table class="table cart-table-list table-responsive">
                                                     <tbody>
                                                     {{# each cart.courses}}
                                                         <tr>
-                                                            <td><a href="#"><img alt=""
-                                                                                 src="/assets/client/images/products/sm1.jpg"></a>
+                                                            <td><a href="/courses/{{this.id}}"><img alt="product"
+                                                                                                    src="/assets/client/images/courses/{{this.id}}.png"
+                                                                                                    onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'"></a>
                                                             </td>
-                                                            <td><a href="#">{{this.name}}</a></td>
-                                                            <td>X3</td>
+                                                            <td><a href="/courses/{{this.id}}">{{this.name}}</a></td>
                                                             <td>{{this.price}} VND</td>
-                                                            <td><a class="close" href="#"><i
+                                                            <td><a class="close" href="javascript: $('form#removeFromCartHeader input').val({{this.id}}); $('form#removeFromCartHeader').submit();"><i
                                                                     class="fa fa-close font-13"></i></a></td>
                                                         </tr>
                                                     {{/each}}
@@ -67,11 +71,15 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <form action="/cart/courses/"></form>
+                                                <form id="checkoutCartHeader"
+                                                      action="/cart/checkout" method="POST" hidden>
+                                                </form>
+                                                <form id="viewCartHeader" action="/cart" hidden></form>
                                                 <div class="cart-btn text-right">
-                                                    <a class="btn btn-theme-colored btn-xs" href="javascript: $()"> View
+                                                    <a class="btn btn-theme-colored btn-xs" href="javascript: $('form#viewCartHeader').submit();"> View
                                                         cart</a>
-                                                    <a class="btn btn-dark btn-xs" href="shop-checkout.html"> Checkout</a>
+                                                    <a class="btn btn-dark btn-xs" href="javascript: $('form#checkoutCartHeader').submit();">
+                                                        Checkout</a>
                                                 </div>
                                             </div>
                                             <!-- dropdown cart ends -->

@@ -5,6 +5,12 @@ const CourseModel = require('../models/course.model');
 const TBL_FIELDS = 'fields';
 
 module.exports = {
+	async getById(id, connection) {
+		const query = `SELECT * FROM ${TBL_FIELDS} WHERE id = ${id}`;
+		const rows = await database.query(query, connection);
+		if (rows.length === 0) return null;
+		return rows[0];
+	},
 	async getAll(connection) {
 		const query = `SELECT * FROM ${TBL_FIELDS}`;
 		const rows = await database.query(query, connection);
@@ -26,5 +32,10 @@ module.exports = {
 			if (course.statuscode === 'AVAILABLE') return course;
 		}));
 		return courses.slice(pageSize * (pageIndex - 1), pageSize * pageIndex);
+	},
+	async getAllByIds(ids, connection) {
+		return await Promise.all(ids.map(async id => {
+			return await this.getById(id, connection);
+		}));
 	}
 }

@@ -7,6 +7,11 @@ exports.getCourses  = async function(req,res,next ){
     const user = req.session.authUser;
     const courses = await courseModel.allByAuthor(user.id);
     const fields  = await fieldModel.getAll();
+    await Promise.all(courses.map(async course => {
+      let fieldIds = await field_courseModel.getListFieldIDByCourseID(course.id);
+	    course.fieldIds = fieldIds.map(field => field.fieldid);
+      return course;
+    }));
     res.render('clients/listCourses', {
         layout: 'layoutclient.hbs',
         courses : courses,
@@ -38,7 +43,6 @@ exports.addImage =  function(req,res,next ){
 exports.addCourse =  async function(req,res,next){
     const author = req.session.authUser.id;
     const {name,number,price,Des,selection} = req.body;
-
     const course = {
         name: name,
         author: author,
@@ -46,8 +50,8 @@ exports.addCourse =  async function(req,res,next){
         price: price,
         description: Des
     }
-    const result = await courseModel.addOne(course);
     console.log(selection);
+    const result = await courseModel.addOne(course);
     for(let i = 0 ;i< selection.length;i++){
       const resu = await field_courseModel.addOne(selection[i],result.id);
     }
@@ -68,7 +72,7 @@ exports.deleteCourse = async function(req,res){
 exports.updateCourse = async function(req,res,next){
 
   const author = req.session.authUser.id;
-  const {name,number,price,Des,selection} = req.body;
+  const {name,number,price,Des} = req.body;
   const course = {
       id: req.params.id,
       name: name,
@@ -77,8 +81,11 @@ exports.updateCourse = async function(req,res,next){
       price: price,
       description: Des
   }
-  console.log(req.params.id);
-  const result = await courseModel.update(course);
-  if(result !== null)
+ //const field_course = field_courseModel.getListFieldByCourseID(req.params.id)
+  // for(let i = 0 ;i< selection.length;i++){
+  //   const resu = await field_courseModel.updateOne(selection[i],result.id);
+  // }
+  // const result = await courseModel.update(course);
+  // if(result !== null)
   res.redirect('/teacher/courses/');
 }

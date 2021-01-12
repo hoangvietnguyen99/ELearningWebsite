@@ -105,7 +105,7 @@ module.exports = {
 		return result.changedRows;
 	},
 	async getAllCourses(cartId, connection) {
-		const courseIds = await CartsCoursesModel.getListCourseIdsByCartId(cartId, connection);
+		let courseIds = await CartsCoursesModel.getListCourseIdsByCartId(cartId, connection);
 		return await courseModel.getCoursesByIds(courseIds);
 	}
 }

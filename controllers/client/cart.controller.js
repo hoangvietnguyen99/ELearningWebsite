@@ -6,7 +6,7 @@ module.exports = {
 	async addCourse(req, res) {
 		const connection = await database.getConnection();
 		const userId = req.session.authUser.id;
-		const courseId = req.params.id;
+		const courseId = parseInt(req.body.courseid);
 		connection.beginTransaction(async err => {
 			if (err) throw err;
 			try {
@@ -15,7 +15,7 @@ module.exports = {
 				connection.commit(commitError => {
 					connection.release();
 					if (commitError) throw commitError;
-					res.locals.cart = result;
+					res.redirect(req.headers.referer || '/');
 				});
 			} catch (e) {
 				console.log(e);
@@ -27,17 +27,58 @@ module.exports = {
 		});
 	},
 	async removeCourse(req, res) {
-
+		const connection = await database.getConnection();
+		const userId = req.session.authUser.id;
+		const courseId = parseInt(req.body.courseid);
+		connection.beginTransaction(async err => {
+			if (err) throw err;
+			try {
+				const result = await CartModel.removeCourse(userId, courseId, connection);
+				if (!result) throw new Error('Cannot remove course');
+				connection.commit(commitError => {
+					connection.release();
+					if (commitError) throw commitError;
+					res.redirect(req.headers.referer || '/');
+				});
+			} catch (e) {
+				console.log(e);
+				connection.rollback(rollbackError => {
+					connection.release();
+					if (rollbackError) throw rollbackError;
+				});
+			}
+		});
 	},
 	async checkOut(req, res) {
-
+		const connection = await database.getConnection();
+		const userId = req.session.authUser.id;
+		connection.beginTransaction(async err => {
+			if (err) throw err;
+			try {
+				const result = await CartModel.checkOut(userId, connection);
+				if (!result) throw new Error('Cannot remove course');
+				connection.commit(commitError => {
+					connection.release();
+					if (commitError) throw commitError;
+					res.redirect(req.headers.referer || '/');
+				});
+			} catch (e) {
+				console.log(e);
+				connection.rollback(rollbackError => {
+					connection.release();
+					if (rollbackError) throw rollbackError;
+				});
+			}
+		});
 	},
 
 	async getCart(req, res) {
-		const thisCart = CartModel.getByUserId(req.session.authUser.id);
+		const thisCart = await CartModel.getByUserId(req.session.authUser.id);
 		res.render('clients/cart', {
 			layout: 'layoutclient',
-			cart: thisCart
+			data: {
+				cart: thisCart
+			}
 		});
 	}
 }

@@ -9,6 +9,6 @@ module.exports = {
   },
   async getCourseIdsByUserId(userId, connection) {
     const query = `SELECT courseid FROM ${TBL_USER_COURSE} WHERE userid = ${userId}`;
-    return await database.query(query, connection);
+    return (await database.query(query, connection)).map(item => item.courseid);
   }
 }

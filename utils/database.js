@@ -31,6 +31,16 @@ module.exports = {
         });
     },
 
+    queryWithCondition(sql, condition, connection) {
+      return new Promise((resolve, reject) => {
+          const thisConnection = connection || pool;
+          thisConnection.query(sql, condition, (err, results) => {
+              if (err) return reject(err);
+              resolve(results);
+          })
+      })
+    },
+
     query(sql, connection) {
         return new Promise((resolve, reject) => {
             const thisConnection = connection || pool;
@@ -64,7 +74,7 @@ module.exports = {
     update(entity, condition, tableName, connection) {
         return new Promise((resolve, reject) => {
             const thisConnection = connection || pool;
-            thisConnection.query(`update ${tableName} set ? where ? `, [entity, condition], (error, results) => {
+            thisConnection.query(`update ${tableName} set ? where ?`, [entity, condition], (error, results) => {
                 if (error) return reject(error);
                 resolve(results);
             })
