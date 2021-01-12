@@ -41,7 +41,7 @@ exports.approve = async(req, res, next) => {
         var data = {}
         data.id = req.params.id
         data.approvedby = req.session.authUser.id
-        const ret = await UserModel.update(data);
+        const ret = await CourseModel.update(data);
     }
 
     res.redirect('/admin/course')
