@@ -125,10 +125,10 @@
     });
 </script>
 <script>
-    const player = new Plyr('video', {captions: {active: true}});
-
+    //const player = new Plyr('video', {captions: {active: true}});
+    const players = Plyr.setup('.js-player');
     // Expose player so it can be used from the console
-    window.player = player;
+    window.player = players;
 
 </script>
 {{/section}}
@@ -174,16 +174,17 @@
                                         {{/if}}
 
                                         <div class="video-container">
-                                            <video controls crossorigin playsinline
-                                                poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg">
+                                            <video class = "js-player"controls crossorigin playsinline
+                                                poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;">
                                                 <source
-                                                    src="/assets/client/videos/{{lesson.id}}.mp4"
+                                                    src="/assets/client/videos/{{lesson.courseid}}_{{lesson.id}}.mp4"
                                                     type="video/mp4" size="576">
                                                 <source
-                                                    src="/assets/client/videos/{{lesson.id}}.mp4"
+                                                    src="/assets/client/videos/{{lesson.courseid}}_{{lesson.id}}.mp4"
                                                     type="video/mp4" size="720">
                                                 <source
-                                                    src="/assets/client/videos/{{lesson.id}}.mp4"
+                                                    src="/assets/client/videos/{{lesson.courseid}}_{{lesson.id}}.mp4"
                                                     type="video/mp4" size="1080">
 
                                                 <!-- Caption files -->

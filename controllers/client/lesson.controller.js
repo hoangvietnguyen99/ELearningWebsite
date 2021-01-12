@@ -48,7 +48,7 @@ exports.addVideo =  function(req,res,next ){
 		  cb(null, './public/assets/client/videos')
 		},
 		filename: function (req, file, cb) {
-		  cb(null, req.params.lid + `.mp4`)
+		  cb(null, req.params.id +'_'+req.params.lid + `.mp4`)
 		}
 	  });
 	  const upload = multer({ storage });
