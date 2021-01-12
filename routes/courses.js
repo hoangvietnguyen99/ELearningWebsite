@@ -15,13 +15,11 @@ router.route('/:courseid/reviews')
 
 router.route('/:id/lessons')
 	.post(lessonController.addLesson)
-	
+
 
 router.route('/:id/lessons/:lid')
 	.delete(lessonController.deleteLesson)
+	.put(lessonController.editLesson)
 	.post(lessonController.addVideo)
-
-router.route('/:id/lessons/:lid/edit')
-	.post(lessonController.editLesson)
 
 module.exports = router;

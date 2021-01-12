@@ -45,7 +45,9 @@
             let id = $(this).attr('data-id');
             let title = $(this).attr('data-title');
             let des = $(this).attr('data-des');
+            let courseId = $(this).attr('data-courseid');
             $('#edit-lesson #title-edit').attr('value', `${title}`);
+            $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
             tinymce.get('des-edit').setContent(des);
         });
     </script>
@@ -104,7 +106,7 @@
                         {{/if}}
                     </div>
 
-                    
+
                     <h4 class="title">Course Outline</h4>
                     <div class="content">
                         <ul class="course_list">
@@ -113,25 +115,27 @@
                                     <li class="justify-content-between align-items-center d-flex">
                                         <p style="padding-left: 20px;">{{this.title}}</p>
                                         <div class="row" style="display: flex;text-align: center; align-items: center;">
-                                           
-                                                <div class="collapse multi-collapse" id="collapseExample{{this.id}}">
-                                                     {{#if this.description}}
+
+                                            <div class="collapse multi-collapse" id="collapseExample{{this.id}}">
+                                                {{#if this.description}}
                                                     <div
                                                             style="background-color: rgb(255, 255, 255);width: 300px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
                                                         {{{this.description}}}
                                                     </div>
-                                                    {{/if}}
-                                                    <video width="320" height="240" controls>
-                                                        <source src="/assets/client/videos/{{this.id}}.webm" type="video/webm" />
-                                                    </video>
-                                                </div>
+                                                {{/if}}
+                                                <video width="320" height="240" controls>
+                                                    <source src="/assets/client/videos/{{this.id}}.webm"
+                                                            type="video/webm"/>
+                                                </video>
+                                            </div>
                                         </div>
                                         <a class="btn_2 text-uppercase" data-toggle="collapse"
                                            href="#collapseExample{{this.id}}" role="button"
-                                           aria-expanded="false" aria-controls="collapseExample{{lesson.id}}">View
+                                           aria-expanded="false" aria-controls="collapseExample{{this.id}}">View
                                             Details</a>
                                         <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
                                            data-id="{{this.id}}"
+                                           data-courseid="{{this.courseid}}"
                                            data-title="{{this.title}}" data-des="{{this.description}}"
                                            style="margin-left: 20px">
                                             <img src="/assets/client/images/icon/edit.png" style="width: 30px;"/>
@@ -144,55 +148,16 @@
                                             <img src="/assets/client/images/icon/del.png" style="width: 30px;">
                                         </a>
 
-                                        <a class="add-video" href="#videoModal" data-toggle="modal" data-id ="{{this.id}}" data-courseid="{{this.courseid}}"
-                                        role="button">
-                                            <img src="/assets/client/images/icon/image.png" style="width: 50px; padding-left:15px">
+                                        <a class="add-video" href="#videoModal" data-toggle="modal"
+                                           data-id="{{this.id}}" data-courseid="{{this.courseid}}"
+                                           role="button">
+                                            <img src="/assets/client/images/icon/image.png"
+                                                 style="width: 50px; padding-left:15px">
                                         </a>
 
                                     </li>
 
-                                    <!-- Modal of edit lesson-->
-                                    <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
-                                         aria-labelledby="lessonEditModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="/courses/{{this.courseid}}/lessons/{{this.id}}/edit"
-                                                          method="POST" id="edit-lesson">
-                                                        <div class="lesson"
-                                                             style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                                            <div class="form-group">
-                                                                <label for="title-edit">Title</label>
-                                                                <input type="input" name="title" id="title-edit"
-                                                                       placeholder="ex: Introduction lesson"
-                                                                       style="width: 100%;" value="">
-                                                                <br><br>
 
-                                                                <label for="des-edit">Description</label>
-                                                                <textarea class="txtDes" name="des" id="des-edit"
-                                                                          cols="30" rows="10"
-                                                                          value=""></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close
-                                                            </button>
-                                                            <button type="submit" class="btn btn-primary">Save changes
-                                                            </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 {{/each}}
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                         data-target="#lessonModal"
@@ -271,38 +236,38 @@
             </div>
         </div>
         {{#if isAuthor}}
-             <!-- Modal of add image-->
-                <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="videoModalLabel">Edit</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="POST" enctype="multipart/form-data" id="addVideo-form">
-                                    <div class="image"
-                                        style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                        <div class="form-group">
-                                            <input id="fuMain" name="fuMain" class="file" type="file" multiple>
-                                        </div>
+            <!-- Modal of add image-->
+            <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="videoModalLabel">Edit</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST" enctype="multipart/form-data" id="addVideo-form">
+                                <div class="image"
+                                     style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                    <div class="form-group">
+                                        <input id="fuMain" name="fuMain" class="file" type="file" multiple>
                                     </div>
-                                    <div class="editor-footer"
-                                        style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
-                                        <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
-                                            <i class="fa fa-check " aria-hidden="true"></i>
-                                            Upload
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                                </div>
+                                <div class="editor-footer"
+                                     style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
+                                    <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+                                        <i class="fa fa-check " aria-hidden="true"></i>
+                                        Upload
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
             <!-- Modal of add lesson-->
             <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
                  aria-hidden="true">
@@ -364,35 +329,79 @@
                     </div>
                 </div>
             </div>
-        </div>
-      </div>
-    </div>
+            </div>
+            </div>
+            </div>
 
-    <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog" aria-labelledby="delLessonModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="" method="POST" id="delete-form">
-          <h3>Are you sure about delete ?</h3>
-          <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-            <i class="fa fa-check " aria-hidden="true"></i>
-            Delete
-          </button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </form>
-      </div>
-      
-    </div>
-  </div>
-</div>
-</div>
-</div>
-    {{/if}}
-</section>
+            <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
+                 aria-labelledby="delLessonModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="POST" id="delete-form">
+                                <h3>Are you sure about delete ?</h3>
+                                <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
+                                    <i class="fa fa-check " aria-hidden="true"></i>
+                                    Delete
+                                </button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        {{/if}}
+    </section>
 {{/if}}
+
+<!-- Modal of edit lesson-->
+<div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
+     aria-labelledby="lessonEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action=""
+                      method="POST" id="edit-lesson">
+                    <div class="lesson"
+                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                        <div class="form-group">
+                            <label for="title-edit">Title</label>
+                            <input type="input" name="title" id="title-edit"
+                                   placeholder="ex: Introduction lesson"
+                                   style="width: 100%;" value="">
+                            <br><br>
+
+                            <label for="des-edit">Description</label>
+                            <textarea class="txtDes" name="des" id="des-edit"
+                                      cols="30" rows="10"
+                                      value=""></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal">Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">Save changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

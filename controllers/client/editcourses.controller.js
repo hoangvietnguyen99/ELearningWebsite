@@ -9,10 +9,7 @@ exports.getCourses  = async function(req,res,next ){
     const fields  = await fieldModel.getAll();
     await Promise.all(courses.map(async course => {
       let fieldIds = await field_courseModel.getListFieldIDByCourseID(course.id);
-      fieldIds = fieldIds.map(item => {
-        return item.fieldid;
-      })
-      course.fieldIds = fieldIds;
+	    course.fieldIds = fieldIds.map(field => field.fieldid);
       return course;
     }));
     res.render('clients/listCourses', {
@@ -76,7 +73,6 @@ exports.updateCourse = async function(req,res,next){
 
   const author = req.session.authUser.id;
   const {name,number,price,Des} = req.body;
-  console.log(req.body);
   const course = {
       id: req.params.id,
       name: name,
@@ -91,5 +87,5 @@ exports.updateCourse = async function(req,res,next){
   // }
   // const result = await courseModel.update(course);
   // if(result !== null)
-  // res.redirect('/teacher/courses/');
+  res.redirect('/teacher/courses/');
 }
