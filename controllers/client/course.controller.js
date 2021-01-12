@@ -40,19 +40,42 @@ module.exports = {
 
 	async addReview(req, res) {
 		const connection = await database.getConnection();
-		const thisCourse = courseModel.getById(req.params.courseid, connection);
-		if (!thisCourse) return;
-		if (!await userModel.hasCourseIdCheck(req.session.authUser.id, thisCourse.id, connection)) return;
-		connection.beginTransaction(err => {
+		connection.beginTransaction(async err => {
 			if (err) throw err;
 			try {
-
+				const thisCourse = courseModel.getById(req.params.courseid, connection);
+				if (!thisCourse) throw `Course not found: ${req.body.courseid}`;
+				if (!await userModel.hasCourseIdCheck(req.session.authUser.id, thisCourse.id, connection)) throw `User has not buy the course`;
+				if (await reviewModel.hasRatedCheck(req.session.authUser.id, thisCourse.id, connection)) throw `User has reviewd, only one is allowed per user`;
+				const review = {
+					userid: req.session.authUser.id,
+					courseid: req.params.courseid,
+					createddat: new Date(),
+					point: parseFloat(req.body.point) || 5,
+					comment: req.body.comment
+				}
+				const result = await reviewModel.addOne(review, connection);
+				if (result) {
+					const reviews = await reviewModel.getAllByCourseId(thisCourse.id, connection);
+					const totalRating = reviews.reduce((a, b) => a + b.point, 0);
+					const rating = totalRating / reviews.length;
+					thisCourse.commentscount = reviews.length;
+					thisCourse.rating = rating;
+					const result = await courseModel.update(thisCourse, connection);
+					if (result) {
+						connection.commit(commitError => {
+							connection.release();
+							if (commitError) throw commitError;
+							res.redirect(req.headers.referer || '/');
+						});
+					} else throw 'Can not save course';
+				} else throw "Can not create review";
 			} catch (err) {
 				console.log(err);
 				connection.rollback(rollbackError => {
 					connection.release();
 					if (rollBackError) throw rollbackError;
-					res.redirect('/courses/' + thisCourse.id);
+					res.redirect(req.headers.referer || '/');
 				});
 			}
 		});
@@ -69,11 +92,10 @@ module.exports = {
 		const author = await userModel.getById(thisCourse.author);
 		const lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
-		const thisUserCart = res.locals.cart;
 		let isInCart = false;
-		const found = thisUserCart.courses.find(course => course.id === thisCourse.id);
+		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
-		res.render('clients/DetailCourse', {
+		res.render('clients/course', {
 			layout: 'layoutclient.hbs',
 			data: {
 				hasThisCourse: userCourseIds.includes(thisCourse.id),

@@ -115,6 +115,20 @@
 
         });
     </script>
+    <script>
+        $(document).ready(function () {
+            let courseRating = {{data.thisCourse.rating}};
+            $('div.ratings').append(`
+<span class="product-rating">${courseRating.toFixed(2)}</span><span>/5</span>
+<div class="stars"></div>
+<div class="rating-text"><span>{{data.thisCourse.commentscount}} ratings</span></div>
+            `);
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.round(courseRating))
+                	$("div.ratings div.stars").append(`<i class="fa fa-star">`);
+            }
+        })
+    </script>
 {{/section}}
 {{#if data.thisCourse}}
     <section class="course_details_area section_padding">
@@ -267,22 +281,22 @@
                                         <input id="courseid" type="number" name="courseid">
                                     </label>
                                 </form>
-                                <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();" class="btn_1 d-block">Remove from cart</a>
+                                <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();"
+                                   class="btn_1 d-block">Remove from cart</a>
                             {{else}}
                                 <form id="addToCart" action="/cart" method="POST" hidden>
                                     <label>
                                         <input id="courseid" type="number" name="courseid">
                                     </label>
                                 </form>
-                                <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();" class="btn_1 d-block">Add to cart</a>
+                                <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
+                                   class="btn_1 d-block">Add to cart</a>
                             {{/if}}
                         {{/if}}
                     {{/if}}
                     <div class="d-flex justify-content-center">
                         <div class="content text-center">
-                            <div class="ratings"> <span class="product-rating">4.6</span><span>/5</span>
-                                <div class="stars"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> </div>
-                                <div class="rating-text"> <span>46 ratings & 15 reviews</span> </div>
+                            <div class="ratings">
                             </div>
                         </div>
                     </div>
@@ -290,7 +304,6 @@
                     <div class="content">
                         <div class="review-top row pt-40">
                             <div class="col-lg-12">
-                                <h6 class="mb-15">Provide Your Rating</h6>
                                 <div class="d-flex flex-row reviews justify-content-between">
                                     <span>Quality</span>
                                     <div class="rating">
