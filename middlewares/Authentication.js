@@ -15,13 +15,13 @@ module.exports =
 		},
 		isTeacher(req, res, next) {
 			if (req.session.authUser.role !== 'TEACHER') {
-				return res.redirect(req.session.retUrl || '/');
+				return res.redirect('/auth');
 			}
 			next();
 		},
 		isAdmin(req, res, next) {
 			if (req.session.authUser.role !== 'ADMIN') {
-				return res.redirect(req.session.retUrl || '/');
+				return res.redirect('/auth');
 			}
 			next();
 		}

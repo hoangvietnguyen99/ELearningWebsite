@@ -13,9 +13,11 @@ module.exports = {
 		]);
 		res.render('clients/courses', {
 			layout: 'layoutclient',
-			courses,
-			title: 'Tất cả khóa học',
-			count
+			data: {
+				courses,
+				title: 'Tất cả khóa học',
+				count
+			}
 		});
 	},
 

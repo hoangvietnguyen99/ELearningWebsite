@@ -1,30 +1,36 @@
 {{#section 'css'}}
 {{/section}}
 
+{{#section 'js'}}
+    <script>
+
+    </script>
+{{/section}}
+
 <section class="bg-lighter">
     <div class="container pb-60">
         <div class="section-title mb-10">
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-0 text-uppercase font-28 line-bottom line-height-1">Our <span
-                            class="text-theme-color-2 font-weight-400">COURSES</span><span
-                            class="text-theme-color-2 font-weight-400"> {{title}}</span></h2>
+                            class="text-theme-color-2 font-weight-400">COURSES | </span><span
+                            class="text-theme-color-2 font-weight-400">{{data.title}}</span></h2>
                 </div>
             </div>
         </div>
         <div class="section-content">
             <div class="row">
                 <div class="col-md-12">
-                    {{#each courses}}
-                        <div class="card" style="width: 20%; min-height: 100px; padding: 2% 0 2% 0; margin: 0 2% 0 2%;">
-                            <img src="/assets/client/images/courses/1.png" class="card-img-top" alt="courses image">
-                            <div class="card-body">
-                                <h5 class="card-title">Card title</h5>
-                                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                <div>
-                                    <i class="fa fa-star" style="font-size: 30px">10</i>
-                                    <i class="fa fa-download" aria-hidden="true" style="font-size: 30px">10</i>
-                                    <i class="fa fa-comment" aria-hidden="true" style="font-size: 30px">20</i>
+                    {{#each data.courses}}
+                        <div class="card" style="width: 20%; height: 20%; padding: 2% 0 2% 0; margin: 0 2% 0 2%;">
+                            <img src="/assets/client/images/courses/{{this.id}}.png" onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'" class="card-img-top" alt="courses image" style="width: auto; height: 105px">
+                            <div class="card-body" style="display: flex; flex-direction: column; justify-content: space-around">
+                                <h5 class="card-title">{{this.name}}</h5>
+                                <p class="card-text" style="width: auto; height: 8em">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                <div style="display: flex; justify-content: space-around">
+                                    <i class="fa fa-star" style="font-size: 1.5rem">10</i>
+                                    <i class="fa fa-download" aria-hidden="true" style="font-size: 1.5rem">10</i>
+                                    <i class="fa fa-comment" aria-hidden="true" style="font-size: 1.5rem">20</i>
                                 </div>
                                 <a href="#" class="btn btn-primary">Go somewhere</a>
                             </div>
