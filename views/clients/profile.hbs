@@ -1,7 +1,27 @@
 {{#section 'js'}}
+    <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
+                referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#des',
+            height: 600,
+            plugins: 'paste image link autolink lists table media',
+            menubar: false,
+            toolbar: [
+                'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            ],
+            setup: function (editor) {
+            editor.on('init', function (e) {
+                let des = `{{{user.teachingdescription}}}`;
+                editor.setContent(des);
+            });
+            }
+        });
+    </script>
     <script>
         $(document).ready(function(){
             const gender = `{{user.gender}}`;
+            
             if(gender === 'MALE') {
 
                 $('select#gender').append(`<option value="MALE" selected>MALE</option>`);
@@ -10,9 +30,10 @@
             else{
                 $('select#gender').append(`<option value="MALE" >MALE</option>`);
                 $('select#gender').append(`<option value="FEMALE" selected>FEMALE</option>`);
-            }   
+            }
         });
     </script>
+    
 {{/section}}
 
 <section style = "margin:100px">
@@ -45,14 +66,24 @@
             </div>
 
             {{#if isTeacher}}
+            <div class="form-group">
                 <i class="fa fa-book" aria-hidden="true" style="font-size: 1.2rem;"> Total uploaded</i>
                 <span><b>: {{user.uploadedcount}}</b></span>
-                <div class="form-group">
-                <i class="fas fa-money-bill" aria-hidden="true" style="font-size: 1.2rem;"> Total earn</i>
+            </div> 
+            <div class="form-group">         
+                <i class="fa fa-eur" aria-hidden="true" style="font-size: 1.2rem;"> Total earn</i>
                 <span><b>: {{user.totalmoneyearn}}</b></span>
             </div>
+            <div class="form-group">
+                <label for="des">Description</label>
+                            <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
+                            ></textarea>
+            </div>
             {{/if}}
-            
+            <div class="form-group">
+                <i class="fa fa-calendar" aria-hidden="true"> Join date</i>
+                {{user.joinedat}}
+            </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
     </div>
