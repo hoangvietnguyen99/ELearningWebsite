@@ -8,5 +8,9 @@ module.exports = {
     const rows = await database.query(`SELECT * FROM ${TBL_RATINGS} WHERE id = ${result.insertId}`);
     if (rows.length === 0) return null;
     return rows[0];
+  },
+  async getAllByCourseId(courseId, connection) {
+    const query = `SELECT * FROM ${TBL_RATINGS} WHERE courseid = ${courseId}`;
+    return await database.query(query,connection);
   }
 }

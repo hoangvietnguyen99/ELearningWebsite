@@ -2,6 +2,9 @@ const courseModel = require('../../models/course.model');
 const userModel = require('../../models/user.model');
 const database = require('../../utils/database');
 const lessonModel = require('../../models/lesson.model');
+const user_courseModel = require('../../models/user_course.model');
+const reviewModel = require('../../models/review.model');
+
 module.exports = {
 	async getAllAvailable(req, res) {
 		const pageIndex = req.query.pageIndex || 1;
@@ -41,18 +44,32 @@ module.exports = {
 		});
 	},
 
-	async getCourses(req,res,next ){
-		const course = await courseModel.getById(req.params.id);
-		const user = await userModel.getById(course.author);
-		const lessons = await lessonModel.getAllByCourseId(course.id);
-		console.log(lessons);
+	async getCourse(req, res){
+		const thisCourse = await courseModel.getById(req.params.id);
+		thisCourse.viewscount++;
+		await courseModel.update(thisCourse);
+		let userCourseIds = [];
+		if (req.session.authUser) {
+			userCourseIds = await user_courseModel.getCourseIdsByUserId(req.session.authUser.id);
+		}
+		const author = await userModel.getById(thisCourse.author);
+		const lessons = await lessonModel.getAllByCourseId(thisCourse.id);
+		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
+		const thisUserCart = res.locals.cart;
+		let isInCart = false;
+		const found = thisUserCart.courses.find(course => course.id === thisCourse.id);
+		if (found) isInCart = true;
 		res.render('clients/DetailCourse', {
 			layout: 'layoutclient.hbs',
-			course : course,
-			user : user,
-			lesson: lessons,
-			empty: course.length == 0,
-			isAuthor: res.locals.authUser.id === course.author
+			data: {
+				hasThisCourse: userCourseIds.includes(thisCourse.id),
+				isInCart,
+				thisCourse,
+				author,
+				isAuthor: req.session.authUser ? req.session.authUser.id === author.id : false,
+				lessons,
+				reviews
+			}
 		});
 	}
 }

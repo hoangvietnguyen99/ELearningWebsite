@@ -8,7 +8,7 @@ router.route('/')
 	.get(courseController.getAllAvailable);
 
 router.route('/:id')
-	.get(courseController.getCourses)
+	.get(courseController.getCourse)
 
 router.route('/:courseid/reviews')
 	.post(courseController.addReview);

@@ -13,12 +13,12 @@ module.exports = {
 	},
 	async getListCourseIdsByFieldId(fieldId, connection) {
 		const query = `SELECT courseid FROM ${TBL_FIELD_COURSE} WHERE fieldid = ${fieldId}`;
-		return await database.query(query, connection);
+		return (await database.query(query, connection)).map(item => item.courseid);
 	},
 	async removeByCourseID(courseId, connection) {
 		const result = await database.delete({courseid: courseId}, TBL_FIELD_COURSE, connection);
 		return result.affectedRows;
-	}, 
+	},
 	async updateOne(fieldId ,courseId, connection) {
 		const result = await database.update([{fieldid: fieldId}, {courseid: courseId}], TBL_FIELD_COURSE, connection);
 		return result.affectedRows;
