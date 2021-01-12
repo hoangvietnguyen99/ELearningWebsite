@@ -21,7 +21,7 @@
     <script>
         $(document).ready(function(){
             const gender = `{{user.gender}}`;
-            
+            const id = `{{user.id}}`
             if(gender === 'MALE') {
 
                 $('select#gender').append(`<option value="MALE" selected>MALE</option>`);
@@ -31,6 +31,7 @@
                 $('select#gender').append(`<option value="MALE" >MALE</option>`);
                 $('select#gender').append(`<option value="FEMALE" selected>FEMALE</option>`);
             }
+            $('#user-form').attr('action',`/user/${id}/edit?_method=PUT`);
         });
     </script>
     
@@ -38,23 +39,23 @@
 
 <section style = "margin:100px">
     <div class = "container-form" style = "border: solid 1px; padding: 20px;">
-        <form action="" method="POST">
+        <form action="" method="POST" id = "user-form">
             <div class="form-group">
                 <label for="fullname" style = "color: gray">Full Name</label>
-                <input type="text" class="form-control" id="fullname" placeholder="Full name" value="{{user.fullname}}">
+                <input type="text" name = "fullname" class="form-control" id="fullname" placeholder="Full name" value="{{user.fullname}}">
             </div>
             <div class="form-group">
                 <label for="gender" style = "color: gray">Gender</label>
-                <select name="gender" id="gender">
+                <select name="gender" id="gender" style="margin-left:10px; border-radius:5px;">
                 </select>
             </div>
             <div class="form-group">
                 <label for="address" style = "color: gray">Address</label>
-                <input type="text" class="form-control" id="address" placeholder="Address" value="{{user.address}}">
+                <input type="text" name = "address" class="form-control" id="address" placeholder="Address" value="{{user.address}}">
             </div>
             <div class="form-group">
                 <label for="phone" style = "color: gray">Phone</label>
-                <input type="text" class="form-control" id="phone" placeholder="Phone" value="{{user.phone}}">
+                <input type="text" name = "phone" class="form-control" id="phone" placeholder="Phone" value="{{user.phone}}">
             </div>
             <div class="form-group">
                 <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 1.2rem;"> Purchased</i>
@@ -76,7 +77,7 @@
             </div>
             <div class="form-group">
                 <label for="des">Description</label>
-                            <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
+                            <textarea class="txtDes" name="teachingdescription" id="des" cols="30" rows="10"
                             ></textarea>
             </div>
             {{/if}}

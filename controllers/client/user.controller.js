@@ -9,3 +9,11 @@ exports.getUserByID = async function(req,res){
         isTeacher: user.role === "TEACHER"
     })
 }
+
+exports.updateUser = async function(req,res){
+    const user = req.body;
+    user.id = req.params.id;
+    const result = await userModel.update(user);
+    if(result !==null)
+    res.redirect('/user/' + req.params.id);
+}
