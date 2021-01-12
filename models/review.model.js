@@ -12,5 +12,11 @@ module.exports = {
   async getAllByCourseId(courseId, connection) {
     const query = `SELECT * FROM ${TBL_RATINGS} WHERE courseid = ${courseId}`;
     return await database.query(query,connection);
+  },
+  async hasRatedCheck(userId, courseId, connection) {
+    const query = `SELECT * FROM ${TBL_RATINGS} WHERE userid = ${userId} AND courseid = ${courseId}`;
+    const rows = await database.query(query,connection);
+    return rows.length === 0;
+
   }
 }
