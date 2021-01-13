@@ -24,6 +24,7 @@ module.exports = {
         return new Promise((resolve, reject) => {
             const thisConnection = connection || pool;
             const query = sql + ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`;
+            console.log(query)
             thisConnection.query(query, (error, results) => {
                 if (error) return reject(error);
                 return resolve(results);
@@ -32,13 +33,13 @@ module.exports = {
     },
 
     queryWithCondition(sql, condition, connection) {
-      return new Promise((resolve, reject) => {
-          const thisConnection = connection || pool;
-          thisConnection.query(sql, condition, (err, results) => {
-              if (err) return reject(err);
-              resolve(results);
-          })
-      })
+        return new Promise((resolve, reject) => {
+            const thisConnection = connection || pool;
+            thisConnection.query(sql, condition, (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            })
+        })
     },
 
     query(sql, connection) {

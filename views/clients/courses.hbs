@@ -1,4 +1,36 @@
 {{#section 'css'}}
+<style>
+    form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
 {{/section}}
 
 {{#section 'js'}}
@@ -53,6 +85,14 @@
                     <h2 class="mt-0 text-uppercase font-28 line-bottom line-height-1">Our <span
                             class="text-theme-color-2 font-weight-400">COURSES | </span><span
                             class="text-theme-color-2 font-weight-400">{{#if data.title}}{{data.title}}{{else}}Tất cả khóa học{{/if}}</span></h2>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <form class="example" action="/courses" method="GET">
+                            <input type="text" placeholder="Search.." name="keyword">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
