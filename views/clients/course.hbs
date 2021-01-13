@@ -249,6 +249,62 @@
                             </button>
                         </ul>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 right-contents">
+                <div class="sidebar_top">
+                    <ul>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Trainer’s Name</p>
+                                <span class="color">{{data.author.fullname}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Course Fee </p>
+                                <span>{{data.thisCourse.price}}$</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Update day</p>
+                                <span>{{data.thisCourse.uploaddate}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Last Update</p>
+                                <span>{{data.thisCourse.lastupdate}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Quantity purchased</p>
+                                <span>{{data.thisCourse.getscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>View</p>
+                                <span>{{data.thisCourse.viewscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Number lessons</p>
+                                <span>{{data.thisCourse.lessonscount}}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Number of reviews</p>
+                                <span>{{data.thisCourse.ratingscount}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
                     {{#if data.hasThisCourse}}
                     {{else}}
                         {{#if data.isAuthor}}
