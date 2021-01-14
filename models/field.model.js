@@ -1,5 +1,5 @@
 const database = require('../utils/database');
-const FieldCourseModel = require('../models/field_course.model');
+const fieldCourseModel = require('../models/field_course.model');
 const CourseModel = require('../models/course.model');
 
 const TBL_FIELDS = 'fields';
@@ -23,15 +23,11 @@ module.exports = {
 		if (rows.length === 0) return [];
 		return rows;
 	},
-	async getAllCoursesByFieldId(fieldId, connection, pageIndex, pageSize) {
-		pageIndex = pageIndex || 1;
-		pageSize = pageSize || 100;
-		const courseIds = await FieldCourseModel.getListCourseIdsByFieldId(fieldId, connection);
-		const courses = await Promise.all(courseIds.map(async courseId => {
-			const course = await CourseModel.getById(courseId, connection);
-			if (course.statuscode === 'AVAILABLE') return course;
+	async getAllCoursesByFieldId(fieldId, connection) {
+		const courseIds = await fieldCourseModel.getListCourseIdsByFieldId(fieldId, connection);
+		return await Promise.all(courseIds.map(async courseId => {
+			return await CourseModel.getById(courseId, connection);
 		}));
-		return courses.slice(pageSize * (pageIndex - 1), pageSize * pageIndex);
 	},
 	async getAllByIds(ids, connection) {
 		return await Promise.all(ids.map(async id => {

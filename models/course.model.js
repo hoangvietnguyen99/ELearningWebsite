@@ -10,13 +10,19 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES}`;
         return await database.queryWithLimit(query, connection, pageIndex, pageSize);
     },
-    async getAllAvailable(connection, pageIndex, pageSize, keyword) {
-        if (keyword != null)
-            var query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE' 
-				&& MATCH(name) AGAINST('${keyword}')`
-        else
-            var query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`
-        return await database.queryWithLimit(query, connection, pageIndex, pageSize);
+    async getAllAvailable(connection, pageIndex, pageSize, keyword, ids) {
+        let queryTail = `FROM ${TBL_COURSES} WHERE approvedby <> NULL`;
+        if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
+        if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
+        if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
+        let [countResult, courses] = await Promise.all([
+          database.query(`SELECT COUNT(*) ` + queryTail, connection),
+          database.query(`SELECT * ` + queryTail, connection)
+        ]);
+        return {
+            count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
+            courses
+        }
     },
     async getById(id, connection) {
         const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id}`;
