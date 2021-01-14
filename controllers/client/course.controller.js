@@ -94,7 +94,7 @@ module.exports = {
 				console.log(err);
 				connection.rollback(rollbackError => {
 					connection.release();
-					if (rollBackError) throw rollbackError;
+					if (rollbackError) throw rollbackError;
 					res.redirect(req.headers.referer || '/');
 				});
 			}

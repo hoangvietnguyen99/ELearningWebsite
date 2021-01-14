@@ -63,7 +63,8 @@ module.exports = {
 			author.totalmoneyearn += course.price;
 			course.getscount++;
 			const fields = await field_courseModel.getListFieldIDByCourseID(course.id, connection);
-			await Promise.all(fields.map(async field => {
+			await Promise.all(fields.map(async id => {
+				const field = await fieldModel.getById(id, connection);
 				field.getscount++;
 				return await fieldModel.update(field, connection);
 			}));
@@ -112,5 +113,6 @@ module.exports = {
 	async getAllCourses(cartId, connection) {
 		let courseIds = await CartsCoursesModel.getListCourseIdsByCartId(cartId, connection);
 		return await courseModel.getCoursesByIds(courseIds);
-	}
+	},
+
 }
