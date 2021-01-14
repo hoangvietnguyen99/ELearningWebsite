@@ -103,6 +103,11 @@ form.example::after {
         <div class="section-content">
             <div class="row">
                 <div class="owl-carousel-4col" data-dots="true"></div>
+                <form id="addToCart" action="/cart" method="POST" hidden>
+                    <label>
+                        <input id="courseid" type="number" name="courseid">
+                    </label>
+                </form>
                 {{#each data.courses}}
 
                     <div class="col-md-3 col-sm-6 p-10">
@@ -111,14 +116,16 @@ form.example::after {
                                 <div class="thumb"><img alt="featured project" src="/assets/client/images/courses/{{this.id}}.png"
                                                         class="img-fullwidth" height="150"
                                     onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
-                                    <h4 class="text-white mt-0 mb-0"><span class="price">{{this.price}}$</span></h4>
+                                    <h4 class="text-white mt-0 mb-0"><span class="price">{{this.price}}VND</span></h4>
                                 </div>
                                 <div class="content text-left flip p-25 pt-0">
                                     <h4 style="height: 55px;" class="line-bottom mb-10">{{this.name}}</h4>
                                     <p>Some quick example text to build on
                                     the card title and make up the bulk of the card's content.</p>
-                                    <a class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
+                                    <a style="height: 35px;" class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
                                         href="/courses/{{this.id}}">view details</a>
+                                    <a href="javascript: $('form#addToCart input#courseid').val({{this.id}}); $('form#addToCart').submit();"
+                                    style="height: 35px; margin-top: 10px;" class="btn btn-dark"><i class="fa fa-cart-plus"></i></a>
                                 </div>
                             </div>
                         </div>
