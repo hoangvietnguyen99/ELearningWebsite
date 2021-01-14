@@ -35,7 +35,7 @@
                                         <th>
                                             <input type="checkbox" id="check_id" name="checkcolumn" data-attr="id" hidden>
                                             <label for="check_id"></label>
-                                            ID
+                                            Image
                                         </th>
                                         <th>
                                             <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
@@ -54,7 +54,9 @@
                             <tbody id="table-body">
                                 {{#each fields}}
                                     <tr class="text-center" id='row_{{{id}}}'>
-                                        <td class="text-center">{{{id}}}</td>
+                                        <td>
+                                            <img style="width: 36px; height:36px; border-radius: 50%;" src="{{imgpath}}" alt="">
+                                        </td>
                                         <td class="text-center">{{{name}}}</td>
                                         <td class="text-center">{{{categoryname}}}</td>
                                         <td class=" text-center">
