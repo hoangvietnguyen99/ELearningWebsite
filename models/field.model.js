@@ -33,5 +33,9 @@ module.exports = {
 		return await Promise.all(ids.map(async id => {
 			return await this.getById(id, connection);
 		}));
+	},
+	async update(field, connection) {
+		const result = await database.update(field, {id: field.id}, TBL_FIELDS, connection);
+		return result.changedRows;
 	}
 }

@@ -4,6 +4,8 @@ const CartsCoursesModel = require("./carts_courses.model");
 const UserModel = require("./user.model");
 const courseModel = require('./course.model');
 const user_courseModel = require('./user_course.model');
+const field_courseModel = require('./field_course.model');
+const fieldModel = require('./field.model');
 
 const TBL_CARTS = 'carts';
 
@@ -60,6 +62,11 @@ module.exports = {
 			const author = await UserModel.getById(course.author, connection);
 			author.totalmoneyearn += course.price;
 			course.getscount++;
+			const fields = await field_courseModel.getListFieldIDByCourseID(course.id, connection);
+			await Promise.all(fields.map(async field => {
+				field.getscount++;
+				return await fieldModel.update(field, connection);
+			}));
 			const userCourseDTO = {
 				userid: userId,
 				courseid: course.id,
@@ -100,7 +107,6 @@ module.exports = {
 		const thisCart = cart;
 		delete thisCart.courses;
 		const result = await database.update(thisCart, {id: cart.id}, TBL_CARTS, connection);
-		console.log(result);
 		return result.changedRows;
 	},
 	async getAllCourses(cartId, connection) {
