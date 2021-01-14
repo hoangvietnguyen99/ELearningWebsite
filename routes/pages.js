@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const CourseModel = require('../models/course.model')
+const UserModel = require('../models/user.model')
 
 //Index
-router.get('/', function(req, res, next) {
-	res.render('clients/index', { layout: 'layoutclient.hbs' });
+router.get('/', async function(req, res, next) {
+    const topCourses = await CourseModel.getTopCourses()
+    const teachers = await UserModel.allByRole('TEACHER', 4)
+    console.log(teachers)
+    res.render('clients/index', { layout: 'layoutclient.hbs', topCourses: topCourses, teachers: teachers });
 });
 // router.get('/detail/:id', async function(req, res, next) {
 //   detailController.getCourses(req,res,next);

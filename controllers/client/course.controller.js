@@ -34,7 +34,8 @@ module.exports = {
                 pageSize,
                 totalPages,
                 userCourseIds,
-                uploadIds
+                uploadIds,
+                keyword: keyword
             }
         });
     },

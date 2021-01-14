@@ -75,5 +75,9 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES} WHERE name LIKE N'%${keyword}%'`
         console.log(query)
         return await database.query(query)
+    },
+    async getTopCourses() {
+        const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 8`
+        return await database.query(query)
     }
 }
