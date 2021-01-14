@@ -4,14 +4,16 @@
           <div class="row">
             <div class="col-md-4">
               <div class="thumb">
-                <img src="/assets/client/images/users/{{user.id}}.png" alt="">
+                <img src="{{user.imgpath}}" alt="">
               </div>
             </div>
             <div class="col-md-8">
-              <h4 class="name font-24 mt-0 mb-0">{{{user.fullname}}}</h4>
+             <div style="display: flex; flex-direction:row">
+                  <h4 class="name font-24 mt-0 mb-0 col-1">{{{user.fullname}}}</h4>
+                  <a style="margin-left: 5px;" class="col-1" href="/user/detail/edit/{{authUser.id}}"><i class="fa fa-pencil-square-o"></i></a>
+            </div>
               <h5 class="mt-5 text-theme-color-2">{{{user.role}}}</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam vero expedita fugiat illo quasi doloremque, in unde omnis sint assumenda! Quaerat in, reprehenderit corporis voluptatum natus sequi reiciendis ullam. Quam eaque dolorum voluptates cupiditate explicabo.</p>
-              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt culpa dicta quaerat qui recusandae possimus placeat quidem ipsam voluptates similique libero tempore, labore quasi delectus vero alias, consectetur blanditiis eum maxime sunt accusantium ipsa doloribus reiciendis. Ea quod reprehenderit deserunt. Veritatis omnis similique tempora delectus a consequuntur, quis.  Adipisicing elit. Nesciunt culpa dicta quaerat qui recusandae possimus placeat quidem ipsam voluptates similique libero tempore, labore quasi delectus vero alias.</p>
+              <p>{{{user.teachingdescription}}}</p>
               <ul class="styled-icons icon-dark icon-theme-colored icon-sm mt-15 mb-0">
                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                <li><a href="#"><i class="fa fa-skype"></i></a></li>
@@ -42,7 +44,7 @@
                       </div>
                       <div class="media-body">
                         <h5 class="mt-0 mb-0">Address:</h5>
-                        <p>Village 856 Broadway New York</p>
+                        <p>{{{user.address}}}</p>
                       </div>
                     </div>
                   </li>
@@ -53,7 +55,7 @@
                       </div>
                       <div class="media-body">
                         <h5 class="mt-0 mb-0">Contact:</h5>
-                        <p><span>Phone:</span> +262 695 2601<br><span>Email:</span> you@yourdomain.com</p>
+                        <p><span>Phone:</span> {{{user.phone}}}<br><span>Email:</span> ngovantai1999@gmail.com</p>
                       </div>
                     </div>
                   </li>

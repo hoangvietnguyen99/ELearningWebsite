@@ -5,6 +5,19 @@ const FieldController = require('../controllers/admin/FieldController')
 const UserController = require('../controllers/admin/UserController')
 const CourseController = require('../controllers/admin/CourseController')
 
+//multer
+var multer = require('multer')
+
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'public/assets/admin/images/fields')
+    },
+    filename: function(req, file, cb) {
+        cb(null, `${file.originalname}`)
+    }
+})
+var upload = multer({ storage: storage })
+
 //Index
 router.get('/', function(req, res, next) {
     res.render('admin/index', { layout: 'layoutadmin.hbs' });
@@ -37,16 +50,16 @@ router.get('/field', async function(req, res, next) {
 router.get('/field/add', async function(req, res, next) {
     FieldController.getAdd(req, res, next)
 });
-router.post('/field/add', async function(req, res, next) {
+router.post('/field/add', upload.single('fuMain'), async function(req, res, next) {
     FieldController.postAdd(req, res, next)
 });
 router.get('/field/update/:id', async function(req, res, next) {
     FieldController.getUpdate(req, res, next)
 });
-router.post('/field/update', async function(req, res, next) {
+router.post('/field/update', upload.single('fuMain'), async function(req, res, next) {
     FieldController.postUpdate(req, res, next)
 });
-router.post('/field/delete', async function(req, res, next) {
+router.post('/field/delete/:id', async function(req, res, next) {
     FieldController.delete(req, res, next)
 });
 

@@ -35,11 +35,15 @@ exports.getUpdate = async(req, res, next) => {
     if (category === null) {
         return res.redirect('/admin/category')
     }
-
+    var canDelete = true
+    var fields = await CategoryModel.fields(req.params.id)
+    if (fields.length > 0)
+        canDelete = false
     res.render('admin/categories/update', {
         layout: 'layoutadmin.hbs',
         category: category,
-        title: 'Update Category'
+        title: 'Update Category',
+        canDelete: canDelete
     });
 }
 

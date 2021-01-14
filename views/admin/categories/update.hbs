@@ -26,9 +26,15 @@
             onclick="window.location.href='/admin/category'">
             <span class="glyphicon glyphicon-align-left" aria-hidden="true">Back to List</span>
           </button>
-          <button type="submit" class="btn btn btn-danger" formaction="/admin/category/delete">
-            <i class="fa fa-trash" aria-hidden="true"> Delete </i>
-          </button>
+          {{#if canDelete}}
+            <button type="submit" class="btn btn btn-danger" formaction="/admin/category/delete">
+              <i class="fa fa-trash" aria-hidden="true"> Delete </i>
+            </button>
+          {{else}}
+            <button disabled type="submit" class="btn btn btn-danger" formaction="/admin/category/delete">
+              <i class="fa fa-trash" aria-hidden="true"> Delete </i>
+            </button>
+          {{/if}}
           <button type="submit" class="btn btn-primary" formaction="/admin/category/update">
             Update
           </button>
