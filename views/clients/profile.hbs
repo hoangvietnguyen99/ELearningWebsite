@@ -1,4 +1,14 @@
+{{#section 'css'}}
+ <link rel="stylesheet"
+          href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006288/BBBootstrap/choices.min.css?version=7.0.0">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+
+{{/section}}
+
 {{#section 'js'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
                 referrerpolicy="origin"></script>
     <script>
@@ -17,6 +27,12 @@
             });
             }
         });
+        
+        $('#fuMain').fileinput({
+            theme: 'fa',
+            dropZoneEnabled: false,
+            allowedFileExtensions: ['png', 'jpg', 'gif'],
+        });
     </script>
     <script>
         $(document).ready(function(){
@@ -31,7 +47,7 @@
                 $('select#gender').append(`<option value="MALE" >MALE</option>`);
                 $('select#gender').append(`<option value="FEMALE" selected>FEMALE</option>`);
             }
-            $('#user-form').attr('action',`/user/${id}/edit?_method=PUT`);
+            //$('#user-form').attr('action',`/user/detail/edit/${id}?_method=PUT`);
         });
     </script>
     
@@ -39,7 +55,7 @@
 
 <section style = "margin:100px">
     <div class = "container-form" style = "border: solid 1px; padding: 20px;">
-        <form action="" method="POST" id = "user-form">
+        <form action="/user/detail/edit/{{user.id}}" method="POST" id = "user-form" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="fullname" style = "color: gray">Full Name</label>
                 <input type="text" name = "fullname" class="form-control" id="fullname" placeholder="Full name" value="{{user.fullname}}">
@@ -75,12 +91,13 @@
                 <i class="fa fa-eur" aria-hidden="true" style="font-size: 1.2rem;"> Total earn</i>
                 <span><b>: {{user.totalmoneyearn}}</b></span>
             </div>
-            <div class="form-group">
+            {{!-- <div class="form-group">
                 <label for="des">Description</label>
                             <textarea class="txtDes" name="teachingdescription" id="des" cols="30" rows="10"
                             ></textarea>
-            </div>
+            </div> --}}
             {{/if}}
+            <input id="input-b1" name="fuMain" type="file" class="file" data-browse-on-zone-click="true">
             <div class="form-group">
                 <i class="fa fa-calendar" aria-hidden="true"> Join date</i>
                 {{user.joinedat}}
