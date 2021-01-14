@@ -22,6 +22,7 @@ module.exports = {
 				connection.rollback(rollbackError => {
 					connection.release();
 					if (rollbackError) throw rollbackError;
+					res.redirect(req.headers.referer || '/');
 				});
 			}
 		});
@@ -45,6 +46,7 @@ module.exports = {
 				connection.rollback(rollbackError => {
 					connection.release();
 					if (rollbackError) throw rollbackError;
+					res.redirect(req.headers.referer || '/');
 				});
 			}
 		});
@@ -56,7 +58,7 @@ module.exports = {
 			if (err) throw err;
 			try {
 				const result = await CartModel.checkOut(userId, connection);
-				if (!result) throw new Error('Cannot remove course');
+				if (!result) throw new Error('Cannot checkout course');
 				connection.commit(commitError => {
 					connection.release();
 					if (commitError) throw commitError;
@@ -67,6 +69,7 @@ module.exports = {
 				connection.rollback(rollbackError => {
 					connection.release();
 					if (rollbackError) throw rollbackError;
+					res.redirect(req.headers.referer || '/');
 				});
 			}
 		});

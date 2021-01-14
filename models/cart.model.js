@@ -27,11 +27,10 @@ module.exports = {
 		if (!thisCourse) return 0;
 		const added = await CartsCoursesModel.addOne(thisCart.id, courseId, connection);
 		if (!added) return 0;
+		if (!thisCourse.price) return 1;
 		thisCart.amount += thisCourse.price;
 		thisCart.total += thisCourse.price;
-		let changedRows = await this.update(thisCart, connection);
-		if (!changedRows) return 0;
-		return this.getByUserId(userId, connection);
+		return await this.update(thisCart, connection);
 	},
 	async removeCourse(userId, courseId, connection) {
 		const thisCart = await this.getByUserId(userId, connection);
@@ -39,11 +38,10 @@ module.exports = {
 		if (!found) return 0;
 		const removed = await CartsCoursesModel.removeOne(thisCart.id, courseId, connection);
 		if (!removed) return 0;
+		if (!found.price) return 1;
 		thisCart.amount -= found.price;
 		thisCart.total -= found.price;
-		let changedRows = await this.update(thisCart, connection);
-		if (!changedRows) return 0;
-		return this.getByUserId(userId, connection);
+		return await this.update(thisCart, connection);
 	},
 	/**
 	 * Checkout cart, return true or false
@@ -70,7 +68,7 @@ module.exports = {
 			};
 			const result = await Promise.all([
 				user_courseModel.addOne(userCourseDTO, connection),
-				UserModel.update(author, connection),
+				course.price ? UserModel.update(author, connection) : 1,
 				CourseModel.update(course, connection)
 			]);
 			if (result.includes(0)) return false;
@@ -102,6 +100,7 @@ module.exports = {
 		const thisCart = cart;
 		delete thisCart.courses;
 		const result = await database.update(thisCart, {id: cart.id}, TBL_CARTS, connection);
+		console.log(result);
 		return result.changedRows;
 	},
 	async getAllCourses(cartId, connection) {

@@ -11,12 +11,13 @@ module.exports = {
         return await database.queryWithLimit(query, connection, pageIndex, pageSize);
     },
     async getAllAvailable(connection, pageIndex, pageSize, keyword, ids) {
-        let queryTail = `FROM ${TBL_COURSES} WHERE approvedby <> NULL`;
+        let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
         if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
         if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
+        const countQuery = `SELECT COUNT(*) ` + queryTail;
         if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
         let [countResult, courses] = await Promise.all([
-          database.query(`SELECT COUNT(*) ` + queryTail, connection),
+          database.query(countQuery, connection),
           database.query(`SELECT * ` + queryTail, connection)
         ]);
         return {

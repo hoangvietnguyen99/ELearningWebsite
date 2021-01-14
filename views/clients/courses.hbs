@@ -35,45 +35,54 @@ form.example::after {
 
 {{#section 'js'}}
     <script>
-        $('.pagination').each(function () {
-            const pageIndex = {{data.pageIndex}};
-            if (pageIndex === 1) {
-                $(this).append(`<li class="page-item disabled">
-                    <a class="page-link" href="" tabindex="-1">Previous</a>
+        $(document).ready(function() {
+            $('.pagination').each(function () {
+                const pageIndex = {{data.pageIndex}};
+                if (pageIndex !== 1) {
+                    $(this).append(`<li class="page-item">
+                    <a class="page-link" href="/courses/?pageIndex=${pageIndex - 1}&pageSize={{data.pageSize}}" tabindex="-1">Previous</a>
                 </li>`)
-            } else {
-                $(this).append(`<li class="page-item">
-                    <a class="page-link" href="/courses/?{{#if data.fieldId}}fieldid={{data.fieldId}}&{{/if}}pageIndex=${pageIndex - 1}&pageSize={{data.pageSize}}" tabindex="-1">Previous</a>
-                </li>`)
-            }
-            for (let i = 1; i <= {{data.totalPages}}; i++) {
-                if (i === pageIndex) {
-                    $(this).append(`<li class="page-item active">
-                    <a class="page-link" href="/courses?{{#if data.fieldId}}fieldid={{data.fieldId}}&{{/if}}pageIndex=${i}&pageSize={{data.pageSize}}">${i} <span class="sr-only">(current)</span></a>
-                </li>`)
-                } else {
-                    $(this).append(`<li class="page-item"><a class="page-link" href="/courses?{{#if data.fieldId}}fieldid={{data.fieldId}}&{{/if}}pageIndex=${i}&pageSize={{data.pageSize}}">${i}</a></li>`)
                 }
-            }
-            if (pageIndex === {{data.totalPages}}) {
-                $(this).append(`<li class="page-item disabled">
-                    <a class="page-link" href="">Next</a>
+                for (let i = 1; i <= {{data.totalPages}}; i++) {
+                    if (i === pageIndex) {
+                        $(this).append(`<li class="page-item active">
+                    <a class="page-link" href="/courses?pageIndex=${i}&pageSize={{data.pageSize}}">${i} <span class="sr-only">(current)</span></a>
                 </li>`)
-            } else {
-                $(this).append(`<li class="page-item">
-                    <a class="page-link" href="/courses/?{{#if data.fieldId}}fieldid={{data.fieldId}}&{{/if}}pageIndex=${pageIndex + 1}&pageSize={{data.pageSize}}">Next</a>
-                </li>`)
-            }
-        })
+                    } else {
+                        $(this).append(`<li class="page-item"><a class="page-link" href="/courses?pageIndex=${i}&pageSize={{data.pageSize}}">${i}</a></li>`)
+                    }
+                }
+                if (pageIndex !== {{data.totalPages}}) {
+                    $(this).append(`<li class="page-item">
+                    <a class="page-link" href="/courses/?pageIndex=${pageIndex + 1}&pageSize={{data.pageSize}}">Next</a>
+                </li>`);
+                }
+            })
 
-        const userCourseIds = "{{data.userCourseIds}}";
-        const uploadIds = "{{data.uploadIds}}";
-        $("div.actionButton").each(function () {
-            const id = $(this).attr('data-id');
-            if (!userCourseIds.includes(id.toString()) && !uploadIds.includes(id.toString())) {
-                $(this).append(`<a href="javascript: $('form#addToCart input#courseid').val(${id}); $('form#addToCart').submit();" class="btn btn-warning">Add to cart</a>`)
-            }
-        })
+            $('a.page-link').on('click', function (e) {
+                e.preventDefault();
+                let thisHref = $(this).attr('href');
+                thisHref += `{{#if data.categoryId}}&categoryid={{data.categoryId}}{{else}}{{#if data.fieldId}}&fieldid={{data.fieldId}}{{/if}}{{/if}}{{#if data.keyword}}&keyword={{data.keyword}}{{/if}}`;
+                $(this).attr('href', thisHref);
+                $(this).off('click').click();
+            });
+
+            const userCourseIds = "{{data.userCourseIds}}";
+            const userUploadIds = "{{data.userUploadIds}}";
+            let courseIdsInCart = "";
+            {{#if cart}}
+                {{#each cart.courses}}
+                    courseIdsInCart += '{{this.id}}'
+                {{/each}}
+            {{/if}}
+            $("div.actionButton").each(function () {
+                const id = $(this).attr('data-id');
+                if (!userCourseIds.includes(id.toString()) && !userUploadIds.includes(id.toString()) && !courseIdsInCart.includes(id.toString())) {
+                    $(this).append(`<a href="javascript: $('form#addToCart input#courseid').val(${id}); $('form#addToCart').submit();"
+                                    style="height: 35px; margin-top: 10px;" class="btn btn-dark"><i class="fa fa-cart-plus"></i></a>`)
+                }
+            });
+        });
     </script>
 {{/section}}
 
@@ -112,20 +121,18 @@ form.example::after {
 
                     <div class="col-md-3 col-sm-6 p-10">
                         <div class="item ">
-                            <div class="service-block bg-white">
+                            <div class="service-block bg-white"">
                                 <div class="thumb"><img alt="featured project" src="/assets/client/images/courses/{{this.id}}.png"
                                                         class="img-fullwidth" height="150"
                                     onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                                     <h4 class="text-white mt-0 mb-0"><span class="price">{{this.price}}VND</span></h4>
                                 </div>
-                                <div class="content text-left flip p-25 pt-0">
+                                <div class="content text-left flip p-25 pt-0 actionButton" data-id="{{{this.id}}}">
                                     <h4 style="height: 55px;" class="line-bottom mb-10">{{this.name}}</h4>
                                     <p>Some quick example text to build on
                                     the card title and make up the bulk of the card's content.</p>
                                     <a style="height: 35px;" class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
                                         href="/courses/{{this.id}}">view details</a>
-                                    <a href="javascript: $('form#addToCart input#courseid').val({{this.id}}); $('form#addToCart').submit();"
-                                    style="height: 35px; margin-top: 10px;" class="btn btn-dark"><i class="fa fa-cart-plus"></i></a>
                                 </div>
                             </div>
                         </div>

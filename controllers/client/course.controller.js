@@ -53,6 +53,7 @@ module.exports = {
 				totalPages,
 				userCourseIds,
 				userUploadIds,
+				keyword
 			}
 		});
 	},
