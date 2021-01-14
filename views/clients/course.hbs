@@ -118,11 +118,8 @@
     <script>
         $(document).ready(function () {
             let courseRating = {{data.thisCourse.rating}};
-            $('div.ratings').append(`
-<span class="product-rating">${courseRating.toFixed(2)}</span><span>/5</span>
-<div class="stars"></div>
-<div class="rating-text"><span>{{data.thisCourse.commentscount}} ratings</span></div>
-            `);
+            $('div.ratings').append(`<span class="product-rating">${courseRating.toFixed(2)}</span><span>/5</span>
+                <div class="stars"></div><div class="rating-text"><span>{{data.thisCourse.commentscount}} ratings</span></div>`);
             for (let i = 1; i <= 5; i++) {
                 if (i <= Math.round(courseRating))
                 	$("div.ratings div.stars").append(`<i class="fa fa-star">`);
@@ -135,7 +132,6 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 course_details_left">
-                    <h1>{{data.thisCourse.name}}</h1>
                     <div class="main_image">
                         <img class="img-fluid" src="/assets/client/images/courses/{{data.thisCourse.id}}.png"
                              alt="course image"
@@ -231,82 +227,51 @@
                 </div>
 
                 <div class="col-lg-4 right-contents">
-                    
-                    <div class="sidebar_top">
-                        <ul>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Trainer’s Name</p>
-                                    <span class="color">{{data.author.fullname}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Course Fee </p>
-                                    <span>{{data.thisCourse.price}}$</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Update day</p>
-                                    <span>{{data.thisCourse.uploaddate}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Last Update</p>
-                                    <span>{{data.thisCourse.lastupdate}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Quantity purchased</p>
-                                    <span>{{data.thisCourse.getscount}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>View</p>
-                                    <span>{{data.thisCourse.viewscount}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Number lessons</p>
-                                    <span>{{data.thisCourse.lessonscount}}</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="justify-content-between d-flex" href="#">
-                                    <p>Number of reviews</p>
-                                    <span>{{data.thisCourse.ratingscount}}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    {{#if data.hasThisCourse}}
-                    {{else}}
-                        {{#if data.isAuthor}}
+                    <div class="product-summary">
+                  <h2 class="product-title">{{data.thisCourse.name}}</h2>
+                  <div class="product_review">
+                    <ul class="review_text list-inline">
+                      <li>
+                        <div title="Rated 4.50 out of 5" class="star-rating"><span style="width: 90%;">{{data.thisCourse.rating}}</span></div>
+                      </li>
+                      <li><a href="#"><span>2</span>Reviews</a></li>
+                      <li><a href="#">Add reviews</a></li>
+                    </ul>
+                  </div>
+                  <div class="price"> <ins><span class="amount">{{data.thisCourse.price}} VND</span></ins> </div>
+                  <div class="short-description">
+                    <p>{{{data.thisCourse.description}}}</p>
+                  </div>
+                  <div class="tags"><strong>Number lessons:     </strong>{{data.thisCourse.lessonscount}}</div>
+                  <div class="category"><strong>Quantity purchased:     </strong><a href="#">{{data.thisCourse.getscount}}</a></div>
+                  <div class="tags"><strong>View:   </strong><a href="#">{{data.thisCourse.viewscount}}</a></div>
+                </div>
+                    <div style="margin-top: 20px;">
+                        {{#if data.hasThisCourse}}
                         {{else}}
-                            {{#if data.isInCart}}
-                                <form id="removeFromCart" action="/cart?_method=DELETE" method="POST" hidden>
-                                    <label>
-                                        <input id="courseid" type="number" name="courseid">
-                                    </label>
-                                </form>
-                                <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();"
-                                   class="btn_1 d-block">Remove from cart</a>
+                            {{#if data.isAuthor}}
                             {{else}}
-                                <form id="addToCart" action="/cart" method="POST" hidden>
-                                    <label>
-                                        <input id="courseid" type="number" name="courseid">
-                                    </label>
-                                </form>
-                                <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
-                                   class="btn_1 d-block">Add to cart</a>
+                                {{#if data.isInCart}}
+                                    <form id="removeFromCart" action="/cart?_method=DELETE" method="POST" hidden>
+                                        <label>
+                                            <input id="courseid" type="number" name="courseid">
+                                        </label>
+                                    </form>
+                                    <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();"
+                                    class="btn_1 d-block">Remove from cart</a>
+                                {{else}}
+                                    <form id="addToCart" action="/cart" method="POST" hidden>
+                                        <label>
+                                            <input id="courseid" type="number" name="courseid">
+                                        </label>
+                                    </form>
+                                    <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
+                                    class="btn_1 d-block">Add to cart</a>
+                                    
+                                {{/if}}
                             {{/if}}
                         {{/if}}
-                    {{/if}}
+                    </div>
                     <div class="d-flex justify-content-center">
                         <div class="text-center" style="margin-top: 20px;">
                             <div class="ratings">
@@ -314,6 +279,46 @@
                             </div>
                         </div>
                     </div>
+
+                    <h4 class="title">Reviews</h4>
+                        <div class="review-top row pt-40">
+                            <div class="col-lg-12">
+                                <h6 class="mb-15">Provide Your Rating</h6>
+                                <div class="d-flex flex-row reviews justify-content-between">
+                                    <span>Quality</span>
+                                    <div class="rating">
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/star.svg" alt=""></a>
+                                    </div>
+                                    <span>Outstanding</span>
+                                </div>
+                                <div class="d-flex flex-row reviews justify-content-between">
+                                    <span>Puncuality</span>
+                                    <div class="rating">
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/star.svg" alt=""></a>
+                                    </div>
+                                    <span>Outstanding</span>
+                                </div>
+                                <div class="d-flex flex-row reviews justify-content-between">
+                                    <span>Quality</span>
+                                    <div class="rating">
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                        <a href="#"><img src="img/icon/star.svg" alt=""></a>
+                                    </div>
+                                    <span>Outstanding</span>
+                                </div>
+                            </div>
+                        </div>
                     
                 </div>
                 {{#if data.isAuthor}}
