@@ -3,7 +3,6 @@ const userModel = require('../../models/user.model');
 const database = require('../../utils/database');
 const lessonModel = require('../../models/lesson.model');
 const user_courseModel = require('../../models/user_course.model');
-const field_courseModel = require('../../models/field_course.model')
 const reviewModel = require('../../models/review.model');
 const fieldModel = require('../../models/field.model');
 const categoryModel = require('../../models/category.model');
