@@ -73,7 +73,6 @@
             let id = $(this).attr('data-id');
             let courseId = $(this).attr('data-courseid');
             $('#addVideo-form').attr('action', `/courses/${courseId}/lessons/${id}`);
-
         });
     </script>
     <script>
@@ -199,10 +198,7 @@
                                                 <img src="/assets/client/images/icon/image.png"
                                                      style="width: 50px; padding-left:15px">
                                             </a>
-
                                         </li>
-
-
                                     {{/each}}
                                 {{/if}}
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
@@ -221,7 +217,7 @@
                                     <a href="#" class="btn_1">Submit</a>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -267,7 +263,7 @@
                                     </form>
                                     <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
                                     class="btn_1 d-block">Add to cart</a>
-                                    
+
                                 {{/if}}
                             {{/if}}
                         {{/if}}
@@ -275,7 +271,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="text-center" style="margin-top: 20px;">
                             <div class="ratings">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -319,7 +315,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+
                 </div>
                 {{#if data.isAuthor}}
                     <!-- Modal of add image-->
@@ -491,8 +487,8 @@
                 {{/if}}
             </div>
         </div>
-       
-    
+
+
     </section>
 {{else}}
     <p>Khóa học không tồn tại</p>

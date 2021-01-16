@@ -4,6 +4,8 @@ const CartsCoursesModel = require("./carts_courses.model");
 const UserModel = require("./user.model");
 const courseModel = require('./course.model');
 const user_courseModel = require('./user_course.model');
+const field_courseModel = require('./field_course.model');
+const fieldModel = require('./field.model');
 
 const TBL_CARTS = 'carts';
 
@@ -27,11 +29,10 @@ module.exports = {
 		if (!thisCourse) return 0;
 		const added = await CartsCoursesModel.addOne(thisCart.id, courseId, connection);
 		if (!added) return 0;
+		if (!thisCourse.price) return 1;
 		thisCart.amount += thisCourse.price;
 		thisCart.total += thisCourse.price;
-		let changedRows = await this.update(thisCart, connection);
-		if (!changedRows) return 0;
-		return this.getByUserId(userId, connection);
+		return await this.update(thisCart, connection);
 	},
 	async removeCourse(userId, courseId, connection) {
 		const thisCart = await this.getByUserId(userId, connection);
@@ -39,11 +40,10 @@ module.exports = {
 		if (!found) return 0;
 		const removed = await CartsCoursesModel.removeOne(thisCart.id, courseId, connection);
 		if (!removed) return 0;
+		if (!found.price) return 1;
 		thisCart.amount -= found.price;
 		thisCart.total -= found.price;
-		let changedRows = await this.update(thisCart, connection);
-		if (!changedRows) return 0;
-		return this.getByUserId(userId, connection);
+		return await this.update(thisCart, connection);
 	},
 	/**
 	 * Checkout cart, return true or false
@@ -62,6 +62,12 @@ module.exports = {
 			const author = await UserModel.getById(course.author, connection);
 			author.totalmoneyearn += course.price;
 			course.getscount++;
+			const fields = await field_courseModel.getListFieldIDByCourseID(course.id, connection);
+			await Promise.all(fields.map(async id => {
+				const field = await fieldModel.getById(id, connection);
+				field.getscount++;
+				return await fieldModel.update(field, connection);
+			}));
 			const userCourseDTO = {
 				userid: userId,
 				courseid: course.id,
@@ -70,7 +76,7 @@ module.exports = {
 			};
 			const result = await Promise.all([
 				user_courseModel.addOne(userCourseDTO, connection),
-				UserModel.update(author, connection),
+				course.price ? UserModel.update(author, connection) : 1,
 				CourseModel.update(course, connection)
 			]);
 			if (result.includes(0)) return false;
@@ -107,5 +113,6 @@ module.exports = {
 	async getAllCourses(cartId, connection) {
 		let courseIds = await CartsCoursesModel.getListCourseIdsByCartId(cartId, connection);
 		return await courseModel.getCoursesByIds(courseIds);
-	}
+	},
+
 }

@@ -26,6 +26,7 @@ module.exports = {
 					connection.commit(async newError => {
 						connection.release();
 						if (newError) throw newError;
+						await AccountModel.getOtp(req.hostname, newAccount);
 						req.session.isAuth = true;
 						req.session.authUser = newUser;
 						req.session.authAccount = newAccount;
@@ -59,7 +60,6 @@ module.exports = {
 			req.session.isAuth = true;
 			req.session.authUser = thisUser;
 			req.session.authAccount = thisAccount;
-
 			let url = req.session.retUrl || '/';
 			res.redirect(url);
 		} catch (err) {

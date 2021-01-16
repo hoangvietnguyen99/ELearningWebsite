@@ -5,10 +5,10 @@
                 <ul class="menuzord-menu">
                     <li class="active"><a href="/">Home</a>
                     </li>
-                    <li><a href="#">Categories</a>
+                    <li><a href="/courses">Categories</a>
                         <ul class="dropdown">
                             {{#each categories}}
-                                <li><a href="#">{{this.name}}</a>
+                                <li><a href="/courses?categoryid={{this.id}}">{{this.name}}</a>
                                     <ul class="dropdown">
                                         {{#each this.fields}}
                                             <li><a href="/courses?fieldid={{this.id}}">{{this.name}}</a></li>

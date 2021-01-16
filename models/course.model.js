@@ -10,13 +10,20 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES}`;
         return await database.queryWithLimit(query, connection, pageIndex, pageSize);
     },
-    async getAllAvailable(connection, pageIndex, pageSize, keyword) {
-        if (keyword != null)
-            var query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE' 
-				&& MATCH(name) AGAINST('${keyword}')`
-        else
-            var query = `SELECT * FROM ${TBL_COURSES} WHERE statuscode = 'AVAILABLE'`
-        return await database.queryWithLimit(query, connection, pageIndex, pageSize);
+    async getAllAvailable(connection, pageIndex, pageSize, keyword, ids) {
+        let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
+        if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
+        if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
+        const countQuery = `SELECT COUNT(*) ` + queryTail;
+        if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
+        let [countResult, courses] = await Promise.all([
+          database.query(countQuery, connection),
+          database.query(`SELECT * ` + queryTail, connection)
+        ]);
+        return {
+            count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
+            courses
+        }
     },
     async getById(id, connection) {
         const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id}`;
@@ -79,5 +86,13 @@ module.exports = {
     async getTopCourses() {
         const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 8`
         return await database.query(query)
+    },
+    async getTopFourGetsCountCoursesLastWeek(connection) {
+        const query = 'SELECT * FROM courses WHERE id IN (SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC) LIMIT 4';
+        return await database.query(query, connection);
+    },
+    async getTopTenViewsCount(connection) {
+        const query = 'SELECT * FROM courses ORDER BY viewscount DESC LIMIT 10';
+        return await database.query(query, connection);
     }
 }
