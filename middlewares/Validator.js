@@ -10,6 +10,7 @@ module.exports.Validator = {
 	],
 	login: [
 		check('email', 'Email is required').notEmpty(),
+		check('email', 'Invalid email address').isEmail(),
 		check('password', 'Password is required').notEmpty(),
 	]
 }

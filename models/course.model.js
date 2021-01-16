@@ -87,8 +87,12 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 8`
         return await database.query(query)
     },
-    async getTopGetsCountCoursesLastWeek(connection) {
+    async getTopFourGetsCountCoursesLastWeek(connection) {
         const query = 'SELECT * FROM courses WHERE id IN (SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC) LIMIT 4';
+        return await database.query(query, connection);
+    },
+    async getTopTenViewsCount(connection) {
+        const query = 'SELECT * FROM courses ORDER BY viewscount DESC LIMIT 10';
         return await database.query(query, connection);
     }
 }
