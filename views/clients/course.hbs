@@ -80,7 +80,11 @@
     $('a.add-video').on('click', function () {
         let id = $(this).attr('data-id');
         let courseId = $(this).attr('data-courseid');
-        $('#addVideo-form').attr('action', `/courses/${courseId}/lessons/${id}`);
+        
+        $('form#addVideo-form').on('submit', function (e) {
+            
+            $('#addVideo-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=POST`);
+        });
 
     });
 </script>
@@ -91,47 +95,38 @@
         let des = $(this).attr('data-des');
         let courseId = $(this).attr('data-courseid');
         $('#edit-lesson #title-edit').attr('value', `${title}`);
-        $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
+        $('form#edit-lesson').on('submit', function () {
+             $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
+        });
         tinymce.get('des-edit').setContent(des);
     });
 </script>
-{{!--
 <script>
-    $('a.delete-lesson').on('click', function () {
+    $('button.add-lesson').on('click', function () {
         let id = $(this).attr('data-id');
-        let coureID = $(this).attr('data-course');
-        $.ajax({
-            type: 'DELETE',
-            url: '/courses/' + coureID + '/lessons/' + id,
-            data: id,
-            success: function (data) {
-                console.log(data);
-                $('window').location.href = '/courses/' + coureID;
-            },
-            error: function (err) {
-                console.log(err);
-            }
-
+        $('#add-lesson').on('submit', function () {
+             $('#add-lesson').attr('action', `/courses/${id}/lessons`);
         });
-
+       
     });
-</script> --}}
+</script>
 <script>
     $('a.delete-lesson').on('click', function () {
         let id = $(this).attr('data-id');
         let courseId = $(this).attr('data-course');
-        $('#delete-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=DELETE`);
+        $('#delete-form').on('submit', function () {
+            $('#delete-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=DELETE`);
+        });
+      
 
     });
 </script>
 <script>
-    //const player = new Plyr('video', {captions: {active: true}});
+    
     const players = Plyr.setup('.js-player');
-    // Expose player so it can be used from the console
     window.player = players;
-
 </script>
-    </script>
+
     <script>
         $(document).ready(function () {
             let courseRating = {{data.thisCourse.rating}};
@@ -187,19 +182,18 @@
                                             {{{lesson.description}}}
                                         </div>
                                         {{/if}}
-
                                         <div class="video-container">
-                                            <video class = "js-player"controls crossorigin playsinline
+                                            <video id = "id-video" class = "js-player"controls crossorigin playsinline
                                                 poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
-                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;">
+                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;" data-id = "{{lesson.id}}" data-courseid="{{lesson.courseid}}">
                                                 <source
-                                                    src="/assets/client/videos/{{lesson.courseid}}_{{lesson.id}}.mp4"
+                                                    src="{{lesson.videourl}}"
                                                     type="video/mp4" size="576">
                                                 <source
-                                                    src="/assets/client/videos/{{lesson.courseid}}_{{lesson.id}}.mp4"
+                                                    src="{{lesson.videourl}}"
                                                     type="video/mp4" size="720">
                                                 <source
-                                                    src="/assets/client/videos/{{lesson.courseid}}_{{lesson.id}}.mp4"
+                                                    src="{{lesson.videourl}}"
                                                     type="video/mp4" size="1080">
 
                                                 <!-- Caption files -->
@@ -216,6 +210,7 @@
                                         <!-- Plyr resources and browser polyfills are specified in the pen settings -->
                                     </div>
                                 </div>
+                                
                                 <a class="btn_2 text-uppercase" data-toggle="collapse"
                                     href="#collapseExample{{lesson.id}}" role="button" aria-expanded="false"
                                     aria-controls="collapseExample{{lesson.id}}">View
@@ -244,8 +239,8 @@
 
                             {{/each}}
                             {{/if}}
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#lessonModal"
-                                style="margin-left:10px; margin-bottom: 50px;">Add
+                            <button class = "add-lesson btn btn-primary" type="button" data-toggle="modal" data-target="#lessonModal"
+                                style="margin-left:10px; margin-bottom: 50px;" data-id = "{{data.thisCourse.id}}">Add
                             </button>
                         </ul>
                     </div>
@@ -502,7 +497,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="/courses/{{data.thisCourse.id}}/lessons" method="POST">
+                            <form action="" method="POST" id = "add-lesson">
                                 <div class="lesson"
                                     style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
                                     <div class="form-group">
