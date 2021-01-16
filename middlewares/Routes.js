@@ -31,7 +31,9 @@ module.exports = function(app) {
     app.use('/auth', require('../routes/auth'));
     app.use('/courses', require('../routes/courses'));
     app.use('/cart', isAuth, require('../routes/cart'));
-    app.use('/user',isAuth,require('../routes/user'));
+    app.use('/users', isAuth, require('../routes/users'));
+
+    app.use('/confirm', require('../routes/confirm'));
     // app.use('/products', require('../routes/front/product.route'));
     // app.use('/cart', auth, require('../routes/front/cart.route'));
 

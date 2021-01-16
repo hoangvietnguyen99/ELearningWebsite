@@ -19,12 +19,21 @@ module.exports = {
 		const result = await database.delete({courseid: courseId}, TBL_FIELD_COURSE, connection);
 		return result.affectedRows;
 	},
+	async addFieldIdsToCourseId(courseId, fieldIds, connection) {
+		if (fieldIds && fieldIds.length) {
+			const result = await Promise.all(fieldIds.map(async id => {
+				return await this.addOne(id, courseId, connection);
+			}));
+			if (result.includes(0)) return 0;
+			return result.length;
+		} return 0;
+	},
 	async updateOne(fieldId ,courseId, connection) {
 		const result = await database.update([{fieldid: fieldId}, {courseid: courseId}], TBL_FIELD_COURSE, connection);
 		return result.affectedRows;
 	},
-	async getListFieldIDByCourseID(couresID,connection){
-		const query = `SELECT fieldid FROM ${TBL_FIELD_COURSE} WHERE courseid = ${couresID}`;
-		return await database.query(query, connection);
+	async getListFieldIDByCourseID(courseId, connection){
+		const query = `SELECT fieldid FROM ${TBL_FIELD_COURSE} WHERE courseid = ${courseId}`;
+		return (await database.query(query, connection)).map(item => item.fieldid);
 	}
 }

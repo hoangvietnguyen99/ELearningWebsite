@@ -27,7 +27,9 @@ exports.getAdd = async(req, res, next) => {
 }
 
 exports.postAdd = async(req, res, next) => {
-    const ret = await FieldModel.add(req.body);
+    var data = req.body
+    data.imgpath = `/assets/admin/images/fields/${req.file.originalname}`
+    const ret = await FieldModel.add(data);
     res.render('admin/fields/add', {
         layout: 'layoutadmin.hbs',
     });
@@ -38,26 +40,33 @@ exports.getUpdate = async(req, res, next) => {
     if (field === null) {
         return res.redirect('/admin/field')
     }
-
+    var canDelete = true
+    const courses = await FieldModel.courses(req.params.id)
+    if (courses.length > 0)
+        canDelete = false
     const categories = await CategoryModel.except(field.categoryid)
     res.render('admin/fields/update', {
         layout: 'layoutadmin.hbs',
         field: field,
         categories: categories,
-        title: 'Update Field'
+        title: 'Update Field',
+        canDelete: canDelete
     });
 }
 
 exports.postUpdate = async(req, res, next) => {
-    const ret = await FieldModel.update(req.body);
+    var data = req.body
+    if (req.file)
+        data.imgpath = `/assets/admin/images/fields/${req.file.originalname}`
+    const ret = await FieldModel.update(data);
     res.redirect('/admin/field')
 }
 
 exports.delete = async(req, res, next) => {
-    const courses = await FieldModel.courses(req.body.id)
-    if (courses.length === 0)
+    const courses = await FieldModel.courses(req.params.id)
+    if (courses.length > 0)
         console.log("This Field already has Course and cannot be deleted")
     else
-        var ret = await FieldModel.del(req.body);
+        var ret = await FieldModel.del(req.params);
     res.redirect('/admin/field')
 }

@@ -3,37 +3,56 @@ const userModel = require('../../models/user.model');
 const database = require('../../utils/database');
 const lessonModel = require('../../models/lesson.model');
 const user_courseModel = require('../../models/user_course.model');
-const field_courseModel = require('../../models/field_course.model')
 const reviewModel = require('../../models/review.model');
 const fieldModel = require('../../models/field.model');
+const categoryModel = require('../../models/category.model');
 
 module.exports = {
 	async getAllAvailable(req, res) {
-		let pageIndex = req.query.pageIndex || 1;
-		const field = req.query.fieldid ? await fieldModel.getById(req.query.fieldid) : null;
+		let keyword = req.query.keyword;
+		let pageIndex = req.query.pageIndex ? req.query.pageIndex : 1;
+		let pageSize = req.query.pageSize ? req.query.pageSize : 12;
+		let ids = null;
+		let title = null;
+		const categoryId = req.query.categoryid;
+		const fieldId = req.query.fieldid;
+		if (categoryId) {
+			let category;
+			[category, ids] = await Promise.all([
+				categoryModel.getById(categoryId),
+				categoryModel.getAllCourseIds(categoryId)
+			]);
+			title = category.name;
+		} else if (fieldId) {
+			let field;
+			[field, courses] = await Promise.all([
+				fieldModel.getById(fieldId),
+				fieldModel.getAllCoursesByFieldId(fieldId)
+			]);
+			title = field.name;
+			ids = courses.map(course => course.id);
+		}
 		const userId = req.session.authUser ? req.session.authUser.id : null;
-		if (pageIndex == 0) pageIndex = 1;
-		const pageSize = req.query.pageSize || 12;
-		let [count, courses, userCourseIds, uploadIds] = await Promise.all([
-			field ? 0 : courseModel.getCountAvailable(),
-			field ? courseModel.getAvailableCoursesByIds(await field_courseModel.getListCourseIdsByFieldId(field.id)) : courseModel.getAllAvailable(null, pageIndex, pageSize),
+		let [coursesObject, userCourseIds, userUploadIds] = await Promise.all([
+			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, ids),
 			userId ? user_courseModel.getCourseIdsByUserId(userId) : [],
-			courseModel.getCourseIdsByAuthorId(userId)
+			userId ? courseModel.getCourseIdsByAuthorId(userId) : []
 		]);
-		if (field) count = courses.length;
-		const totalPages = Math.ceil(count / pageSize);
+		const totalPages = Math.ceil(coursesObject.count / pageSize);
 		res.render('clients/courses', {
 			layout: 'layoutclient',
 			data: {
-				courses: field ? courses.slice(pageSize*(pageIndex - 1),pageSize*pageIndex) : courses,
-				title: field ? field.name : null,
-				fieldId: field ? field.id : null,
-				count,
+				courses: coursesObject.courses,
+				title,
+				fieldId,
+				categoryId,
+				count: coursesObject.count,
 				pageIndex,
 				pageSize,
 				totalPages,
 				userCourseIds,
-				uploadIds
+				userUploadIds,
+				keyword
 			}
 		});
 	},
@@ -74,14 +93,14 @@ module.exports = {
 				console.log(err);
 				connection.rollback(rollbackError => {
 					connection.release();
-					if (rollBackError) throw rollbackError;
+					if (rollbackError) throw rollbackError;
 					res.redirect(req.headers.referer || '/');
 				});
 			}
 		});
 	},
 
-	async getCourse(req, res){
+	async getCourse(req, res) {
 		const thisCourse = await courseModel.getById(req.params.id);
 		thisCourse.viewscount++;
 		await courseModel.update(thisCourse);
@@ -107,5 +126,6 @@ module.exports = {
 				reviews
 			}
 		});
-	}
+	},
+
 }
