@@ -26,7 +26,7 @@ module.exports = {
 					connection.commit(async newError => {
 						connection.release();
 						if (newError) throw newError;
-						await AccountModel.getOtp(req.hostname, newAccount);
+						await AccountModel.getOtp(req.hostname, req.protocol, newAccount);
 						req.session.isAuth = true;
 						req.session.authUser = newUser;
 						req.session.authAccount = newAccount;

@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+// const logger = require('morgan');
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override');
 const app = express();
@@ -15,7 +15,7 @@ require('./middlewares/View')(app);
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
