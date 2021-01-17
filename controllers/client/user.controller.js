@@ -4,7 +4,6 @@ const accountModel = require('../../models/account.model');
 module.exports = {
 	getUserByID: async function (req, res) {
 		const user = await userModel.getById(req.params.id);
-		console.log(user.role);
 		res.render('clients/profile', {
 			layout: 'layoutclient.hbs',
 			user: user,

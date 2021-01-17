@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const lessonsModel = require('../../models/lesson.model');
 const multer = require('multer');
+const user_courseModel = require('../../models/user_course.model');
 
 exports.addLesson =  async function(req,res,next){
     const courseID = req.params.id;
-    console.log(courseID );
     const {title,Des} = req.body;
     const lesson = {
         title,
@@ -36,7 +36,6 @@ exports.editLesson =  async function(req,res,next){
         id: lessonID,
         courseid: courseID
     }
-    console.log(lesson);
     const result = await lessonsModel.updateLesson(lesson);
     if(result !== null)
     res.redirect('/courses/' + courseID);
@@ -67,4 +66,14 @@ exports.addVideo =  async function(req,res,next ){
 			res.redirect('/courses/'+ req.params.id);
 		}
 	  });
+};
+
+exports.saveCurrentimeVideo = async function(req,res,next){
+  const currentpause = {
+    currentlesson: req.params.lid,
+    currentpause: parseFloat(req.body.pause)
+  }
+  console.log(currentpause);
+  const result = await user_courseModel.updateTimePause(req.session.authUser.id,currentpause);
+  if(result!==null) console.log('Save time pause');
 };

@@ -111,6 +111,8 @@ module.exports = {
 		const author = await userModel.getById(thisCourse.author);
 		const lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
+		const user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id);
+		console.log(user_lesson);
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
@@ -123,7 +125,8 @@ module.exports = {
 				author,
 				isAuthor: req.session.authUser ? req.session.authUser.id === author.id : false,
 				lessons,
-				reviews
+				reviews,
+				user_lesson
 			}
 		});
 	},
