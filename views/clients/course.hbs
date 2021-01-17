@@ -92,13 +92,16 @@
     $('a.edit-lesson').on('click', function () {
         let id = $(this).attr('data-id');
         let title = $(this).attr('data-title');
+        let order = $(this).attr('data-order');
         let des = $(this).attr('data-des');
         let courseId = $(this).attr('data-courseid');
         $('#edit-lesson #title-edit').attr('value', `${title}`);
+        $('#edit-lesson #order-edit').attr('value', `${order}`);
+        tinymce.get('des-edit').setContent(des);
         $('form#edit-lesson').on('submit', function () {
              $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
         });
-        tinymce.get('des-edit').setContent(des);
+        
     });
 </script>
 <script>
@@ -124,18 +127,17 @@
 <script>
     $(document).ready(function(){
         const players = Plyr.setup('.js-player');
+        players[0].on('canplay', event => {
+            players[0].currentTime =  55.53;
+        });
+        console.log({{user_lesson}});
         $('video.js-player').on('play',function(){
             for(let i = 0 ; i< players.length;i++){
                 let id = $(this).attr('data-id');
                 let courseid =  $(this).attr('data-courseid');
                 console.log(id);
                 console.log(courseid);
-                console.log({{user_lesson.lessonid}})
-                {{#if user_lesson.lessonid}}
-                    players[i].on('loadeddata', event => {
-                    players[i].currentTime =  {{user_lesson.currentpause}};
-                    });
-                {{/if}}
+                console.log({{data.user_lesson.currentpause}});
                 players[i].on('pause', event => {
                     $('form.time-pause-video input.timepause').attr('value',`${players[i].currentTime}`);
                     const url = `/courses/${courseid}/lessons/${id}/time`;
@@ -253,7 +255,7 @@
                                     Details</a>
                                 <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
                                     data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
-                                    data-title="{{lesson.title}}" data-des="{{lesson.description}}"
+                                    data-title="{{lesson.title}}" data-order = {{lesson.order}} data-des="{{lesson.description}}"
                                     style="margin-left: 20px">
                                     <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
                                 </a>
@@ -542,6 +544,11 @@
                                             placeholder="ex: Introduction lesson" style="width: 100%;" value="">
                                         <br><br>
 
+                                        <label for="name">Order</label>
+                                        <input type="input" name="order" id="order"
+                                            placeholder="ex: 1" style="width: 100%;" value="">
+                                        <br><br>
+
                                         <label for="txtDesLesson">Description</label>
                                         <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
                                             value=""></textarea>
@@ -603,6 +610,11 @@
                                         <label for="title-edit">Title</label>
                                         <input type="text" name="title" id="title-edit"
                                             placeholder="ex: Introduction lesson" style="width: 100%;" value="">
+                                        <br><br>
+
+                                        <label for="order-edit">Title</label>
+                                        <input type="text" name="order" id="order-edit"
+                                            placeholder="ex: 1" style="width: 100%;" value="">
                                         <br><br>
 
                                         <label for="des-edit">Description</label>

@@ -6,10 +6,11 @@ const user_courseModel = require('../../models/user_course.model');
 
 exports.addLesson =  async function(req,res,next){
     const courseID = req.params.id;
-    const {title,Des} = req.body;
+    const {title,order,Des} = req.body;
     const lesson = {
         title,
         courseid: courseID,
+        order: order,
         description: Des
     }
     const result = await lessonsModel.addOneByCourseId(lesson);
@@ -29,11 +30,12 @@ exports.deleteLesson =  async function(req,res,next){
 exports.editLesson =  async function(req,res,next){
     const lessonID = req.params.lid;
     const courseID = req.params.id;
-    const {title,des} = req.body;
+    const {title,order,des} = req.body;
     lesson = {
         title,
         description :des,
         id: lessonID,
+        order: order,
         courseid: courseID
     }
     const result = await lessonsModel.updateLesson(lesson);
