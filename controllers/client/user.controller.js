@@ -46,8 +46,8 @@ module.exports = {
 	},
 
 	getOtp: async function (req, res) {
-		const thisAccount = await req.session.authAccount;
-		await accountModel.getOtp(req.hostname, thisAccount);
-		res.redirect(req.session.referrer || '/');
+		const thisAccount = await accountModel.single(req.session.authAccount.id);
+		await accountModel.getOtp(req.hostname, req.protocol, thisAccount);
+		res.redirect('/');
 	}
 }

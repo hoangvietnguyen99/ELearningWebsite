@@ -62,7 +62,7 @@ module.exports = {
 		return result.changedRows;
 	},
 
-	async getOtp(hostname, account) {
+	async getOtp(hostname, protocol, account) {
 		if (hostname === 'localhost') hostname += ":" + process.env.PORT;
 		account.otp = randomString(6);
 		const otpExpired = new Date();
@@ -70,7 +70,7 @@ module.exports = {
 		account.otpexpired = otpExpired;
 		sendMail(account.email, `
 <b>Welcome to Elearning Website: </b>
-<a href="${hostname}/confirm/users/${account.userid}?otp=${account.otp}">CLICK HERE TO CONFIRM YOUR ACCOUNT</a>
+<a href="${protocol}://${hostname}/confirm/users/${account.userid}?otp=${account.otp}">CLICK HERE TO CONFIRM YOUR ACCOUNT</a>
 <p>This link will expired in 7 days</p>
 `);
 		await this.update(account);
