@@ -137,26 +137,24 @@
         {{/if}}
         
         $('video.js-player').on('play',function(){
-            for(let i = 0 ; i< players.length;i++){
-                let id = $(this).attr('data-id');
-                let courseid =  $(this).attr('data-courseid');
-                let order = $(this).attr('data-order');
-                players[i].on('pause', event => {
-                    $('form.time-pause-video input.timepause').attr('value',`${players[i].currentTime}`);
-                    const url = `/courses/${courseid}/lessons/${id}/${order}`;
-                    console.log(url);
-                    $.ajax({
-                        type: "PUT",
-                        url: `${url}`,
-                        data: JSON.stringify({ pause: `${players[i].currentTime}`}),
-                        contentType: 'application/json'
-                        /*** Note that The default content type of an ajax post is
-                        urlencoded even though I didn't specify it in my post ***/
-                        });
-                    console.log(players[i].currentTime);
-                });
-            }
-            return false;
+            let id = $(this).attr('data-id');
+            let courseid =  $(this).attr('data-courseid');
+            let order = $(this).attr('data-order');
+            players[order-1].on('pause', event => {
+                $('form.time-pause-video input.timepause').attr('value',`${players[order-1].currentTime}`);
+                const url = `/courses/${courseid}/lessons/${id}/${order}`;
+                console.log(url);
+                $.ajax({
+                    type: "PUT",
+                    url: `${url}`,
+                    data: JSON.stringify({ pause: `${players[order-1].currentTime}`}),
+                    contentType: 'application/json'
+                    /*** Note that The default content type of an ajax post is
+                    urlencoded even though I didn't specify it in my post ***/
+                    });
+                console.log(players[order-1].currentTime);
+            });
+        return false;
         });
         
         window.player = players;
