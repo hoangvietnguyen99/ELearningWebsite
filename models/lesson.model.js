@@ -24,4 +24,8 @@ module.exports = {
 		return result.affectedRows;
 	},
 	
+	async updateVideoUrl(lessionID,url,connection){
+		const result = await database.update(url,{id: lessionID},TBL_LESSONS,connection);
+		return result.changedRows;
+	}
 }
