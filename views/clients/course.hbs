@@ -127,20 +127,23 @@
 <script>
     $(document).ready(function(){
         const players = Plyr.setup('.js-player');
-        players[0].on('canplay', event => {
-            players[0].currentTime =  55.53;
-        });
-        console.log({{user_lesson}});
+        console.log({{data.user_lesson.lessonorder}});
+        {{#if data.user_lesson.lessonorder}}
+            let k = {{data.user_lesson.lessonorder}};
+            console.log({{data.user_lesson.currentpause}});
+            players[k-1].on('loadeddata', event => {
+                players[k-1].currentTime =  {{data.user_lesson.currentpause}};
+            });
+        {{/if}}
+        
         $('video.js-player').on('play',function(){
             for(let i = 0 ; i< players.length;i++){
                 let id = $(this).attr('data-id');
                 let courseid =  $(this).attr('data-courseid');
-                console.log(id);
-                console.log(courseid);
-                console.log({{data.user_lesson.currentpause}});
+                let order = $(this).attr('data-order');
                 players[i].on('pause', event => {
                     $('form.time-pause-video input.timepause').attr('value',`${players[i].currentTime}`);
-                    const url = `/courses/${courseid}/lessons/${id}/time`;
+                    const url = `/courses/${courseid}/lessons/${id}/${order}`;
                     console.log(url);
                     $.ajax({
                         type: "PUT",
@@ -218,7 +221,8 @@
                                         <div class="video-container">
                                             <video id = "id-video" class = "js-player"controls crossorigin playsinline autopause
                                                 poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
-                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;" data-id = "{{lesson.id}}" data-courseid="{{lesson.courseid}}">
+                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;" data-id = "{{lesson.id}}" data-courseid="{{lesson.courseid}}"
+                                                data-order="{{lesson.order}}">
                                                 <source
                                                     src="{{lesson.videourl}}"
                                                     type="video/mp4" size="576">

@@ -112,7 +112,6 @@ module.exports = {
 		const lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
 		const user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id);
-		console.log(user_lesson);
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;

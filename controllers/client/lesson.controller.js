@@ -73,9 +73,9 @@ exports.addVideo =  async function(req,res,next ){
 exports.saveCurrentimeVideo = async function(req,res,next){
   const currentpause = {
     currentlesson: req.params.lid,
-    currentpause: parseFloat(req.body.pause)
+    currentpause: parseFloat(req.body.pause),
+    lessonorder: parseInt(req.params.orderid),
   }
-  console.log(currentpause);
   const result = await user_courseModel.updateTimePause(req.session.authUser.id,currentpause);
   if(result!==null) console.log('Save time pause');
 };

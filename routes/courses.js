@@ -24,6 +24,6 @@ router.route('/:id/lessons/:lid')
 	.post(lessonController.addVideo)
 	
 	
-router.route('/:id/lessons/:lid/time')
+router.route('/:id/lessons/:lid/:orderid')
 	.put(lessonController.saveCurrentimeVideo)
 module.exports = router;
