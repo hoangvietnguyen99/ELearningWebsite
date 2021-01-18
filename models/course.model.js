@@ -2,6 +2,9 @@ const database = require('../utils/database');
 const { addOne } = require('./carts_courses.model');
 
 const CartsCoursesModel = require('./carts_courses.model');
+const fieldModel = require('../models/field.model');
+const field_courseModel = require('../models/field_course.model');
+const user_courseModel = require('../models/user_course.model');
 
 const TBL_COURSES = 'courses';
 
@@ -10,23 +13,51 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES}`;
         return await database.queryWithLimit(query, connection, pageIndex, pageSize);
     },
-    async getAllAvailable(connection, pageIndex, pageSize, keyword, ids) {
-        let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
-        if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
-        if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
-        const countQuery = `SELECT COUNT(*) ` + queryTail;
-        if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
-        let [countResult, courses] = await Promise.all([
-          database.query(countQuery, connection),
-          database.query(`SELECT * ` + queryTail, connection)
-        ]);
-        return {
-            count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
-            courses
+    async getAllAvailable(connection, pageIndex, pageSize, keyword, searchType, ids) {
+        if (searchType == 2) {
+            let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
+            if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
+            if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
+            const countQuery = `SELECT COUNT(*) ` + queryTail;
+            if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
+            let [countResult, courses] = await Promise.all([
+                database.query(countQuery, connection),
+                database.query(`SELECT * ` + queryTail, connection)
+            ]);
+            return {
+                count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
+                courses
+            }
+        } else {
+            let ids = []
+            const fields = await fieldModel.getWithFullTextSearch(keyword);
+            await Promise.all(fields.map(async field => {
+                const courseIds = await field_courseModel.getListCourseIdsByFieldId(field.id);
+                ids.push(...courseIds);
+            }));
+            ids = [...new Set(ids)];
+            let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
+            if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
+            const countQuery = `SELECT COUNT(*) ` + queryTail;
+            if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
+            let [countResult, courses] = await Promise.all([
+                database.query(countQuery, connection),
+                database.query(`SELECT * ` + queryTail, connection)
+            ]);
+            return {
+                count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
+                courses
+            }
         }
     },
     async getById(id, connection) {
         const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id}`;
+        const courses = await database.query(query, connection);
+        if (courses.length === 0) return null;
+        return courses[0];
+    },
+    async getByIdAvailable(id, connection) {
+        const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id} AND approvedby != 0`;
         const courses = await database.query(query, connection);
         if (courses.length === 0) return null;
         return courses[0];
@@ -71,7 +102,7 @@ module.exports = {
         }));
     },
     async getAvailableCoursesByIds(ids, connection) {
-        return (await this.getCoursesByIds(ids, connection)).filter(course => course.statuscode = 'AVAILABLE');
+        return (await this.getCoursesByIds(ids, connection)).filter(course => course.approvedby != 0);
     },
     async getCourseIdsByAuthorId(authorId, connection) {
         const query = `SELECT id FROM ${TBL_COURSES} WHERE ?`;
@@ -84,15 +115,40 @@ module.exports = {
         return await database.query(query)
     },
     async getTopCourses() {
-        const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 8`
+        const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 10`
         return await database.query(query)
     },
-    async getTopFourGetsCountCoursesLastWeek(connection) {
-        const query = 'SELECT * FROM courses WHERE id IN (SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC) LIMIT 4';
-        return await database.query(query, connection);
+    async getTopThreeGetsCountCoursesLastWeek(connection) {
+        const getTopThreeIdsQuery = `SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC LIMIT 3`;
+        const ids = (await database.query(getTopThreeIdsQuery,connection)).map(id => id.courseid);
+        return this.getAvailableCoursesByIds(ids, connection);
     },
     async getTopTenViewsCount(connection) {
         const query = 'SELECT * FROM courses ORDER BY viewscount DESC LIMIT 10';
         return await database.query(query, connection);
+    },
+    async getTopTenRecentlyUpload(connection) {
+        const query = 'SELECT * FROM courses ORDER BY uploaddate DESC LIMIT 10;';
+        let courses = await database.query(query, connection);
+        const today = new Date();
+        courses = courses.map(course => {
+            const timeDiff = today.getTime() - course.uploaddate.getTime();
+            const dateDiff = Math.floor(timeDiff / (1000*60*60*24));
+            if (dateDiff === 0) {
+                couses.uploaddate = 'JUST NOW'
+            } else course.uploaddate = dateDiff + ' days ago';
+            return course;
+        })
+        return courses;
+    },
+    async getWatchListByUserId(userId, connection) {
+        const userCourses = await user_courseModel.getUserWatchList(userId, connection);
+        return await Promise.all(userCourses.map(async userCourse => {
+            const thisCourse = await this.getByIdAvailable(userCourse.courseid, connection);
+            if (thisCourse) {
+                thisCourse.userCourse = userCourse;
+                return thisCourse;
+            }
+        }));
     }
 }
