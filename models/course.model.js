@@ -102,7 +102,7 @@ module.exports = {
         }));
     },
     async getAvailableCoursesByIds(ids, connection) {
-        return (await this.getCoursesByIds(ids, connection)).filter(course => course.statuscode = 'AVAILABLE');
+        return (await this.getCoursesByIds(ids, connection)).filter(course => course.approvedby != 0);
     },
     async getCourseIdsByAuthorId(authorId, connection) {
         const query = `SELECT id FROM ${TBL_COURSES} WHERE ?`;
@@ -115,16 +115,31 @@ module.exports = {
         return await database.query(query)
     },
     async getTopCourses() {
-        const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 8`
+        const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 10`
         return await database.query(query)
     },
-    async getTopFourGetsCountCoursesLastWeek(connection) {
-        const query = 'SELECT * FROM courses WHERE id IN (SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC) LIMIT 4';
-        return await database.query(query, connection);
+    async getTopThreeGetsCountCoursesLastWeek(connection) {
+        const getTopThreeIdsQuery = `SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC LIMIT 3`;
+        const ids = (await database.query(getTopThreeIdsQuery,connection)).map(id => id.courseid);
+        return this.getAvailableCoursesByIds(ids, connection);
     },
     async getTopTenViewsCount(connection) {
         const query = 'SELECT * FROM courses ORDER BY viewscount DESC LIMIT 10';
         return await database.query(query, connection);
+    },
+    async getTopTenRecentlyUpload(connection) {
+        const query = 'SELECT * FROM courses ORDER BY uploaddate DESC LIMIT 10;';
+        let courses = await database.query(query, connection);
+        const today = new Date();
+        courses = courses.map(course => {
+            const timeDiff = today.getTime() - course.uploaddate.getTime();
+            const dateDiff = Math.floor(timeDiff / (1000*60*60*24));
+            if (dateDiff === 0) {
+                couses.uploaddate = 'JUST NOW'
+            } else course.uploaddate = dateDiff + ' days ago';
+            return course;
+        })
+        return courses;
     },
     async getWatchListByUserId(userId, connection) {
         const userCourses = await user_courseModel.getUserWatchList(userId, connection);
