@@ -42,18 +42,25 @@ exports.editLesson =  async function(req,res,next){
     res.redirect('/courses/' + courseID);
 };
 
-exports.addVideo =  function(req,res,next ){
+exports.addVideo =  async function(req,res,next ){
     const storage = multer.diskStorage({
 		destination: function (req, file, cb) {
 		  cb(null, './public/assets/client/videos')
 		},
-		filename: function (req, file, cb) {
-		  cb(null, req.params.lid + `.webm`)
+		filename: async function (req, file, cb) {
+      
+      const url = {
+        videourl: '/assets/client/videos/' + file.originalname.replace(/\s/g, '')
+      }
+      const result = await lessonsModel.updateVideoUrl(req.params.lid,url);
+		  cb(null, file.originalname.replace(/\s/g, ''));
 		}
-	  });
+    });
+    
+
 	  const upload = multer({ storage });
 	  // upload.single('fuMain')(req, res, function (err) {
-	  upload.array('fuMain',1)(req, res, function (err) {
+    await upload.array('fuMain',1)(req, res, function (err) {
 		if (err) {
 			console.log('Error load');
 		} else {
