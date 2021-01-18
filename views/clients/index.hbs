@@ -2,6 +2,26 @@
 
 {{/section}}
 
+{{#section 'js'}}
+    <script>
+        const userCourseIds = "{{data.userCourseIds}}";
+        const userUploadIds = "{{data.userUploadIds}}";
+        let courseIdsInCart = "";
+            {{#if cart}}
+                {{#each cart.courses}}
+                courseIdsInCart += '{{this.id}}'
+                {{/each}}
+            {{/if}}
+        $("div.actionButton").each(function () {
+            const id = $(this).attr('data-id');
+            if (!userCourseIds.includes(id.toString()) && !userUploadIds.includes(id.toString()) && !courseIdsInCart.includes(id.toString())) {
+                $(this).append(`<a href="javascript: $('form#addToCartHeader input#courseid').val(${id}); $('form#addToCartHeader').submit();"
+                                    style="height: 35px; margin-top: 10px;" class="btn btn-dark"><i class="fa fa-cart-plus"></i></a>`)
+            }
+        });
+    </script>
+{{/section}}
+
 <!-- Section: home -->
 <section id="home">
     <div class="container-fluid p-0">
@@ -513,7 +533,7 @@
                                                             onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                                         <h4 class="text-white mt-0 mb-0"><span class="price">{{{this.uploaddate}}}</span></h4>
                                     </div>
-                                    <div class="content text-left flip p-25 pt-0">
+                                    <div class="content text-left flip p-25 pt-0 actionButton" data-id="{{{this.id}}}">
                                         <h4 style="height: 55px;" class="line-bottom mb-10">{{{this.name}}}</h4>
                                         <p>Some quick example text to build on
                                             the card title and make up the bulk of the card's content.</p>
@@ -554,7 +574,7 @@
                                                             onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                                         <h4 class="text-white mt-0 mb-0"><span class="price">{{{format this.price}}} VND</span></h4>
                                     </div>
-                                    <div class="content text-left flip p-25 pt-0">
+                                    <div class="content text-left flip p-25 pt-0 actionButton" data-id="{{{this.id}}}">
                                         <h4 style="height: 55px;" class="line-bottom mb-10">{{{this.name}}}</h4>
                                         <p>Some quick example text to build on
                                             the card title and make up the bulk of the card's content.</p>
