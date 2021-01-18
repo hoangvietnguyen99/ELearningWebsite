@@ -37,5 +37,9 @@ module.exports = {
 	async update(field, connection) {
 		const result = await database.update(field, {id: field.id}, TBL_FIELDS, connection);
 		return result.changedRows;
+	},
+	async getWithFullTextSearch(text, connection) {
+		const query = `SELECT * FROM ${TBL_FIELDS} WHERE MATCH(name) AGAINST('${text}')`;
+		return await database.query(query, connection);
 	}
 }
