@@ -83,6 +83,28 @@ form.example::after {
                 }
             });
         });
+
+        function sortUsingNestedTextAsc(parent, childSelector, keySelector) {
+            const items = parent.children(childSelector).sort(function(a, b) {
+                let vA = $(keySelector, a).text();
+                vA = parseFloat(vA) ? parseFloat(vA) : vA;
+                let vB = $(keySelector, b).text();
+                vB = parseFloat(vB) ? parseFloat(vB) : vB;
+                return (vA < vB) ? -1 : (vA > vB) ? 1 : 0;
+            });
+            parent.append(items);
+        }
+
+        function sortUsingNestedTextDesc(parent, childSelector, keySelector) {
+            const items = parent.children(childSelector).sort(function(a, b) {
+                let vA = $(keySelector, a).text();
+                vA = parseFloat(vA) ? parseFloat(vA) : vA;
+                let vB = $(keySelector, b).text();
+                vB = parseFloat(vB) ? parseFloat(vB) : vB;
+                return (vA < vB) ? 1 : (vA > vB) ? -1 : 0;
+            });
+            parent.append(items);
+        }
     </script>
 {{/section}}
 
@@ -108,27 +130,37 @@ form.example::after {
         <nav aria-label="...">
             <ul class="pagination">
             </ul>
+            <div class="btn-group sort-btn" style="float: right;">
+                <button class="btn btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort</button>
+                <button class="btn btn-primary dropdown-toggle" data-sort="none"><i class="fa fa-sort"></i></button><!-- .dropdown-toggle adds rounded borders and reduces padding. It does not trigger dropdowns. -->
+                <ul class="dropdown-menu">
+                    <li><a href="javascript: sortUsingNestedTextAsc($('#sortThis'), 'div.courseCard', 'span.price');" tabindex="-1" data-type="alpha">Price ASC</a></li>
+                    <li><a href="javascript: sortUsingNestedTextDesc($('#sortThis'), 'div.courseCard', 'span.price');" tabindex="-1" data-type="alpha">Price DESC</a></li>
+                    <li><a href="javascript: sortUsingNestedTextAsc($('#sortThis'), 'div.courseCard', 'h4.name');" tabindex="-1" data-type="numeric">Name ASC</a></li>
+                    <li><a href="javascript: sortUsingNestedTextDesc($('#sortThis'), 'div.courseCard', 'h4.name');" tabindex="-1" data-type="numeric">Name DESC</a></li>
+                </ul>
+            </div>
         </nav>
+        <div class="owl-carousel-4col" data-dots="true"></div>
+        <form id="addToCart" action="/cart" method="POST" hidden>
+            <label>
+                <input id="courseid" type="number" name="courseid">
+            </label>
+        </form>
         <div class="section-content">
-            <div class="row">
-                <div class="owl-carousel-4col" data-dots="true"></div>
-                <form id="addToCart" action="/cart" method="POST" hidden>
-                    <label>
-                        <input id="courseid" type="number" name="courseid">
-                    </label>
-                </form>
+            <div id="sortThis" class="row">
                 {{#each data.courses}}
 
-                    <div class="col-md-3 col-sm-6 p-10">
+                    <div class="col-md-3 col-sm-6 p-10 courseCard">
                         <div class="item ">
                             <div class="service-block bg-white"">
                                 <div class="thumb"><img alt="featured project" src="/assets/client/images/courses/{{this.id}}.png"
                                                         class="img-fullwidth" height="150"
                                     onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
-                                    <h4 class="text-white mt-0 mb-0"><span class="price">{{this.price}}VND</span></h4>
+                                    <h4 class="text-white mt-0 mb-0"><span class="price">{{this.price}}</span> VND</h4>
                                 </div>
                                 <div class="content text-left flip p-25 pt-0 actionButton" data-id="{{{this.id}}}">
-                                    <h4 style="height: 55px;" class="line-bottom mb-10">{{this.name}}</h4>
+                                    <h4 style="height: 55px;" class="name line-bottom mb-10">{{this.name}}</h4>
                                     <p>Some quick example text to build on
                                     the card title and make up the bulk of the card's content.</p>
                                     <a style="height: 35px;" class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
