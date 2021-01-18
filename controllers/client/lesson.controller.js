@@ -72,33 +72,39 @@ exports.addVideo =  async function(req,res,next ){
 };
 
 exports.saveCurrentimeVideo = async function(req,res,next){
+  const pause = await user_courseModel.getOne(req.session.authUser.id,req.params.id);
   const currentpause = {
-    currentlesson: req.params.lid,
+    userid: pause.userid,
+    courseid: pause.courseid,
+    currentlesson: pause.currentlesson,
     currentpause: parseFloat(req.body.pause),
-    lessonorder: parseInt(req.params.orderid),
+    lessonorder: parseInt(pause.lessonorder)
   }
-  console.log(currentpause);
-  //console.log(req.body.pause);
-  const result = await user_courseModel.updateTimePause(req.session.authUser.id,req.params.id,currentpause);
+  const result = await user_courseModel.updateOne(currentpause);
   if(result!==null) console.log('Save time pause');
+  
 };
 
 exports.endVideo = async function(req,res,next){
-  const processed = {
-    process: req.params.lid,
-    currentpause: parseFloat(req.body.pause)
-  }
-
-  const addAfterEnd = {
+  const end = await user_courseModel.getOneByLessonID(req.session.authUser.id,req.params.id,req.params.lid);
+  const process = {
     userid: req.session.authUser.id,
     courseid: req.params.id,
     process: req.params.lid
-
   }
-  //console.log(req.params.id);
-  //console.log(req.params.orderid);
-  //const save = user_courseModel.setProcess(req.session.authUser.id,req.params.lid,req.params.id,processed);
-  //const add = lessonModel.getNextLesson(req.params.id,req.params.orderid);
-  //console.log(add);
-  //if(save!==null) console.log('Ended save');
+  const updateEnd = await user_courseModel.updateOne(process);
+  const nextlesson = await lessonsModel.getNextLesson(end.courseid,end.lessonorder);
+  console.log(nextlesson);
+  if(nextlesson){
+    const update = {
+      userid: req.session.authUser.id,
+      courseid: req.params.id,
+      process: req.params.lid,
+      currentlesson: nextlesson.id,
+      lessonorder: nextlesson.order,
+      currentpause: 0
+    }
+    const result = await user_courseModel.updateOne(update);
+    console.log(result);
+  }
 }

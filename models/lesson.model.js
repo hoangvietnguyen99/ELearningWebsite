@@ -30,7 +30,7 @@ module.exports = {
 	},
 
 	async getNextLesson(courseId,order,connection){
-		const result = await database.query(`SELECT * FROM ${TBL_LESSONS} WHERE courseid = ${courseId} AND  order > ${order} ORDER BY id LIMIT 1`,connection);
-		return result;
+		const result = await database.query(`SELECT * FROM ${TBL_LESSONS} WHERE courseid = ${courseId} AND  ${TBL_LESSONS}.order > ${order} ORDER BY ${TBL_LESSONS}.order LIMIT 1`,connection);
+		return result[0];
 	}
 }

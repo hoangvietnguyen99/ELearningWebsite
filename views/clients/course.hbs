@@ -143,7 +143,12 @@
                         type: "PUT",
                         url: `${url}`,
                         data: JSON.stringify({pause: 0}),
-                        contentType: 'application/json'
+                        contentType: 'application/json',
+                        complete: function (result){
+                            if (result.redirectUrl != null) {
+                                window.location = result.redirectUrl;
+                            }
+                        }
                         /*** Note that The default content type of an ajax post is
                         urlencoded even though I didn't specify it in my post ***/
                         });
