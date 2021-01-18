@@ -2,20 +2,28 @@ const express = require('express');
 const router = express.Router();
 const courseModel = require('../models/course.model')
 const userModel = require('../models/user.model')
+const user_courseModel = require('../models/user_course.model');
 
 //Index
-router.get('/', async function(req, res, next) {
-    const topCourses = await courseModel.getTopCourses();
-    const topThreeCourses = await courseModel.getTopThreeGetsCountCoursesLastWeek();
-    const recentlyUploadCourses = await courseModel.getTopTenRecentlyUpload();
-    const teachers = await userModel.allByRole('TEACHER', 4)
-    res.render('clients/index', {
-        layout: 'layoutclient.hbs',
-        topCourses,
-        recentlyUploadCourses,
-        topThreeCourses,
-        teachers: teachers
-    });
+router.get('/', async function (req, res) {
+	const topCourses = await courseModel.getTopCourses();
+	const topThreeCourses = await courseModel.getTopThreeGetsCountCoursesLastWeek();
+	const recentlyUploadCourses = await courseModel.getTopTenRecentlyUpload();
+	const teachers = await userModel.allByRole('TEACHER', 4)
+	const userId = req.session.authUser ? req.session.authUser.id : null;
+	let [userCourseIds, userUploadIds] = await Promise.all([
+		userId ? user_courseModel.getCourseIdsByUserId(userId) : [],
+		userId ? courseModel.getCourseIdsByAuthorId(userId) : []
+	]);
+	res.render('clients/index', {
+		layout: 'layoutclient.hbs',
+		topCourses,
+		recentlyUploadCourses,
+		topThreeCourses,
+		userCourseIds,
+		userUploadIds,
+		teachers: teachers
+	});
 });
 // router.get('/detail/:id', async function(req, res, next) {
 //   detailController.getCourses(req,res,next);
