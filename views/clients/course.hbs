@@ -127,36 +127,36 @@
 <script>
     $(document).ready(function(){
         const players = Plyr.setup('.js-player');
-        console.log({{data.user_lesson.lessonorder}});
-        {{#if data.user_lesson.lessonorder}}
-            let k = {{data.user_lesson.lessonorder}};
-            console.log({{data.user_lesson.currentpause}});
-            players[k-1].on('loadeddata', event => {
-                players[k-1].currentTime =  {{data.user_lesson.currentpause}};
+        {{#if data.isAuthor}}
+            
+        {{else}}
+            {{#if data.user_lesson.lessonorder}}
+                players[0].on('loadeddata', event => {
+                    players[0].currentTime =  {{data.user_lesson.currentpause}};
+                });
+            {{/if}}
+        
+            $('video.js-player').on('play',function(){
+                let id = $(this).attr('data-id');
+                let courseid =  $(this).attr('data-courseid');
+                let order = $(this).attr('data-order');
+                players[0].on('pause', event => {
+                    $('form.time-pause-video input.timepause').attr('value',`${players[0].currentTime}`);
+                    const url = `/courses/${courseid}/lessons/${id}/${order}`;
+                    console.log(url);
+                    $.ajax({
+                        type: "PUT",
+                        url: `${url}`,
+                        data: JSON.stringify({ pause: `${players[0].currentTime}`}),
+                        contentType: 'application/json'
+                        /*** Note that The default content type of an ajax post is
+                        urlencoded even though I didn't specify it in my post ***/
+                        });
+                    console.log(players[0].currentTime);
+                });
+            return false;
             });
         {{/if}}
-        
-        $('video.js-player').on('play',function(){
-            let id = $(this).attr('data-id');
-            let courseid =  $(this).attr('data-courseid');
-            let order = $(this).attr('data-order');
-            players[order-1].on('pause', event => {
-                $('form.time-pause-video input.timepause').attr('value',`${players[order-1].currentTime}`);
-                const url = `/courses/${courseid}/lessons/${id}/${order}`;
-                console.log(url);
-                $.ajax({
-                    type: "PUT",
-                    url: `${url}`,
-                    data: JSON.stringify({ pause: `${players[order-1].currentTime}`}),
-                    contentType: 'application/json'
-                    /*** Note that The default content type of an ajax post is
-                    urlencoded even though I didn't specify it in my post ***/
-                    });
-                console.log(players[order-1].currentTime);
-            });
-        return false;
-        });
-        
         window.player = players;
     });
 </script>
@@ -174,6 +174,39 @@
                 	$("div.ratings div.stars").append(`<i class="fa fa-star">`);
             }
         })
+    </script>
+<script src = "/assets/client/js/input-validator.js">
+        
+    </script>
+    <script type = "text/javascript">
+        Validator({
+            form: '#add-lesson',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isNumber('#order', `<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Order must be an integer</strong>
+                            </div>`),
+                Validator.isRequired('#title',`<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Title can't empty</strong>
+                            </div>`)
+            ]
+        });
+
+        Validator({
+            form: '#edit-lesson',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isNumber('#order-edit', `<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Order must be an integer</strong>
+                            </div>`),
+                Validator.isRequired('#title-edit',`<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Title can't empty</strong>
+                            </div>`)
+            ]
+        });
+
     </script>
 {{/section}}
 {{#if data.thisCourse}}
@@ -255,33 +288,37 @@
                                     href="#collapseExample{{lesson.id}}" role="button" aria-expanded="false"
                                     aria-controls="collapseExample{{lesson.id}}">View
                                     Details</a>
-                                <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
-                                    data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
-                                    data-title="{{lesson.title}}" data-order = {{lesson.order}} data-des="{{lesson.description}}"
-                                    style="margin-left: 20px">
-                                    <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
-                                </a>
+                                {{#if ../data.isAuthor}}
+                                    <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
+                                        data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
+                                        data-title="{{lesson.title}}" data-order = {{lesson.order}} data-des="{{lesson.description}}"
+                                        style="margin-left: 20px">
+                                        <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
+                                    </a>
 
 
-                                <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
-                                    data-id="{{lesson.id}}" data-course="{{lesson.courseid}}" style="margin-left: 20px">
-                                    <img src="/assets/client/images/icon/del.png" style="width: 30px;">
-                                </a>
+                                    <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
+                                        data-id="{{lesson.id}}" data-course="{{lesson.courseid}}" style="margin-left: 20px">
+                                        <img src="/assets/client/images/icon/del.png" style="width: 30px;">
+                                    </a>
 
-                                <a class="add-video" href="#videoModal" data-toggle="modal" data-id="{{lesson.id}}"
-                                    data-courseid="{{lesson.courseid}}" role="button">
-                                    <img src="/assets/client/images/icon/video.png"
-                                        style="width: 50px; padding-left:15px">
-                                </a>
+                                    <a class="add-video" href="#videoModal" data-toggle="modal" data-id="{{lesson.id}}"
+                                        data-courseid="{{lesson.courseid}}" role="button">
+                                        <img src="/assets/client/images/icon/video.png"
+                                            style="width: 50px; padding-left:15px">
+                                    </a>
+                                {{/if}}
 
                             </li>
 
 
                             {{/each}}
                             {{/if}}
+                            {{#if data.isAuthor}}
                             <button class = "add-lesson btn btn-primary" type="button" data-toggle="modal" data-target="#lessonModal"
                                 style="margin-left:10px; margin-bottom: 50px;" data-id = "{{data.thisCourse.id}}">Add
                             </button>
+                            {{/if}}
                         </ul>
                     </div>
                 </div>
@@ -538,24 +575,32 @@
                         </div>
                         <div class="modal-body">
                             <form action="" method="POST" id = "add-lesson">
-                                <div class="lesson"
-                                    style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                    <div class="form-group">
-                                        <label for="name">Title</label>
-                                        <input type="input" name="title" id="title"
-                                            placeholder="ex: Introduction lesson" style="width: 100%;" value="">
-                                        <br><br>
-
-                                        <label for="name">Order</label>
-                                        <input type="input" name="order" id="order"
-                                            placeholder="ex: 1" style="width: 100%;" value="">
-                                        <br><br>
-
-                                        <label for="txtDesLesson">Description</label>
-                                        <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
-                                            value=""></textarea>
+                              
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input class = "form-control" type="input" name="title" id="title"
+                                        placeholder="ex: Introduction lesson" value="">
+                                    <br>
+                                    <div class="form-message">
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="order">Order</label>
+                                    <input class = "form-control" type="input" name="order" id="order"
+                                        placeholder="ex: 1" value="">
+                                    <br>
+                                <div class="form-message">
+                                </div>
+
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="txtDesLesson">Description</label>
+                                    <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
+                                        value=""></textarea>
+                                </div>
+
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
@@ -606,23 +651,29 @@
                         </div>
                         <div class="modal-body">
                             <form action="" method="POST" id="edit-lesson">
-                                <div class="lesson"
-                                    style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                    <div class="form-group">
-                                        <label for="title-edit">Title</label>
-                                        <input type="text" name="title" id="title-edit"
-                                            placeholder="ex: Introduction lesson" style="width: 100%;" value="">
-                                        <br><br>
-
-                                        <label for="order-edit">Title</label>
-                                        <input type="text" name="order" id="order-edit"
-                                            placeholder="ex: 1" style="width: 100%;" value="">
-                                        <br><br>
-
-                                        <label for="des-edit">Description</label>
-                                        <textarea class="txtDes" name="des" id="des-edit" cols="30"
-                                            rows="10"></textarea>
+                                <div class="form-group">
+                                    <label for="title-edit">Title</label>
+                                    <input class = "form-control" type="input" name="title" id="title-edit"
+                                        placeholder="ex: Introduction lesson" value="">
+                                    <br>
+                                    <div class="form-message">
                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="order-edit">Order</label>
+                                    <input class = "form-control" type="input" name="order" id="order-edit"
+                                        placeholder="ex: 1" value="">
+                                    <br>
+                                <div class="form-message">
+                                </div>
+
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <label for="des-edit">Description</label>
+                                    <textarea class="txtDes" name="des" id="des-edit" cols="30" rows="10"
+                                        value=""></textarea>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close

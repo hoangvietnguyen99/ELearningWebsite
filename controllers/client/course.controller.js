@@ -109,20 +109,34 @@ module.exports = {
 			userCourseIds = await user_courseModel.getCourseIdsByUserId(req.session.authUser.id);
 		}
 		const author = await userModel.getById(thisCourse.author);
-		const lessons = await lessonModel.getAllByCourseId(thisCourse.id);
+		let lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
-		const user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id);
+		const hasThisCourse = userCourseIds.includes(thisCourse.id);
+		const isAuthor = req.session.authUser ? req.session.authUser.id === author.id : false;
+		let user_lesson = null;
+		if(hasThisCourse){
+			user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id,req.params.id);
+			lessons = [lessons.find(lesson => lesson.id == user_lesson.currentlesson)];
+		} 
+		else {
+			if(!isAuthor){
+				lessons = [lessons[0]];
+				
+			}
+		}
+		console.log(lessons);
+		console.log(user_lesson);
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
 		res.render('clients/course', {
 			layout: 'layoutclient.hbs',
 			data: {
-				hasThisCourse: userCourseIds.includes(thisCourse.id),
+				hasThisCourse,
 				isInCart,
 				thisCourse,
 				author,
-				isAuthor: req.session.authUser ? req.session.authUser.id === author.id : false,
+				isAuthor,
 				lessons,
 				reviews,
 				user_lesson

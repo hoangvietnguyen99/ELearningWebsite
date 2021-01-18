@@ -15,8 +15,8 @@ module.exports = {
     const result = await database.update(currentpause,{userid: userId},TBL_USER_COURSE,connection);
     return result.changedRows;
   },
-  async getLessonIdByUserId(userId,connection){
-    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE userid = ${userId}`;
+  async getLessonIdByUserId(userId,courseId,connection){
+    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE userid = ${userId} AND courseid = ${courseId}`;
     const result = await database.query(query,connection);
     return result[0];
   }
