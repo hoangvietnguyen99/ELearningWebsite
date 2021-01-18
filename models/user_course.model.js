@@ -19,5 +19,11 @@ module.exports = {
     const query = `UPDATE ${TBL_USER_COURSE} SET ? WHERE ? AND ?`;
     const result = await database.queryWithCondition(query,[entity, {fieldid: fieldId}, {courseid: courseId}],  connection);
     return result.changedRows;
+  },
+  async getOne(userId, courseId, connection) {
+    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE ? AND ?`;
+    const rows = await database.queryWithCondition(query, [{userid: userId}, {courseid: courseId}], connection);
+    if (rows.length) return rows[0];
+    return null;
   }
 }
