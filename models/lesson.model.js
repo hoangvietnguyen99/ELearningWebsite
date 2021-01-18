@@ -27,5 +27,10 @@ module.exports = {
 	async updateVideoUrl(lessionID,url,connection){
 		const result = await database.update(url,{id: lessionID},TBL_LESSONS,connection);
 		return result.changedRows;
+	},
+
+	async getNextLesson(courseId,order,connection){
+		const result = await database.query(`SELECT * FROM ${TBL_LESSONS} WHERE courseid = ${courseId} AND  order > ${order} ORDER BY id LIMIT 1`,connection);
+		return result;
 	}
 }

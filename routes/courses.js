@@ -21,9 +21,12 @@ router.route('/:id/lessons')
 router.route('/:id/lessons/:lid')
 	.delete(lessonController.deleteLesson)
 	.put(lessonController.editLesson)
-	.post(lessonController.addVideo)
-	
+	.post(lessonController.addVideo);
 	
 router.route('/:id/lessons/:lid/:orderid')
-	.put(lessonController.saveCurrentimeVideo)
+	.put(lessonController.saveCurrentimeVideo);
+
+router.route('/:id/lessons/:lid/:orderid/ended')
+	.put(lessonController.endVideo)
+
 module.exports = router;

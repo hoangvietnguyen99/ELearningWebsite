@@ -3,6 +3,7 @@ const router = express.Router();
 const lessonsModel = require('../../models/lesson.model');
 const multer = require('multer');
 const user_courseModel = require('../../models/user_course.model');
+const lessonModel = require('../../models/lesson.model');
 
 exports.addLesson =  async function(req,res,next){
     const courseID = req.params.id;
@@ -76,6 +77,28 @@ exports.saveCurrentimeVideo = async function(req,res,next){
     currentpause: parseFloat(req.body.pause),
     lessonorder: parseInt(req.params.orderid),
   }
-  const result = await user_courseModel.updateTimePause(req.session.authUser.id,currentpause);
+  console.log(currentpause);
+  //console.log(req.body.pause);
+  const result = await user_courseModel.updateTimePause(req.session.authUser.id,req.params.id,currentpause);
   if(result!==null) console.log('Save time pause');
 };
+
+exports.endVideo = async function(req,res,next){
+  const processed = {
+    process: req.params.lid,
+    currentpause: parseFloat(req.body.pause)
+  }
+
+  const addAfterEnd = {
+    userid: req.session.authUser.id,
+    courseid: req.params.id,
+    process: req.params.lid
+
+  }
+  //console.log(req.params.id);
+  //console.log(req.params.orderid);
+  //const save = user_courseModel.setProcess(req.session.authUser.id,req.params.lid,req.params.id,processed);
+  //const add = lessonModel.getNextLesson(req.params.id,req.params.orderid);
+  //console.log(add);
+  //if(save!==null) console.log('Ended save');
+}

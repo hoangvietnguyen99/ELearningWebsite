@@ -135,24 +135,40 @@
                     players[0].currentTime =  {{data.user_lesson.currentpause}};
                 });
             {{/if}}
-        
-            $('video.js-player').on('play',function(){
-                let id = $(this).attr('data-id');
-                let courseid =  $(this).attr('data-courseid');
-                let order = $(this).attr('data-order');
-                players[0].on('pause', event => {
-                    $('form.time-pause-video input.timepause').attr('value',`${players[0].currentTime}`);
-                    const url = `/courses/${courseid}/lessons/${id}/${order}`;
-                    console.log(url);
-                    $.ajax({
+
+           
+            function updateEnd(){
+                const url = `/courses/{{data.thisCourse.id}}/lessons/{{data.lessons.0.id}}/{{data.lessons.0.order}}/ended`;
+                $.ajax({
                         type: "PUT",
                         url: `${url}`,
-                        data: JSON.stringify({ pause: `${players[0].currentTime}`}),
+                        data: JSON.stringify({pause: 0}),
                         contentType: 'application/json'
                         /*** Note that The default content type of an ajax post is
                         urlencoded even though I didn't specify it in my post ***/
                         });
+            };
+
+            function updatePause(timePause){
+                const url = `/courses/{{data.thisCourse.id}}/lessons/{{data.lessons.0.id}}/{{data.lessons.0.order}}`;
+                $.ajax({
+                        type: "PUT",
+                        url: `${url}`,
+                        data: JSON.stringify({pause: timePause}),
+                        contentType: 'application/json'
+                        /*** Note that The default content type of an ajax post is
+                        urlencoded even though I didn't specify it in my post ***/
+                        });
+            };
+
+            players[0].on('ended',event => {
+                updateEnd();
+            })
+
+            $('video.js-player').on('play',function(){
+                players[0].on('pause', event => {
                     console.log(players[0].currentTime);
+                    updatePause(players[0].currentTime);
                 });
             return false;
             });
@@ -276,7 +292,7 @@
                                             </video>
                                             {{!-- Start currentTime pause video --}}
                                             <form action ="" method = "POST" class="time-pause-video" data-id ="{{lesson.id}}" data-courseid="{{lesson.courseid}}">
-                                                <input type="text" name="pause"  class = "timepause" value="">
+                                                <input type="hidden" name="pause"  class = "timepause" value="">
                                             </form>
                                             {{!-- End currentTime pause video --}}
                                         </div>
