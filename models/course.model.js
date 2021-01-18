@@ -2,6 +2,9 @@ const database = require('../utils/database');
 const { addOne } = require('./carts_courses.model');
 
 const CartsCoursesModel = require('./carts_courses.model');
+const fieldModel = require('../models/field.model');
+const field_courseModel = require('../models/field_course.model');
+const user_courseModel = require('../models/user_course.model');
 
 const TBL_COURSES = 'courses';
 
@@ -10,23 +13,51 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES}`;
         return await database.queryWithLimit(query, connection, pageIndex, pageSize);
     },
-    async getAllAvailable(connection, pageIndex, pageSize, keyword, ids) {
-        let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
-        if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
-        if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
-        const countQuery = `SELECT COUNT(*) ` + queryTail;
-        if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
-        let [countResult, courses] = await Promise.all([
-          database.query(countQuery, connection),
-          database.query(`SELECT * ` + queryTail, connection)
-        ]);
-        return {
-            count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
-            courses
+    async getAllAvailable(connection, pageIndex, pageSize, keyword, searchType, ids) {
+        if (searchType == 2) {
+            let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
+            if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
+            if (keyword) queryTail += ` && MATCH(name) AGAINST('${keyword}')`;
+            const countQuery = `SELECT COUNT(*) ` + queryTail;
+            if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
+            let [countResult, courses] = await Promise.all([
+                database.query(countQuery, connection),
+                database.query(`SELECT * ` + queryTail, connection)
+            ]);
+            return {
+                count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
+                courses
+            }
+        } else {
+            let ids = []
+            const fields = await fieldModel.getWithFullTextSearch(keyword);
+            await Promise.all(fields.map(async field => {
+                const courseIds = await field_courseModel.getListCourseIdsByFieldId(field.id);
+                ids.push(...courseIds);
+            }));
+            ids = [...new Set(ids)];
+            let queryTail = `FROM ${TBL_COURSES} WHERE approvedby != 0`;
+            if (ids && ids.length > 0) queryTail += ` AND id IN (${ids.join(',')})`;
+            const countQuery = `SELECT COUNT(*) ` + queryTail;
+            if (pageIndex && pageSize) queryTail += ` LIMIT ${(pageIndex - 1) * pageSize}, ${pageSize}`
+            let [countResult, courses] = await Promise.all([
+                database.query(countQuery, connection),
+                database.query(`SELECT * ` + queryTail, connection)
+            ]);
+            return {
+                count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
+                courses
+            }
         }
     },
     async getById(id, connection) {
         const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id}`;
+        const courses = await database.query(query, connection);
+        if (courses.length === 0) return null;
+        return courses[0];
+    },
+    async getByIdAvailable(id, connection) {
+        const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id} AND approvedby != 0`;
         const courses = await database.query(query, connection);
         if (courses.length === 0) return null;
         return courses[0];
@@ -94,5 +125,15 @@ module.exports = {
     async getTopTenViewsCount(connection) {
         const query = 'SELECT * FROM courses ORDER BY viewscount DESC LIMIT 10';
         return await database.query(query, connection);
+    },
+    async getWatchListByUserId(userId, connection) {
+        const userCourses = await user_courseModel.getUserWatchList(userId, connection);
+        return await Promise.all(userCourses.map(async userCourse => {
+            const thisCourse = await this.getByIdAvailable(userCourse.courseid, connection);
+            if (thisCourse) {
+                thisCourse.userCourse = userCourse;
+                return thisCourse;
+            }
+        }));
     }
 }

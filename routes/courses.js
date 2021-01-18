@@ -9,14 +9,14 @@ router.route('/')
     .get(courseController.getAllAvailable);
 
 router.route('/:id')
-    .get(courseController.getCourse)
+    .get(courseController.getCourse);
 
 router.route('/:courseid/reviews')
     .post(isAuth, courseController.addReview);
 
 router.route('/:id/lessons')
 	.post(lessonController.addLesson)
-		
+
 
 router.route('/:id/lessons/:lid')
 	.delete(lessonController.deleteLesson)
@@ -28,5 +28,6 @@ router.route('/:id/lessons/:lid/:orderid')
 
 router.route('/:id/lessons/:lid/:orderid/ended')
 	.put(lessonController.endVideo)
+
 
 module.exports = router;

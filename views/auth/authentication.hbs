@@ -365,7 +365,7 @@
                 Validator.isRequired('#emailreg', 'Required'),
                 Validator.isEmail('#emailreg', 'Invalid email address'),
                 Validator.isRequired("#passwordreg", "Required"),
-                Validator.minLength("#passwordreg", 8, "Required"),
+                Validator.minLength("#passwordreg", 8, "Length must equal or longer than 8"),
                 Validator.isRequired("#passwordconfirmreg", "Required"),
                 Validator.isConfirmed("#passwordconfirmreg", function () {
                     return document.querySelector("#formRegister #passwordreg").value;
@@ -373,8 +373,11 @@
             ]
         });
 
-        document.querySelector("#email").addEventListener("focus", myFunction);
-        document.querySelector("#password").addEventListener("focus", myFunction);
+        document.querySelector("#emaillog").addEventListener("focus", myFunction);
+        document.querySelector("#passwordlog").addEventListener("focus", myFunction);
+        document.querySelector("#emailreg").addEventListener("focus", myFunction);
+        document.querySelector("#passwordreg").addEventListener("focus", myFunction);
+        document.querySelector("#passwordconfirmreg").addEventListener("focus", myFunction);
 
         function myFunction() {
             document.querySelector("#error").innerText = "";

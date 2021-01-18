@@ -12,6 +12,7 @@ module.exports = {
 		let keyword = req.query.keyword;
 		let pageIndex = req.query.pageIndex ? req.query.pageIndex : 1;
 		let pageSize = req.query.pageSize ? req.query.pageSize : 12;
+		const searchType = req.query.searchType;
 		let ids = null;
 		let title = null;
 		const categoryId = req.query.categoryid;
@@ -34,7 +35,7 @@ module.exports = {
 		}
 		const userId = req.session.authUser ? req.session.authUser.id : null;
 		let [coursesObject, userCourseIds, userUploadIds] = await Promise.all([
-			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, ids),
+			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, searchType, ids),
 			userId ? user_courseModel.getCourseIdsByUserId(userId) : [],
 			userId ? courseModel.getCourseIdsByAuthorId(userId) : []
 		]);
@@ -52,7 +53,8 @@ module.exports = {
 				totalPages,
 				userCourseIds,
 				userUploadIds,
-				keyword
+				keyword,
+				searchType
 			}
 		});
 	},
