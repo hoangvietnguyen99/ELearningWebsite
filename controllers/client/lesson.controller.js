@@ -106,5 +106,6 @@ exports.endVideo = async function(req,res,next){
     }
     const result = await user_courseModel.updateOne(update);
     console.log(result);
+    if(result!==null) return res.redirect('/courses/'+ req.params.id);
   }
 }
