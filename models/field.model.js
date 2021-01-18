@@ -1,6 +1,6 @@
 const database = require('../utils/database');
 const fieldCourseModel = require('../models/field_course.model');
-const CourseModel = require('../models/course.model');
+const courseModel = require('../models/course.model');
 
 const TBL_FIELDS = 'fields';
 
@@ -26,7 +26,7 @@ module.exports = {
 	async getAllCoursesByFieldId(fieldId, connection) {
 		const courseIds = await fieldCourseModel.getListCourseIdsByFieldId(fieldId, connection);
 		return await Promise.all(courseIds.map(async courseId => {
-			return await CourseModel.getById(courseId, connection);
+			return await courseModel.getById(courseId, connection);
 		}));
 	},
 	async getAllByIds(ids, connection) {
