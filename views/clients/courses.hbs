@@ -138,23 +138,26 @@ form.example::after {
                             class="text-theme-color-2 font-weight-400">{{#if data.title}}{{data.title}}{{else}}Tất cả khóa học{{/if}}</span></h2>
                 </div>
                 <div class="col-md-4">
-                    <div class="row">
-                        <form class="example" action="/courses" method="GET">
-                            <select name="searchType" class="form-select" aria-label="Default select example">
-                                <option value="1">Field name</option>
-                                <option value="2" selected>Course name</option>
-                            </select>
-                            <input type="text" placeholder="Search.." name="keyword">
-                            <button type="submit"><i class="fa fa-search"></i></button>
+                        <form class="example row" action="/courses" method="GET">
+                            <div class="col-md-5">
+                                <select style="height: 50px;"  name="searchType" class="form-select" aria-label="Default select example">
+                                    <option value="1">Field name</option>
+                                    <option value="2" selected>Course name</option>
+                                </select>
+                            </div>
+                            <div class="col-md-7">
+                                <input type="text" placeholder="Search.." name="keyword">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </div>
                         </form>
-                    </div>
+                        
                 </div>
             </div>
         </div>
-        <nav aria-label="...">
+        <nav aria-label="..." style="display: flex; align-items: center; flex-direction:row; justify-content:space-between">
             <ul class="pagination">
             </ul>
-            <div class="btn-group sort-btn" style="float: right;">
+            <div class="btn-group sort-btn page-item">
                 <button class="btn btn-primary" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort</button>
                 <button class="btn btn-primary dropdown-toggle" data-sort="none"><i class="fa fa-sort"></i></button><!-- .dropdown-toggle adds rounded borders and reduces padding. It does not trigger dropdowns. -->
                 <ul class="dropdown-menu">
