@@ -184,11 +184,8 @@
     <script>
         $(document).ready(function () {
             let courseRating = {{data.thisCourse.rating}};
-            $('div.ratings').append(`
-<span class="product-rating">${courseRating.toFixed(2)}</span><span>/5</span>
-<div class="stars"></div>
-<div class="rating-text"><span>{{data.thisCourse.commentscount}} ratings</span></div>
-            `);
+             $('div.ratings').append(`<span class="product-rating">${courseRating.toFixed(2)}</span><span>/5</span>
+<span class="product-rating">${courseRating.toFixed(2)}</span><span>/5</span>	                <div class="stars"></div><div class="rating-text"><span>{{data.thisCourse.commentscount}} ratings</span></div>`);
             for (let i = 1; i <= 5; i++) {
                 if (i <= Math.round(courseRating))
                 	$("div.ratings div.stars").append(`<i class="fa fa-star">`);

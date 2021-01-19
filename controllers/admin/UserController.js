@@ -4,7 +4,7 @@ const UserModel = require('../../models/admin/UserModel')
 
 exports.index = async(req, res, next) => {
     try {
-        const rows = await UserModel.all()
+        const rows = await UserModel.all(req.query)
         res.render('admin/users/index', {
             layout: 'layoutadmin.hbs',
             users: rows,
@@ -34,3 +34,4 @@ exports.postUpdate = async(req, res, next) => {
     const ret = await UserModel.update(req.body);
     res.redirect('/admin/user')
 }
+
