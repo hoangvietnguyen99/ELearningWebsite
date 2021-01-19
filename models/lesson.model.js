@@ -23,7 +23,7 @@ module.exports = {
 		const result = await database.delete({id: lessonId}, TBL_LESSONS, connection);
 		return result.affectedRows;
 	},
-	
+
 	async updateVideoUrl(lessionID,url,connection){
 		const result = await database.update(url,{id: lessionID},TBL_LESSONS,connection);
 		return result.changedRows;
@@ -31,6 +31,13 @@ module.exports = {
 
 	async getNextLesson(courseId,order,connection){
 		const result = await database.query(`SELECT * FROM ${TBL_LESSONS} WHERE courseid = ${courseId} AND  ${TBL_LESSONS}.order > ${order} ORDER BY ${TBL_LESSONS}.order LIMIT 1`,connection);
+		if (result.length === 0) return null;
+		return result[0];
+	},
+	async getLessonsByCourseIdAndOrder(courseId, order, connection) {
+		const query = `SELECT * FROM ${TBL_LESSONS} WHERE courseid = ${courseId} AND order = ${order}`;
+		const result = await database.query(query,connection);
+		if (result.length === 0) return null;
 		return result[0];
 	}
 }

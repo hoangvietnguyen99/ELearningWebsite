@@ -15,6 +15,9 @@ module.exports = function (app) {
       },
       isTeacher(role) {
         return role === 'TEACHER'
+      },
+      isAdmin(role) {
+        return role === 'ADMIN'
       }
     }
   }));
