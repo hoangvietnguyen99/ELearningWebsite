@@ -64,17 +64,19 @@ module.exports = {
 		connection.beginTransaction(async err => {
 			if (err) throw err;
 			try {
-				const thisCourse = courseModel.getById(req.params.courseid, connection);
+				const thisCourse = await courseModel.getById(req.params.courseid, connection);
 				if (!thisCourse) throw `Course not found: ${req.body.courseid}`;
-				if (!await userModel.hasCourseIdCheck(req.session.authUser.id, thisCourse.id, connection)) throw `User has not buy the course`;
+				let hasBuy = await userModel.hasCourseIdCheck(req.session.authUser.id, thisCourse.id, connection)
+				if (!hasBuy) throw `User has not buy the course`;
 				if (await reviewModel.hasRatedCheck(req.session.authUser.id, thisCourse.id, connection)) throw `User has reviewd, only one is allowed per user`;
 				const review = {
 					userid: req.session.authUser.id,
-					courseid: req.params.courseid,
+					courseid: parseInt(req.params.courseid),
 					createddat: new Date(),
 					point: parseFloat(req.body.point) || 5,
 					comment: req.body.comment
 				}
+				
 				const result = await reviewModel.addOne(review, connection);
 				if (result) {
 					const reviews = await reviewModel.getAllByCourseId(thisCourse.id, connection);
@@ -125,7 +127,8 @@ module.exports = {
 				author,
 				isAuthor: req.session.authUser ? req.session.authUser.id === author.id : false,
 				lessons,
-				reviews
+				reviews,
+				totalReview: reviews.length
 			}
 		});
 	},

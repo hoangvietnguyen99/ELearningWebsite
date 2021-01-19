@@ -4,10 +4,9 @@ const TBL_RATINGS = 'ratings';
 
 module.exports = {
   async addOne(entity, connection) {
-    const result = await database.add(entity, TBL_RATINGS, connection);
-    const rows = await database.query(`SELECT * FROM ${TBL_RATINGS} WHERE id = ${result.insertId}`);
-    if (rows.length === 0) return null;
-    return rows[0];
+    const query = `INSERT INTO ${TBL_RATINGS} SET ?`
+    const rows = await database.queryWithCondition(query, entity, connection);
+    return rows.affectedRows != 0;
   },
   async getAllByCourseId(courseId, connection) {
     const query = `SELECT * FROM ${TBL_RATINGS} WHERE courseid = ${courseId}`;
@@ -16,7 +15,8 @@ module.exports = {
   async hasRatedCheck(userId, courseId, connection) {
     const query = `SELECT * FROM ${TBL_RATINGS} WHERE userid = ${userId} AND courseid = ${courseId}`;
     const rows = await database.query(query,connection);
-    return rows.length === 0;
+    
+    return rows.length > 0;
 
   }
 }
