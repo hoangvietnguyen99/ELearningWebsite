@@ -126,7 +126,7 @@ module.exports = {
 				
 			}
 		}
-		//console.log(lessons);
+		console.log(lessons);
 		//console.log(user_lesson);
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;

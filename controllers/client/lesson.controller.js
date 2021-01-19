@@ -72,14 +72,14 @@ exports.addVideo =  async function(req,res,next ){
 };
 
 exports.saveCurrentimeVideo = async function(req,res,next){
-  const pause = await user_courseModel.getOne(req.session.authUser.id,req.params.id);
   const currentpause = {
-    userid: pause.userid,
-    courseid: pause.courseid,
-    currentlesson: pause.currentlesson,
+    userid: req.session.authUser.id,
+    courseid: req.params.id,
+    currentlesson: req.params.lid,
     currentpause: parseFloat(req.body.pause),
-    lessonorder: parseInt(pause.lessonorder)
+    lessonorder: parseInt(req.params.orderid)
   }
+  console.log(currentpause);
   const result = await user_courseModel.updateOne(currentpause);
   if(result!==null) console.log('Save time pause');
   

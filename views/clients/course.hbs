@@ -92,11 +92,9 @@
     $('a.edit-lesson').on('click', function () {
         let id = $(this).attr('data-id');
         let title = $(this).attr('data-title');
-        let order = $(this).attr('data-order');
         let des = $(this).attr('data-des');
         let courseId = $(this).attr('data-courseid');
         $('#edit-lesson #title-edit').attr('value', `${title}`);
-        $('#edit-lesson #order-edit').attr('value', `${order}`);
         tinymce.get('des-edit').setContent(des);
         $('form#edit-lesson').on('submit', function () {
              $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
@@ -206,9 +204,6 @@
             formGroupSelector: '.form-group',
             errorSelector: '.form-message',
             rules: [
-                Validator.isNumber('#order', `<div class="alert alert-warning" role="alert">
-                                <strong class = "form-message">Order must be an integer</strong>
-                            </div>`),
                 Validator.isRequired('#title',`<div class="alert alert-warning" role="alert">
                                 <strong class = "form-message">Title can't empty</strong>
                             </div>`)
@@ -220,9 +215,6 @@
             formGroupSelector: '.form-group',
             errorSelector: '.form-message',
             rules: [
-                Validator.isNumber('#order-edit', `<div class="alert alert-warning" role="alert">
-                                <strong class = "form-message">Order must be an integer</strong>
-                            </div>`),
                 Validator.isRequired('#title-edit',`<div class="alert alert-warning" role="alert">
                                 <strong class = "form-message">Title can't empty</strong>
                             </div>`)
@@ -505,15 +497,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="order">Order</label>
-                                        <input class = "form-control" type="input" name="order" id="order"
-                                            placeholder="ex: 1" value="">
-                                        <br>
-                                    <div class="form-message">
-                                    </div>
-
-                                    </div>
+                                    
                                         
                                     <div class="form-group">
                                         <label for="txtDesLesson">Description</label>
@@ -580,16 +564,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="order-edit">Order</label>
-                                        <input class = "form-control" type="input" name="order" id="order-edit"
-                                            placeholder="ex: 1" value="">
-                                        <br>
-                                    <div class="form-message">
-                                    </div>
-
-                                    </div>
-                                        
                                     <div class="form-group">
                                         <label for="des-edit">Description</label>
                                         <textarea class="txtDes" name="des" id="des-edit" cols="30" rows="10"
