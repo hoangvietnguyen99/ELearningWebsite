@@ -59,6 +59,7 @@ module.exports = {
 		const thisCart = await this.getByUserId(userId, connection);
 		if (thisCart.courses.length === 0) return false;
 		const thisUser = await UserModel.getById(userId);
+		if (!thisUser.isvalid) throw 'Please confirm your email before checkout'
 		thisUser.purchasedcount += thisCart.courses.length;
 		thisUser.totalmoneyspend += thisCart.total;
 		const paidDate = new Date();

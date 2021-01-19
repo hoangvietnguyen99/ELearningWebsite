@@ -19,6 +19,13 @@
                                     <a class="text-white" href="/admin">Admin page</a>
                                 </li>
                             {{/if}}
+                            {{#if authUser.isvalid}}
+                            {{else}}
+                                <li class="text-white">|</li>
+                                <li>
+                                    <a class="text-white" href="/users/otp">Resend email OTP</a>
+                                </li>
+                            {{/if}}
                         {{else}}
                             <li>
                                 <a class="text-white" href="/auth">Login Or Register</a>
