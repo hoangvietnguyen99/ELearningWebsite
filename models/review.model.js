@@ -9,7 +9,7 @@ module.exports = {
     return rows.affectedRows != 0;
   },
   async getAllByCourseId(courseId, connection) {
-    const query = `SELECT * FROM ${TBL_RATINGS} WHERE courseid = ${courseId}`;
+    const query = `SELECT * FROM ${TBL_RATINGS} LEFT JOIN users ON ${TBL_RATINGS}.userid = users.id WHERE courseid = ${courseId} `;
     return await database.query(query,connection);
   },
   async hasRatedCheck(userId, courseId, connection) {

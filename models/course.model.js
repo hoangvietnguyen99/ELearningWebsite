@@ -134,7 +134,7 @@ module.exports = {
             const timeDiff = today.getTime() - course.uploaddate.getTime();
             const dateDiff = Math.floor(timeDiff / (1000*60*60*24));
             if (dateDiff === 0) {
-                couses.uploaddate = 'JUST NOW'
+                courses.uploaddate = 'JUST NOW'
             } else course.uploaddate = dateDiff + ' days ago';
             return course;
         })
