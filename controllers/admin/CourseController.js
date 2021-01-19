@@ -2,14 +2,21 @@ const express = require('express');
 const router = express.Router();
 const UserModel = require('../../models/admin/UserModel')
 const CourseModel = require('../../models/admin/CourseModel')
+const FieldModel = require('../../models/admin/FieldModel');
+const { json } = require('body-parser');
 
 exports.index = async(req, res, next) => {
     try {
-        const rows = await CourseModel.all()
+        const fields = await FieldModel.all() 
+        const teachers = await UserModel.getByRole('TEACHER')
+        const rows = await CourseModel.all(req.query)
+        
         res.render('admin/courses/index', {
             layout: 'layoutadmin.hbs',
             courses: rows,
-            empty: rows.length === 0,
+            fields: fields,
+            teachers: teachers,
+            //empty: rows.length === 0,
             title: 'Course'
         });
     } catch (error) {
@@ -17,23 +24,26 @@ exports.index = async(req, res, next) => {
     }
 }
 
-exports.getUpdate = async(req, res, next) => {
-    const user = await UserModel.single(req.params.id)
-    if (user === null) {
-        return res.redirect('/admin/user')
-    }
-
-    res.render('admin/users/update', {
-        layout: 'layoutadmin.hbs',
-        user: user,
-        title: 'Update Role & Status'
-    });
-}
 
 exports.postUpdate = async(req, res, next) => {
-    // console.log(req.body)
-    const ret = await UserModel.update(req.body);
-    res.redirect('/admin/user')
+    try{
+        var data = {}
+        var result = {status: true}
+        data.id = req.params.id
+        if(req.body.status == 'disabled')
+            data.approvedby = null
+        else
+        {
+            data.approvedby = req.session.authUser.id
+            result.approvedbyname = req.session.authUser.fullname
+        }
+        await CourseModel.update(data)
+        return res.end(JSON.stringify(result))
+    }catch
+    {
+        return res.end(JSON.stringify({status: false}))
+    }
+
 }
 
 exports.approve = async(req, res, next) => {
@@ -46,3 +56,4 @@ exports.approve = async(req, res, next) => {
 
     res.redirect('/admin/course')
 }
+

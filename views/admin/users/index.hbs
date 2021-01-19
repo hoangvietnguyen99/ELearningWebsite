@@ -13,31 +13,39 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row search-row-custom">
-                        {{!-- Menu Top Left --}}
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label class="control-label">Role</label>
-                                <select name="visible" class="form-control select2">
-                                    <option value="1">Admin</option>
-                                    <option value="2">Teacher</option>
-                                    <option value="3">Student</option>
-                                </select>
+                    <form action="/admin/user" method="GET">
+                        <div class="row search-row-custom">
+                            {{!-- Menu Top Left --}}
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label class="control-label">Role</label>
+                                    <select name="role" class="form-control select2">
+                                        <option value="ALL">All</option>
+                                        <option value="ADMIN">Admin</option>
+                                        <option value="TEACHER">Teacher</option>
+                                        <option value="STUDENT">Student</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-2"></div>
-                        {{!-- end Menu Top Left --}}
+                            <div class="col-sm-1">
+                                        <button onclick="window.location.href='/admin/user'" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i>
+                                        </button>
+                            </div>
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-2"></div>
+                            {{!-- end Menu Top Left --}}
 
-                        {{!-- Menu Top Right --}}
-                        <div class="col-sm-6 ">
-                            <div class="search-box search-group-custom float-right">
-                                <input type="text" class="form-control " placeholder="Search">
-                                <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                            {{!-- Menu Top Right --}}
+                            <div class="col-sm-6 ">
+                                <div class="search-box search-group-custom float-right">
+                                    <input type="text" class="form-control " placeholder="Search">
+                                    <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                                </div>
                             </div>
+                            {{!-- end Menu Top Right --}}
                         </div>
-                        {{!-- end Menu Top Right --}}
-                    </div>
+                    </form>    
                     <div style="margin: 10px 0px;">
                         {{!-- Menu Right --}}
                         {{!-- <div class="float-right">
@@ -103,7 +111,7 @@
                                         <td class="text-center">{{{address}}}</td>
                                         <td class="text-center">{{{status}}}</td>
                                         <td class=" text-center">
-                                            <a href="/admin/user/update/{{{id}}}"<i class="mdi mdi-pencil font-size-12"></i></a>
+                                            <a href="/admin/user/update/{{{id}}}"<i class="mdi mdi-pencil font-size-14"></i></a>
                                         </td>
                                     </tr>
                                 {{/each}}
