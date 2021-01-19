@@ -2,8 +2,11 @@ const db = require('../../utils/database')
 const tableName = 'users'
 
 module.exports = {
-    all() {
-        return db.query(`SELECT * from ${tableName}`)
+    all(params) {
+        if(params.role && params.role != 'ALL')
+            return db.query(`SELECT * FROM ${tableName} WHERE role='${params.role}'`)
+        else
+            return db.query(`SELECT * from ${tableName}`)
     },
     async single(id) {
         const rows = await db.query(`SELECT * FROM ${tableName} WHERE id = ${id}`)
@@ -17,4 +20,7 @@ module.exports = {
         delete entity.id
         db.update(entity, condition, tableName)
     },
+    getByRole(rolename){
+        return db.query(`SELECT * FROM ${tableName} WHERE role='${rolename}'`)
+    }
 }
