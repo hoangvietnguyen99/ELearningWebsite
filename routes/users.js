@@ -30,4 +30,10 @@ router.route('/detail/edit/:id')
     await userController.updateUser(req, res, next)
 });
 
+const courseController = require('../controllers/client/course.controller');
+
+router.route('/:id/watch-list')
+  .post(courseController.addToWatchList)
+  .delete(courseController.removeFromWatchList);
+
 module.exports = router;

@@ -473,17 +473,56 @@
 <!-- Section: About -->
 <section>
     <div class="container">
-        <div class="section-content">
-            <div class="row">
-                {{#each topThreeCourses}}
-                    <div class="col-sm-6 col-md-4 maxwidth500 mb-sm-40 wow fadeInUp" data-margin-top="-140px"
-                         data-wow-duration="1s" data-wow-delay="0.1s">
-                        <img class="img-fullwidth" src="/assets/client/images/courses/{{{this.id}}}.png" alt="" onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
-                        <div class="bg-lighter border-1px p-20 pt-0 mb-sm-180">
-                            <h4 class="font-weight-700 mt-20">{{{this.name}}}</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero omnis unde nesciunt?</p>
-                            <a href="/courses/{{{this.id}}}" class="btn btn-sm btn-theme-colored">More detail</a>
-                        </div>
+        <div class="section-content text-center">
+<!--            <div class="row">-->
+<!--                {{#each topThreeCourses}}-->
+<!--                    <div class="col-sm-6 col-md-4 maxwidth500 mb-sm-40 wow fadeInUp" data-margin-top="-140px"-->
+<!--                         data-wow-duration="1s" data-wow-delay="0.1s">-->
+<!--                        <img class="img-fullwidth" src="/assets/client/images/courses/{{{this.id}}}.png" alt="" onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">-->
+<!--                        <div class="bg-lighter border-1px p-20 pt-0 mb-sm-180">-->
+<!--                            <h4 class="font-weight-700 mt-20">{{{this.name}}}</h4>-->
+<!--                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero omnis unde nesciunt?</p>-->
+<!--                            <a href="/courses/{{{this.id}}}" class="btn btn-sm btn-theme-colored">More detail</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                {{/each}}-->
+<!--            </div>-->
+            <h2 class="title font-30 text-theme-colored mt-30 mb-20">Top 5 of the week</h2>
+            <div class="owl-carousel-3col" data-nav="true">
+                {{#each topFiveCourses}}
+                    <div class="item">
+                        <article class="post clearfix maxwidth600 mb-sm-30">
+                            <div class="entry-header">
+                                <div class="post-thumb thumb">
+                                    <img src="/assets/client/images/courses/{{{this.id}}}.png" alt="course pic"
+                                                                   class="img-responsive img-fullwidth"
+                                                                   onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
+                                </div>
+                                <div class="entry-meta meta-absolute text-center pl-15 pr-15">
+                                    <div class="display-table">
+                                        <div class="display-table-cell">
+                                            <ul>
+                                                <li><a class="text-white" href="#"><i class="fa fa-eye"></i>
+                                                    {{{this.viewscount}}} <br> views</a></li>
+                                                <li><a class="text-white" href="#"><i class="fa fa-download"></i>
+                                                    {{{this.getscount}}} <br> enrolls</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="entry-content border-1px p-20">
+                                <h5 class="entry-title mt-0 pt-0"><a href="/courses/{{{this.id}}}">{{{this.name}}}</a></h5>
+                                <p class="text-left mb-20 mt-15 font-13">Lorem ipsum dolor sit amet, consectetur
+                                    adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p>
+                                <a class="btn btn-flat btn-dark btn-theme-colored btn-sm pull-left" href="/courses/{{{this.id}}}">View detail</a>
+                                <ul class="list-inline entry-date pull-right font-12 mt-5">
+                                    <li><a class="text-theme-colored" href="#">{{{format this.price}}} VND |</a></li>
+                                    <li><span class="text-theme-colored">Rating {{{format this.rating}}}</span></li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                        </article>
                     </div>
                 {{/each}}
             </div>

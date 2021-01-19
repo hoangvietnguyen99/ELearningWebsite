@@ -26,13 +26,13 @@ module.exports = {
     return result.changedRows;
   },
   async getOne(userId, courseId, connection) {
-    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE ? AND ?`;
-    const rows = await database.queryWithCondition(query, [{userid: userId }, {courseid: courseId }], connection);
+    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE userid = ${userId} AND courseid = ${courseId}`;
+    const rows = await database.query(query, connection);
     if (rows.length) return rows[0];
     return null;
   },
   async getOneByLessonID(userId, courseId, lessonId ,connection){
-    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE ? AND ?`;
+    const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE ? AND ? AND ?`;
     const rows = await database.queryWithCondition(query, [{userid: userId }, {courseid: courseId},{lessonid: lessonId}], connection);
     if (rows.length) return rows[0];
     return null;

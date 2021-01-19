@@ -1,5 +1,4 @@
 const database = require('../utils/database');
-const { getAllCourses } = require('./cart.model');
 const courseModel = require('./course.model');
 const user_courseModel = require('./user_course.model');
 
