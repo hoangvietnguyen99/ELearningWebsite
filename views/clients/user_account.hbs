@@ -1,0 +1,94 @@
+{{#section 'css'}}
+ <link rel="stylesheet"
+          href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006288/BBBootstrap/choices.min.css?version=7.0.0">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+
+    <style>
+        .field-icon {
+            float: right;
+            margin-left: -25px;
+            margin-top: -25px;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+
+{{/section}}
+
+{{#section 'js'}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.0.9/js/fileinput.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
+                referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#des',
+            height: 600,
+            plugins: 'paste image link autolink lists table media',
+            menubar: false,
+            toolbar: [
+                'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            ],
+            setup: function (editor) {
+            editor.on('init', function (e) {
+                let des = `{{{user.teachingdescription}}}`;
+                editor.setContent(des);
+            });
+            }
+        });
+        
+        $('#fuMain').fileinput({
+            theme: 'fa',
+            dropZoneEnabled: false,
+            allowedFileExtensions: ['png', 'jpg', 'gif'],
+        });
+
+        $(".toggle-password").click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+                var input = $($(this).attr("toggle"));
+                if (input.attr("type") == "password") {
+                    input.attr("type", "text");
+                } else {
+                    input.attr("type", "password");
+                }
+        });
+
+        function validation(element)
+        {
+            let password = $('#password-field').val()
+            let repassword = $('#repassword').val()
+            if(password == repassword)
+            {
+                $('#labelvalidation').attr('hidden', true)
+                $('#updatebtn').prop('disabled', false)
+            }
+        }
+
+    </script>
+    
+{{/section}}
+
+<section style = "margin:100px">
+    <div class = "container-form" style = "border: solid 1px; padding: 20px;">
+        <form action="/users/account/edit/{{{user.id}}}" method="POST" id = "user-form">
+            <div class="form-group">
+                <label for="fullname" style = "color: gray">Email</label>
+                <input type="text" name = "email" class="form-control" id="fullname" placeholder="Full name" value="{{user.email}}">
+            </div>
+            <div class="form-group">
+                <label for="fullname" style = "color: gray">Password</label>
+                <input type="password" name = "password" class="form-control" id="password-field"  value="{{user.password}}">
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            </div>
+            <div class="form-group">
+                <label for="fullname" style = "color: gray">Password</label>
+                <input type="password" onchange="validation(this)" name = "repassword" class="form-control" id="repassword" placeholder="RePassword">
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+            </div>
+            <label id='labelvalidation' for="repassword" style="color: tomato;">Mật khẩu nhập lại không đúng</label>
+            <br>
+            <button id='updatebtn' type="submit" disabled="disabled" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</section>

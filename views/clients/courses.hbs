@@ -173,21 +173,23 @@ form.example::after {
             <div id="sortThis" class="row">
                 {{#each data.courses}}
                     <div class="col-md-3 col-sm-6 p-10 courseCard">
-                        <div class="item" style="object-fit: fill">
+                        <div class="item">
                             <div class="service-block bg-white">
                                 <div class="thumb"><img alt="featured project" src="/assets/client/images/courses/{{this.id}}.png"
                                                         class="img-fullwidth" height="150"
                                     onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                                     <h4 class="text-white mt-0 mb-0"><span class="price" {{#if this.discount}}style="text-decoration-line: line-through;"{{/if}}>{{format this.price}} VND</span></h4>
                                 </div>
-                                <div class="content text-left flip p-25 pt-0 actionButton" style="min-height: 35vh" data-id="{{{this.id}}}">
+                                <div class="content text-left flip p-25 pt-0" style="min-height: 22vh">
                                     <h4 style="height: 55px;" class="name line-bottom mb-10">{{this.name}}</h4>{{#if this.discount}}- {{this.discount.percent}}
                                     <i class="fa fa-percent" aria-hidden="true"></i> | New price: {{format this.newPrice}} VND{{/if}}
                                     {{#if this.isTopCourse}}<div><b>TOP TEN POPULAR COURSES</b></div>{{/if}}
                                     {{#if this.isTopTenRecentUpload}}<div><strong>RECENTLY UPLOAD</strong></div>{{/if}}
-                                    <p>{{{this.tinydes}}}</p>
+                                    <p style="height: 35px;">{{{this.tinydes}}}</p>
+                                </div>
+                                <div class="content text-left flip p-25 pt-0 actionButton" data-id="{{{this.id}}}">
                                     <a style="height: 35px;" class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
-                                        href="/courses/{{this.id}}">view details</a>
+                                       href="/courses/{{this.id}}">view details</a>
                                 </div>
                             </div>
                         </div>

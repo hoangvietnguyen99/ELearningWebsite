@@ -16,9 +16,7 @@
                     <h5 class="mt-5 text-theme-color-2">{{{user.role}}}</h5>
                     <p>{{{user.teachingdescription}}}</p>
                     <ul class="styled-icons icon-dark icon-theme-colored icon-sm mt-15 mb-0">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-skype"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <button onclick="window.location.href='/users/account/edit/{{{authUser.id}}}'" class="btn btn-success">Chỉnh sửa thông tin tài khoản</button>
                     </ul>
                 </div>
             </div>
