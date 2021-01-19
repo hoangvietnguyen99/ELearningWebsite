@@ -8,8 +8,7 @@ module.exports = {
         users2.fullname as approvedbyname, users2.id as approvedbyid from ${tableName} 
         left join users as users1 on courses.author = users1.id 
         left join users as users2 on courses.approvedby = users2.id`
-        console.log(params)
-       
+
         if(params.category && params.teacher == 'all')
         {
             query += ` left join field_course on courses.id = field_course.courseid

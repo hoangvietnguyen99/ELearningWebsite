@@ -25,7 +25,6 @@ module.exports = {
     update(entity) {
         const condition = { id: entity.id };
         delete entity.id
-        console.log(entity)
         db.update(entity, condition, tableName)
     },
     courses(id) {

@@ -342,10 +342,10 @@
                                     <div class="media">
                                         <div class="media-body">
                                             <div class="reviews-members-header">
-                                                <p class="text-gray">{{{fullname}}} - {{{createddat}}}</p>
+                                                <p class="text-gray">{{{fullname}}} - {{{formatDate createddat}}}</p>
                                             </div>
                                             <div class="reviews-members-body">
-                                                <p>{{{comment}}}</p>
+                                                <p><i class="fa fa-star fa-2x" aria-hidden="true">{{{point}}}</i>{{{comment}}}</p>
                                             </div>
 
                                         </div>
@@ -373,7 +373,7 @@
                             </ul>
                         </div>
                         <div class="price">
-                            <ins><span class="amount">{{data.thisCourse.price}} VND</span></ins>
+                            <ins><span class="amount">{{format data.thisCourse.price}} VND</span></ins>
                         </div>
                         <div class="short-description">
                             <p>{{{data.thisCourse.description}}}</p>
@@ -412,6 +412,8 @@
                     </div>
 
                     {{#if data.hasThisCourse}}
+                        {{#if data.hasReviewed}}
+                        {{else}}
                         <form method="POST" action="/courses/{{{data.thisCourse.id}}}/reviews">
                             <div>
                                 <div class="feedeback">
@@ -425,6 +427,7 @@
                                 </div>
                             </div>
                         </form>
+                        {{/if}}
                     {{/if}}
 
 
