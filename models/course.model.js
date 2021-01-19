@@ -2,6 +2,8 @@ const database = require('../utils/database');
 
 const CartsCoursesModel = require('./carts_courses.model');
 const user_courseModel = require('../models/user_course.model');
+const course_discountModel = require('../models/course_discount.model');
+const discountModel = require('../models/discount.model');
 
 const TBL_COURSES = 'courses';
 
@@ -28,6 +30,18 @@ module.exports = {
 			database.query(countQuery, connection),
 			database.query(`SELECT * ` + queryTail, connection)
 		]);
+		for (const course of courses) {
+			const discountIds = await course_discountModel.getDiscountIdsByCourseId(course.id);
+			const discounts = await Promise.all(discountIds.map(async id => {
+				const discount = await discountModel.getValidById(id);
+				if (discount) return discount;
+			}));
+			if (discounts.length) {
+				course.discount = discounts[0];
+				course.discountAmount = Math.floor((course.discount.percent * course.price)/100);
+				course.newPrice = course.price - course.discountAmount;
+			}
+		}
 		return {
 			count: countResult[0] ? countResult[0]['COUNT(*)'] : 0,
 			courses
@@ -37,13 +51,35 @@ module.exports = {
 		const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id}`;
 		const courses = await database.query(query, connection);
 		if (courses.length === 0) return null;
-		return courses[0];
+		const course = courses[0];
+		const discountIds = await course_discountModel.getDiscountIdsByCourseId(course.id);
+		const discounts = await Promise.all(discountIds.map(async id => {
+			const discount = await discountModel.getValidById(id);
+			if (discount) return discount;
+		}));
+		if (discounts.length) {
+			course.discount = discounts[0];
+			course.discountAmount = Math.floor((course.discount.percent * course.price)/100);
+			course.newPrice = course.price - course.discountAmount;
+		}
+		return course;
 	},
 	async getByIdAvailable(id, connection) {
 		const query = `SELECT * FROM ${TBL_COURSES} WHERE id = ${id} AND approvedby != 0`;
 		const courses = await database.query(query, connection);
 		if (courses.length === 0) return null;
-		return courses[0];
+		const course = courses[0];
+		const discountIds = await course_discountModel.getDiscountIdsByCourseId(course.id);
+		const discounts = await Promise.all(discountIds.map(async id => {
+			const discount = await discountModel.getValidById(id);
+			if (discount) return discount;
+		}));
+		if (discounts.length) {
+			course.discount = discounts[0];
+			course.discountAmount = Math.floor((course.discount.percent * course.price)/100);
+			course.newPrice = course.price - course.discountAmount;
+		}
+		return course;
 	},
 	async getAllByCartId(cartId, connection) {
 		const courseIds = await CartsCoursesModel.getListCourseIdsByCartId(cartId, connection);
@@ -118,7 +154,7 @@ module.exports = {
 			const timeDiff = today.getTime() - course.uploaddate.getTime();
 			const dateDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
 			if (dateDiff === 0) {
-				courses.uploaddate = 'JUST NOW'
+				course.uploaddate = 'JUST TODAY'
 			} else course.uploaddate = dateDiff + ' days ago';
 			return course;
 		})

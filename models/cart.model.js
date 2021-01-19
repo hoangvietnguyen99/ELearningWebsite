@@ -31,7 +31,9 @@ module.exports = {
 		if (!added) return 0;
 		if (!thisCourse.price) return 1;
 		thisCart.amount += thisCourse.price;
-		thisCart.total += thisCourse.price;
+		if (thisCourse.discountAmount)
+			thisCart.discountamount += thisCourse.discountAmount;
+		thisCart.total += thisCourse.price - (thisCourse.discountAmount ? thisCourse.discountAmount : 0);
 		return await this.update(thisCart, connection);
 	},
 	async removeCourse(userId, courseId, connection) {
@@ -42,7 +44,9 @@ module.exports = {
 		if (!removed) return 0;
 		if (!found.price) return 1;
 		thisCart.amount -= found.price;
-		thisCart.total -= found.price;
+		if (found.discountAmount)
+			thisCart.discountamount -= found.discountAmount;
+		thisCart.total -= (found.newPrice ? found.newPrice : found.price);
 		return await this.update(thisCart, connection);
 	},
 	/**

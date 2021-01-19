@@ -7,10 +7,12 @@ const user_courseModel = require('../models/user_course.model');
 
 //Index
 router.get('/', async function (req, res) {
-	const topCourses = await courseModel.getTopCourses();
-	const topFiveCourses = await courseModel.getTopFiveGetsCountCoursesLastWeek();
-	const topFiveFields = await fieldModel.getTopFiveFieldsOfTheWeek();
-	const recentlyUploadCourses = await courseModel.getTopTenRecentlyUpload();
+	const [topCourses, topFiveCourses, topFiveFields, recentlyUploadCourses] = await Promise.all([
+		courseModel.getTopCourses(),
+		courseModel.getTopFiveGetsCountCoursesLastWeek(),
+		fieldModel.getTopFiveFieldsOfTheWeek(),
+		courseModel.getTopTenRecentlyUpload(),
+	]);
 	const teachers = await userModel.allByRole('TEACHER', 4)
 	const userId = req.session.authUser ? req.session.authUser.id : null;
 	let [userCourseIds, userUploadIds] = await Promise.all([
