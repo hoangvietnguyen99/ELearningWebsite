@@ -33,7 +33,7 @@ module.exports = {
   },
   async getOneByLessonID(userId, courseId, lessonId ,connection){
     const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE ? AND ? AND ?`;
-    const rows = await database.queryWithCondition(query, [{userid: userId }, {courseid: courseId},{lessonid: lessonId}], connection);
+    const rows = await database.queryWithCondition(query, [{userid: userId }, {courseid: courseId},{currentlesson: lessonId}], connection);
     if (rows.length) return rows[0];
     return null;
   },

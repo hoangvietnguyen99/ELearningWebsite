@@ -144,9 +144,10 @@
                         url: `${url}`,
                         data: JSON.stringify({pause: 0}),
                         contentType: 'application/json',
-                        complete: function (result){
-                            if (result.redirectUrl != null) {
-                                window.location = result.redirectUrl;
+                        success: function(response) {
+                            if (response.result == 'redirect') {
+                            //redirecting to main page from here.
+                            window.location.replace(response.url);
                             }
                         }
                         /*** Note that The default content type of an ajax post is
