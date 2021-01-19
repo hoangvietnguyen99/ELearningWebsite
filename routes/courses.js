@@ -11,17 +11,24 @@ router.route('/')
 router.route('/:id')
     .get(courseController.getCourse);
 
+router.route('/:id/lessons')
+	.post(lessonController.addLesson);
+	
 router.route('/:courseid/reviews')
     .post(isAuth, courseController.addReview);
 
-router.route('/:id/lessons')
-	.post(lessonController.addLesson)
+
 
 
 router.route('/:id/lessons/:lid')
-	.delete(lessonController.deleteLesson)
 	.put(lessonController.editLesson)
-	.post(lessonController.addVideo)
+	.post(lessonController.addVideo);
+	
+router.route('/:id/lessons/:lid/:orderid')
+	.put(lessonController.saveCurrentimeVideo);
+
+router.route('/:id/lessons/:lid/:orderid/ended')
+	.put(lessonController.endVideo)
 
 
 module.exports = router;

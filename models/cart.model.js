@@ -1,9 +1,9 @@
 const database = require('../utils/database');
-const CourseModel = require("./course.model");
 const CartsCoursesModel = require("./carts_courses.model");
 const UserModel = require("./user.model");
 const courseModel = require('./course.model');
 const user_courseModel = require('./user_course.model');
+const lessonModel = require('./lesson.model');
 const field_courseModel = require('./field_course.model');
 const fieldModel = require('./field.model');
 
@@ -25,7 +25,7 @@ module.exports = {
 		if (found) return 0;
 		found = thisCart.courses.find(course => course.id === courseId);
 		if (found) return 0;
-		const thisCourse = await CourseModel.getById(courseId, connection);
+		const thisCourse = await courseModel.getById(courseId, connection);
 		if (!thisCourse) return 0;
 		const added = await CartsCoursesModel.addOne(thisCart.id, courseId, connection);
 		if (!added) return 0;
@@ -68,16 +68,18 @@ module.exports = {
 				field.getscount++;
 				return await fieldModel.update(field, connection);
 			}));
+			const firstLesson = await lessonModel.getLessonsByCourseIdAndOrder(course.id, 0, connection);
 			const userCourseDTO = {
 				userid: userId,
 				courseid: course.id,
 				purchasedat: paidDate,
-				amount: course.price
+				amount: course.price,
+				currentlesson: firstLesson ? firstLesson.id : 0
 			};
 			const result = await Promise.all([
 				user_courseModel.addOne(userCourseDTO, connection),
 				course.price ? UserModel.update(author, connection) : 1,
-				CourseModel.update(course, connection)
+				courseModel.update(course, connection)
 			]);
 			if (result.includes(0)) return false;
 		}

@@ -79,8 +79,7 @@
             $('#number').attr('value', `${number}`);
             $('#price').attr('value', `${price}`);
             tinymce.get('des').setContent(des);
-            //$('#edit-choice').append('')
-            $('#edit-form').attr('action', `/teacher/courses/${id}?_method=PUT`);
+            $('form#edit-form').attr('action', `/teacher/courses/${id}?_method=PUT`);
         });
     </script>
 
@@ -91,23 +90,7 @@
 
         });
     </script>
-    <script>
-        $('a.delete-course').on('click', function () {
-            let id = $(this).attr('data-id');
-            $('#delete-form').attr('action', `/teacher/courses/${id}?_method=DELETE`);
-
-        });
-    </script>
-
-    {{!-- <script>
-	 $('#edit-choice').on('change',function(){
-
-		alert('value '+$('#edit-choice').val())
-	//console.log('text '+$('#edit-choice').text())
-	//console.log('index '+$('#edit-choice').index())
-
-	})
-	</script> --}}
+    
 
     <script>
         $(document).ready(function () {
@@ -118,6 +101,45 @@
                 renderChoiceLimit: 10,
             });
         });
+    </script>
+    <script src = "/assets/client/js/input-validator.js">
+        
+    </script>
+    <script type = "text/javascript">
+        Validator({
+            form: '#edit-form',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isNumber('#number', `<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Must be an integer</strong>
+                            </div>`),
+                Validator.isFloat('#price', `<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Must be a number</strong>
+                            </div>`),
+                Validator.isRequired('#name',`<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Name can't empty</strong>
+                            </div>`)
+            ]
+        });
+
+        Validator({
+            form: '#add-course',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isNumber('#add-number', `<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Must be an integer</strong>
+                            </div>`),
+                Validator.isFloat('#add-price', `<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Must be a number</strong>
+                            </div>`),
+                Validator.isRequired('#add-name',`<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Name can't empty</strong>
+                            </div>`)
+            ]
+        });
+
     </script>
 {{/section}}
 {{#if empty}}
@@ -177,10 +199,6 @@
                             <img src="/assets/client/images/icon/edit.png" style="width: 30px;">
                         </a>
 
-                        <a class="delete-course" href="#delModal" data-toggle="modal" data-id="{{course.id}}">
-                            <img src="/assets/client/images/icon/del.png" style="width: 30px;">
-                        </a>
-
                         <a href="/courses/{{course.id}}">
                             <img src="/assets/client/images/icon/open.png" style="width: 30px;">
                         </a>
@@ -227,35 +245,6 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal of delete-->
-    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="delModalLabel">Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="POST" id="delete-form">
-                        <h3>Are you sure about delete ?</h3>
-                        <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-                            <i class="fa fa-check " aria-hidden="true"></i>
-                            Delete
-                        </button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -274,42 +263,45 @@
             </div>
             <div class="modal-body">
                 <form action="" method="POST" id="edit-form">
-                    <div class="editor"
-                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                    {{!-- <div class="editor"> --}}
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" name="name" id="name" placeholder="ex: Python online..."
+                            <input type="text" class = "form-control" name="name" id="name" placeholder="ex: Python online..."
                                    style="width: 100%;">
-                            <br><br>
-
+                            <br>
+                            <div class="form-message">
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="edit-choice">Field</label>
                             <div class="select" id="fieldSelect" style="z-index: 1000;">
 
                             </div>
-
-                            <div>
-                                <div style="display: inline-block; margin-right: 10px">
-                                    <label for="number">Number of lessons</label><input type="input"
-                                                                                        name="number"
-                                                                                        id="number"
-                                                                                        placeholder="ex: 40"
-                                                                                        style="width: 100%;"
-                                                                                        value=""><br><br>
-                                </div>
-
-                                <div style="float: right;">
-                                    <label for="price">Price</label>
-                                    <input type="text" name="price" id="price" placeholder="ex: 20"
-                                           style="width: 100%; "
-                                           value=""><br><br>
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="number">Number of lessons</label><input class = "form-control" type="input"
+                                                                                name="number"
+                                                                                id="number"
+                                                                                placeholder="ex: 40"
+                                                                                value=""><br>
+                            <div class="form-message">
                             </div>
+                        </div>
 
+                        <div class="form-group">
+                        
+                            <label for="price">Price</label>
+                            <input type="text" class = "form-control" name="price" id="price" placeholder="ex: 20"
+                            value=""><br>
+                            <div class="form-message">
+                            </div>
+                        </div>
+                        <div class="form-group"></div>
                             <label for="des">Description</label>
                             <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
                             ></textarea>
                         </div>
-                    </div>
+                    {{!-- </div> --}}
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                         </button>
@@ -334,45 +326,51 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST">
-                    <div class="editor"
-                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="input" name="name" placeholder="ex: Python online..."
-                                   style="width: 100%;" value="">
-                            <br><br>
-
-                            <label for="choices-multiple-remove-button">Field</label>
-                            <div class="select" style="z-index: 1000;">
-                                <select name="selection" id="choices-multiple-remove-button"
-                                        placeholder="Choise Field" multiple>
-                                    {{#each fields as |field|}}
-                                        <option value="{{field.id}}">{{field.name}}</option>
-                                    {{/each}}
-                                </select>
-                            </div>
-
-
-                            <div>
-                                <div style="display: inline-block; margin-right: 10px">
-                                    <label for="name">Number lessons</label>
-                                    <input type="input" name="number" placeholder="ex: 40" style="width: 100%;"
-                                           value="0"><br><br>
-                                </div>
-
-                                <div style="float: right;">
-                                    <label for="name">Price</label>
-                                    <input type="input" name="price" placeholder="ex: 20" style="width: 100%; "
-                                           value="0"><br><br>
-                                </div>
-                            </div>
-                            <div>
-                                <label for="txtDes">Description</label>
-                                <textarea class="txtDes" name="Des" cols="30" rows="10" value=""></textarea>
-                            </div>
+                <form action="" method="POST" id = "add-course">
+                    
+                    <div class="form-group">
+                        <label for="add-name">Name</label>
+                        <input class = "form-control" type="input" name="name" id = 'add-name' placeholder="ex: Python online..."
+                                value="">
+                        <br>
+                        <div class="form-message">
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="choices-multiple-remove-button">Field</label>
+                        <div class="select" style="z-index: 1000;">
+                            <select name="selection" id="choices-multiple-remove-button"
+                                    placeholder="Choise Field" multiple>
+                                {{#each fields as |field|}}
+                                    <option value="{{field.id}}">{{field.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                       
+                        <label for="add-number">Number lessons</label>
+                        <input class = "form-control" type="input" name="number" id = 'add-number' placeholder="ex: 40"
+                            value="0"><br>
+                        <div class="form-message">
+                        </div>
+                            
+                    </div>
+
+                    <div class="form-group">
+                       
+                        <label for="add-price">Price</label>
+                        <input class = "form-control" type="input" name="price" id = 'add-price' placeholder="ex: 20"
+                            value="0"><br>
+                       
+                        <div class="form-message">
+                            </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtDes">Description</label>
+                        <textarea class="txtDes" name="Des" cols="30" rows="10" value=""></textarea>
+                    </div>    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>

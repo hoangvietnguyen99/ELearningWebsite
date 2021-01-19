@@ -58,16 +58,6 @@ exports.addCourse = async function (req, res, next) {
 		res.redirect('/teacher/courses');
 };
 
-exports.deleteCourse = async function (req, res) {
-	console.log(req.params.id);
-	const field = await field_courseModel.removeByCourseID(req.params.id);
-	const result = await courseModel.remove([{id: req.params.id}, {statuscode: 'UNAVAILABLE'}]);
-	if (result !== null)
-		//res.json({status: true, url: "/teacher/courses"});
-		return res.redirect('/teacher/courses');
-	//res.send('OK');
-};
-
 exports.updateCourse = async function (req, res, next) {
 	const thisCourse = await courseModel.getById(req.params.id);
 	if (!thisCourse) return res.redirect(req.headers.referer || '/');
@@ -91,7 +81,6 @@ exports.updateCourse = async function (req, res, next) {
 				fieldIds.length ? field_courseModel.removeByCourseID(course.id, connection) : 1,
 				field_courseModel.addFieldIdsToCourseId(course.id, selection, connection)
 			]);
-			console.log('result', result);
 			if (!result.includes(0)) {
 				connection.commit(commitError => {
 					connection.release();

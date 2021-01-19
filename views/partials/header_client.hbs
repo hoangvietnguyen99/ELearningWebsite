@@ -13,6 +13,12 @@
                             <li>
                                 <a class="text-white" href="javascript: $('#frmLogout').submit();">Logout</a>
                             </li>
+                            {{#if (isAdmin authUser.role)}}
+                                <li class="text-white">|</li>
+                                <li>
+                                    <a class="text-white" href="/admin">Admin page</a>
+                                </li>
+                            {{/if}}
                         {{else}}
                             <li>
                                 <a class="text-white" href="/auth">Login Or Register</a>
@@ -127,11 +133,17 @@
         </div>
     </div>
 </div>
-<form id="removeFromCartHeader"
-      action="/cart?_method=DELETE" method="POST" hidden>
-    <input type="text" name="courseid" id="courseid">
-</form>
-<form id="addToCartHeader"
-      action="/cart" method="POST" hidden>
-    <input type="text" name="courseid" id="courseid">
-</form>
+{{#if isAuth}}
+    <form id="removeFromCartHeader"
+          action="/cart?_method=DELETE" method="POST" hidden>
+        <input type="text" name="courseid">
+    </form>
+    <form id="addToCartHeader"
+          action="/cart" method="POST" hidden>
+        <input type="text" name="courseid">
+    </form>
+    <form id="addToWatchListHeader"
+          action="/users/{{{authUser.id}}}/watch-list" method="POST" hidden>
+        <input type="text" name="courseid">
+    </form>
+{{/if}}

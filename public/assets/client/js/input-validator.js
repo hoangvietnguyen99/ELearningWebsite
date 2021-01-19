@@ -36,10 +36,10 @@ function Validator(options) {
 		}
 
 		if (errorMessage) {
-			errorElement.innerText = errorMessage;
+			errorElement.innerHTML = errorMessage;
 			getParent(inputElement, options.formGroupSelector).classList.add('invalid');
 		} else {
-			errorElement.innerText = '';
+			errorElement.innerHTML = '';
 			getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
 		}
 
@@ -123,7 +123,7 @@ function Validator(options) {
 				// Xử lý mỗi khi người dùng nhập vào input
 				inputElement.oninput = function () {
 					const errorElement = getParent(inputElement, options.formGroupSelector).querySelector(options.errorSelector);
-					errorElement.innerText = '';
+					errorElement.innerHTML = '';
 					getParent(inputElement, options.formGroupSelector).classList.remove('invalid');
 				}
 			});
@@ -182,4 +182,24 @@ Validator.ischecked = function (selector, getValue, message) {
 			return getValue() !== '0' ? undefined : message || 'Please check this to continue';
 		}
 	}
+}
+
+Validator.isNumber = function (selector, message) {
+	return {
+		selector: selector,
+		test: function (value) {
+			console.log(value);
+			return value != parseInt(value) ? message || 'Must is a number' : undefined
+		}
+	};
+}
+
+Validator.isFloat = function (selector, message) {
+	return {
+		selector: selector,
+		test: function (value) {
+			console.log(value);
+			return value != parseFloat(value) ? message || 'Must is a number' : undefined
+		}
+	};
 }
