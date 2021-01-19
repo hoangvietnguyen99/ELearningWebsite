@@ -74,11 +74,15 @@ router.post('/user/update', async function(req, res, next) {
     UserController.postUpdate(req, res, next)
 });
 
+
 //Course
 router.get('/course', async function(req, res, next) {
-    CourseController.index(req, res, next)
+    CourseController.index(req, res, next)  
 });
 router.get('/course/approve/:id', async function(req, res, next) {
     CourseController.approve(req, res, next)
+});
+router.post('/course/update/:id', async function(req, res, next) {
+    CourseController.postUpdate(req, res, next)
 });
 module.exports = router;

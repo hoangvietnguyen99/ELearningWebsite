@@ -13,15 +13,52 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    
-                    <div class="row">
-                        <div class="input-group col-md-6" style="margin:0px 0px 10px 0px;">
-                            <input type="text" class="form-control col-md-4" placeholder="Search">
-                            <a href="#" class="btn btn-primary btn-rounded">Search</a>
-                        </div>
-                       
-                        
-                    </div>
+                    <form action="/admin/course" method="GET">
+                        <div class="row search-row-custom" style="margin-bottom: 10px;">
+                            {{!-- Menu Top Left --}}
+                            
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label class="control-label">Category</label>                                        
+                                        <select name="category" class="form-control select2">
+                                            <option value="all" selected>All</option>
+                                            {{#each fields}}
+                                                <option value="{{id}}">{{name}}</option>
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Teacher</label>
+                                        <select name="teacher" class="form-control select2">
+                                        <option value="all" selected>All</option>
+                                        {{#each teachers}}
+                                                <option value="{{id}}">{{fullname}}</option>
+                                            {{/each}}   
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-1">
+                                    <button onclick="window.location.href='/admin/course'" class="btn btn-primary">
+                                        <i class="fas fa-filter"></i>
+                                    </button>
+                                </div>
+                            
+                            
+                            {{!-- end Menu Top Left --}}
+
+                            {{!-- Menu Top Right --}}
+                            <div class="col-sm-6 ">
+                                <div class="search-box search-group-custom float-right">
+                                    <input type="text" class="form-control " placeholder="Search">
+                                    <a href="#" class="btn btn-primary btn-rounded">Search</a>
+                                </div>
+                            </div>
+                            {{!-- end Menu Top Right --}}
+                        </div>  
+                    </form>
                     
                     <div class="table-responsive-sm">
                         <table class="table table-light table-centered table-nowrap">
@@ -58,7 +95,11 @@
                                             <label for="check_name"></label>
                                             Price
                                         </th>
-                                        
+                                        <th>
+                                            <input type="checkbox" id="check_name" name="checkcolumn" data-attr="name" hidden>
+                                            <label for="check_name"></label>
+                                            Status
+                                        </th>
                                     {{!-- end Attribute Column Data --}}
                                 </tr>
                             </thead>
@@ -70,16 +111,30 @@
                                         <td class="text-center">{{{authorname}}}</td>
                                         <td class="text-center">{{{statuscode}}}</td>
                                         {{#if approvedbyid}}
-                                            <td class="text-center">{{{approvedbyname}}}</td>
+                                            <td id="approved_{{{id}}}" class="text-center">{{{approvedbyname}}}</td>
                                         {{else}}
-                                            <td>
+                                            <td id="approved_{{{id}}}">
                                                 <button style="border-radius: 12%;" type="button" class="btn btn-success"
                                                     onclick="window.location.href='/admin/course/approve/{{{id}}}'"
                                                 >Approve</button>
                                             </td>
                                         {{/if}}
                                         <td class="text-center">{{{price}}}</td>
-
+                                        {{#if approvedbyid}}
+                                            <td id='statusdiv_{{{id}}}'>
+                                                <div class="custom-control custom-switch">
+                                                    <input onclick="changeStatus(this)" type="checkbox" class="custom-control-input" checked id="{{{id}}}">
+                                                    <label id='labelstatus_{{{id}}}' class="custom-control-label" for="{{{id}}}">Enabled</label>
+                                                </div>
+                                            </td>
+                                        {{else}}
+                                            <td id='statusdiv_{{{id}}}'>
+                                                <div class="custom-control custom-switch">
+                                                    <input onclick="changeStatus(this)" type="checkbox" class="custom-control-input" id="{{{id}}}">
+                                                    <label id='labelstatus_{{{id}}}' class="custom-control-label" for="{{{id}}}">Disabled</label>
+                                                </div>
+                                            </td>
+                                        {{/if}}
                                     </tr>
                                 {{/each}}
                                 
@@ -91,7 +146,49 @@
         </div>
     </div><!-- end row -->
     <!-- end table -->
-{{!-- 
-   Add Quick Modal --}}
-    <div id="add-quick-modal" class="modal" tabindex="-1" role="dialog">
-    </div>
+<script>
+    function changeStatus(element)
+    {   
+        var isChecked = $(element).is(":checked")
+        
+        var status = isChecked ? 'enabled' : 'disabled'
+        var id = element.id
+        $.ajax({
+            url: `/admin/course/update/${id}`,
+            cache: false,
+            method: 'POST',
+            data: {status: status},
+            dataType: 'json',
+        })
+        .done(function(result){
+            if(status == 'enabled')
+            {
+                $(`#approved_${id}`).html(`<td id="approved_${id}" class="text-center">${result.approvedbyname}</td>`)
+                $(`#statusdiv_${id}`).html(`<td id='statusdiv_${id}'>
+                                                <div class="custom-control custom-switch">
+                                                    <input onclick="changeStatus(this)" type="checkbox" class="custom-control-input" checked id="${id}">
+                                                    <label id='labelstatus_${id}' class="custom-control-label" for="${id}">Enabled</label>
+                                                </div>
+                                            </td>`)
+
+            }
+            if(status == 'disabled')
+            {
+                $(`#approved_${id}`).html(`<td id="approved_${id}">
+                                                <button style="border-radius: 12%;" type="button" class="btn btn-success"
+                                                    onclick="window.location.href='/admin/course/approve/${id}'"
+                                                >Approve</button>
+                                            </td>`)
+                $(`#statusdiv_${id}`).html(`<td id='statusdiv_${id}'>
+                                                <div class="custom-control custom-switch">
+                                                    <input onclick="changeStatus(this)" type="checkbox" class="custom-control-input" id="${id}">
+                                                    <label id='labelstatus_${id}' class="custom-control-label" for="${id}">Disabled</label>
+                                                </div>
+                                            </td>`)
+            }
+        })
+        .fail(function(error){
+            console.log(error)
+        })
+    }
+</script>
