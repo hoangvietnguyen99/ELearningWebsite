@@ -78,7 +78,7 @@ form.example::after {
             $("div.actionButton").each(function () {
                 const id = $(this).attr('data-id');
                 if (!userCourseIds.includes(id.toString()) && !userUploadIds.includes(id.toString()) && !courseIdsInCart.includes(id.toString())) {
-                    $(this).append(`<a href="javascript: $('form#addToCartHeader input#courseid').val(${id}); $('form#addToCartHeader').submit();"
+                    $(this).append(`<a href="javascript: $('form#addToCartHeader input').val(${id}); $('form#addToCartHeader').submit();"
                                     style="height: 35px; margin-top: 10px;" class="btn btn-dark"><i class="fa fa-cart-plus"></i></a>`)
                 }
             });
@@ -150,7 +150,7 @@ form.example::after {
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </div>
                         </form>
-                        
+
                 </div>
             </div>
         </div>
@@ -186,7 +186,7 @@ form.example::after {
                                     the card title and make up the bulk of the card's content.</p>
                                     <a style="height: 35px;" class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
                                         href="/courses/{{this.id}}">view details</a>
-                                   
+
                                 </div>
                             </div>
                         </div>

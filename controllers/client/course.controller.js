@@ -116,6 +116,8 @@ module.exports = {
 	},
 
 	async getCourse(req, res) {
+		let isInWatchList = res.locals.watchList.find(item => item.id == req.params.id);
+		isInWatchList = !!isInWatchList;
 		const thisCourse = await courseModel.getById(req.params.id);
 		thisCourse.viewscount++;
 		await courseModel.update(thisCourse);
@@ -124,21 +126,35 @@ module.exports = {
 			userCourseIds = await user_courseModel.getCourseIdsByUserId(req.session.authUser.id);
 		}
 		const author = await userModel.getById(thisCourse.author);
-		const lessons = await lessonModel.getAllByCourseId(thisCourse.id);
+		let lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
+		const hasThisCourse = userCourseIds.includes(thisCourse.id);
+		const isAuthor = req.session.authUser ? req.session.authUser.id === author.id : false;
+		let user_lesson = null;
+		if (hasThisCourse) {
+			user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id,req.params.id);
+			lessons = [lessons.find(lesson => lesson.id == user_lesson.currentlesson)];
+		}
+		else {
+			if(!isAuthor){
+				lessons = [lessons[0]];
+			}
+		}
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
 		res.render('clients/course', {
 			layout: 'layoutclient.hbs',
 			data: {
-				hasThisCourse: userCourseIds.includes(thisCourse.id),
+				hasThisCourse,
 				isInCart,
+				isInWatchList,
 				thisCourse,
 				author,
-				isAuthor: req.session.authUser ? req.session.authUser.id === author.id : false,
+				isAuthor,
 				lessons,
 				reviews,
+				user_lesson,
 				totalReview: reviews.length
 			}
 		});
@@ -149,7 +165,7 @@ module.exports = {
 		connection.beginTransaction(async err => {
 			if (err) throw err;
 			try {
-				const userCourse = await user_courseModel.getOne(req.session.authUser.id, req.body.courseId, connection);
+				const userCourse = await user_courseModel.getOne(req.session.authUser.id, req.body.courseid, connection);
 				if (!userCourse) throw `userCourse not found: userId ${req.session.authUser.id} & courseId ${req.body.courseid}`;
 				if (userCourse.isinwatchlist) return `This course in your watch list`;
 				userCourse.isinwatchlist = true;

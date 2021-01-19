@@ -8,7 +8,6 @@ router.route('/courses')
 
 router.route('/courses/:id')
 .post(teacherController.addImage)
-.delete(teacherController.deleteCourse)
 .put(teacherController.updateCourse)
 
 module.exports = router;

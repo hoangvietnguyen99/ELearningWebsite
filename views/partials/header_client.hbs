@@ -133,11 +133,17 @@
         </div>
     </div>
 </div>
-<form id="removeFromCartHeader"
-      action="/cart?_method=DELETE" method="POST" hidden>
-    <input type="text" name="courseid" id="courseid">
-</form>
-<form id="addToCartHeader"
-      action="/cart" method="POST" hidden>
-    <input type="text" name="courseid" id="courseid">
-</form>
+{{#if isAuth}}
+    <form id="removeFromCartHeader"
+          action="/cart?_method=DELETE" method="POST" hidden>
+        <input type="text" name="courseid">
+    </form>
+    <form id="addToCartHeader"
+          action="/cart" method="POST" hidden>
+        <input type="text" name="courseid">
+    </form>
+    <form id="addToWatchListHeader"
+          action="/users/{{{authUser.id}}}/watch-list" method="POST" hidden>
+        <input type="text" name="courseid">
+    </form>
+{{/if}}

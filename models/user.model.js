@@ -10,7 +10,7 @@ module.exports = {
     },
 
     allByRole(role, limit) {
-        const query = `SELECT * FROM ${TBL_USERS} WHERE role = '${role}' LIMIT ${limit}`
+        const query = `SELECT * FROM ${TBL_USERS} WHERE role = '${role}' LIMIT ${limit}`;
         return database.query(query)
     },
 
