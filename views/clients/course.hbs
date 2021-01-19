@@ -78,7 +78,7 @@
         $('#fuMain').fileinput({
             theme: 'fa',
             dropZoneEnabled: false,
-            allowedFileExtensions: ['webm'],
+            allowedFileExtensions: ['mp4'],
         });
     </script>
     <script>
@@ -215,6 +215,17 @@
                              onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                     </div>
                     <div class="content_wrapper">
+                        <h4 class="title_top">Short description</h4>
+                        <div>
+                            {{#if data.thisCourse.tinydes}}
+                                <div
+                                    style="background-color: rgb(255, 255, 255);border: 1px solid rgb(179, 179, 179);padding: 30px; border-radius: 5%; margin-bottom: 20px">
+                                    {{{data.thisCourse.tinydes}}}
+                                </div>
+                            {{else}}
+                                <p>No short description</p>
+                            {{/if}}
+                        </div>
                         <h4 class="title_top">Description</h4>
                         <div>
                             {{#if data.thisCourse.description}}
