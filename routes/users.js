@@ -25,6 +25,12 @@ router.route('/detail/:id')
 router.route('/detail/edit/:id')
   .get(userController.getUserByID);
 
+router.route('/account/edit/:id')
+  .get(userController.getUpdateAccount);
+
+router.route('/account/edit/:id')
+  .post(userController.postUpdateAccount);
+
 router.route('/detail/edit/:id')
   .post(upload.single('fuMain'), async function(req, res, next) {
     await userController.updateUser(req, res, next)

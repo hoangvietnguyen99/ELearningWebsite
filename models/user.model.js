@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 const database = require('../utils/database');
 const courseModel = require('./course.model');
 const user_courseModel = require('./user_course.model');
@@ -43,5 +45,13 @@ module.exports = {
     async hasCourseIdCheck(userId, courseId, connection) {
         const courseIds = await user_courseModel.getCourseIdsByUserId(userId, connection); 
         return courseIds.includes(courseId);
-    }
+    },
+
+    async getAccount(id){
+        const query = `SELECT *, ${TBL_USERS}.id as id, accounts.id as accountid FROM ${TBL_USERS} join accounts on ${TBL_USERS}.id = accounts.userid 
+                        where ${TBL_USERS}.id = ${id}`
+        let rows = await database.query(query)
+        return rows.length === 0 ? null : rows[0];
+    },
+
 }
