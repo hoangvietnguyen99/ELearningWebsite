@@ -1,5 +1,4 @@
 const database = require('../utils/database');
-const { addOne } = require('./carts_courses.model');
 
 const CartsCoursesModel = require('./carts_courses.model');
 const fieldModel = require('../models/field.model');

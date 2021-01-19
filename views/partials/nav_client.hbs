@@ -30,6 +30,10 @@
                             </ul>
                         </li>
                     {{/if}}
+                    {{#if (isTeacher authUser.role)}}
+                        <li class="active"><a href="/teacher/courses">Manage uploaded courses</a>
+                        </li>
+                    {{/if}}
                 </ul>
                 <div id="top-search-bar" class="collapse">
                     <div class="container">
