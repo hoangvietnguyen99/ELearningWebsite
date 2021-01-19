@@ -41,6 +41,7 @@
             let number = $(this).attr('data-number');
             let price = $(this).attr('data-price');
             let des = $(this).attr('data-des');
+            let tinydes = $(this).attr('data-tinydes');
             const fieldids = $(this).attr('data-fieldids').split(',');
             let tempfields = [];
             const thisDiv = $("#fieldSelect");
@@ -78,6 +79,7 @@
             $('#name').attr('value', `${name}`);
             $('#number').attr('value', `${number}`);
             $('#price').attr('value', `${price}`);
+            $('#tinydes').attr('value', `${tinydes}`);
             tinymce.get('des').setContent(des);
             $('form#edit-form').attr('action', `/teacher/courses/${id}?_method=PUT`);
         });
@@ -119,6 +121,9 @@
                             </div>`),
                 Validator.isRequired('#name',`<div class="alert alert-warning" role="alert">
                                 <strong class = "form-message">Name can't empty</strong>
+                            </div>`),
+                Validator.isRequired('#tinydes',`<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Short desciption can't empty</strong>
                             </div>`)
             ]
         });
@@ -136,6 +141,9 @@
                             </div>`),
                 Validator.isRequired('#add-name',`<div class="alert alert-warning" role="alert">
                                 <strong class = "form-message">Name can't empty</strong>
+                            </div>`),
+                Validator.isRequired('#add-tinydes',`<div class="alert alert-warning" role="alert">
+                                <strong class = "form-message">Short desciption can't empty</strong>
                             </div>`)
             ]
         });
@@ -195,7 +203,8 @@
                            data-id="{{course.id}}"
                            data-name="{{course.name}}"
                            data-number="{{course.lessonscount}}" data-price="{{course.price}}"
-                           data-des="{{course.description}}" data-fieldids="{{course.fieldIds}}">
+                           data-des="{{course.description}}" data-fieldids="{{course.fieldIds}}" 
+                            data-tinydes = "{{course.tinydes}}">
                             <img src="/assets/client/images/icon/edit.png" style="width: 30px;">
                         </a>
 
@@ -296,6 +305,15 @@
                             <div class="form-message">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="tinydes">Short Description</label>
+                            <input class = "form-control" type="text" name="tinydes" id = 'tinydes' placeholder="ex: Short description"
+                                value=""><br>
+                            <div class="form-message">
+                            </div>
+                        </div>
+
+                        
                         <div class="form-group"></div>
                             <label for="des">Description</label>
                             <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
@@ -365,6 +383,14 @@
                        
                         <div class="form-message">
                             </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="add-tinydes">Short Description</label>
+                        <input class = "form-control" type="text" name="tinydes" id = 'add-tinydes' placeholder="ex: Short description"
+                            value=""><br>
+                        <div class="form-message">
+                        </div>
                     </div>
 
                     <div class="form-group">

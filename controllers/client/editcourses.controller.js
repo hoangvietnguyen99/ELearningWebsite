@@ -42,13 +42,14 @@ exports.addImage = function (req, res, next) {
 
 exports.addCourse = async function (req, res, next) {
 	const author = req.session.authUser.id;
-	const {name, number, price, Des, selection} = req.body;
+	const {name, number, price, Des, selection ,tinydes} = req.body;
 	const course = {
 		name: name,
 		author: author,
 		lessonscount: number,
 		price: price,
-		description: Des
+		description: Des,
+		tinydes: tinydes
 	}
 	const result = await courseModel.addOne(course);
 	for (let i = 0; i < selection.length; i++) {
@@ -66,14 +67,15 @@ exports.updateCourse = async function (req, res, next) {
 	connection.beginTransaction(async err => {
 		if (err) throw err;
 		try {
-			const {name, number, price, Des, selection} = req.body;
+			const {name, number, price, Des, selection,tinydes} = req.body;
 			const course = {
 				id: req.params.id,
 				name: name,
 				lessonscount: number,
 				price: price,
 				description: Des,
-				lastupdatedat: new Date()
+				lastupdatedat: new Date(),
+				tinydes: tinydes
 			};
 			const fieldIds = await field_courseModel.getListFieldIDByCourseID(course.id);
 			const result = await Promise.all([
