@@ -232,488 +232,386 @@
     </script>
 {{/section}}
 {{#if data.thisCourse}}
-<section class="course_details_area section_padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 course_details_left">
-                <h1>{{data.thisCourse.name}}</h1>
-                <div class="main_image">
-                    <img class="img-fluid" src="/assets/client/images/courses/{{data.thisCourse.id}}.png"
-                        alt="course image" onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
-                </div>
-                <div class="content_wrapper">
-                    <h4 class="title_top">Description</h4>
-                    <div class="content">
-                        {{#if data.thisCourse.description}}
-                        <div
-                            style="background-color: rgb(255, 255, 255);border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
-                            {{{data.thisCourse.description}}}
-                        </div>
-                        {{else}}
-                        <p>No description</p>
-                        {{/if}}
+    <section class="course_details_area section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 course_details_left">
+                    {{!-- <h1>{{data.thisCourse.name}}</h1> --}}
+                    <div class="main_image">
+                        <img class="img-fluid" src="/assets/client/images/courses/{{data.thisCourse.id}}.png"
+                            alt="course image" onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                     </div>
-
-
-                    <h4 class="title">Course Outline</h4>
-                    <div class="content" style="margin-top: 0;">
-                        <ul class="course_list">
-                            {{#if data.lessons.length}}
-                            {{#each data.lessons as |lesson|}}
-                            <li class="justify-content-between align-items-center d-flex">
-                                <p style="padding-left: 20px;">{{lesson.title}}</p>
-                                <div class="row" style="display: flex;text-align: center; align-items: center;">
-
-                                    <div class="collapse multi-collapse" id="collapseExample{{lesson.id}}">
-                                        {{#if lesson.description}}
-                                        <div
-                                            style="background-color: rgb(255, 255, 255);max-width: 600px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
-                                            {{{lesson.description}}}
-                                        </div>
-                                        {{/if}}
-                                        <div class="video-container">
-                                            <video id = "id-video" class = "js-player"controls crossorigin playsinline autopause
-                                                poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
-                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;" data-id = "{{lesson.id}}" data-courseid="{{lesson.courseid}}"
-                                                data-order="{{lesson.order}}">
-                                                <source
-                                                    src="{{lesson.videourl}}"
-                                                    type="video/mp4" size="576">
-                                                <source
-                                                    src="{{lesson.videourl}}"
-                                                    type="video/mp4" size="720">
-                                                <source
-                                                    src="{{lesson.videourl}}"
-                                                    type="video/mp4" size="1080">
-
-                                                <!-- Caption files -->
-                                                <track kind="captions" label="English" srclang="en"
-                                                    src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
-                                                    default>
-                                                <track kind="captions" label="Français" srclang="fr"
-                                                    src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
-                                                <!-- Fallback for browsers that don't support the <video> element -->
-                                                <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
-                                                    download>Download</a>
-                                            </video>
-                                            {{!-- Start currentTime pause video --}}
-                                            <form action ="" method = "POST" class="time-pause-video" data-id ="{{lesson.id}}" data-courseid="{{lesson.courseid}}">
-                                                <input type="hidden" name="pause"  class = "timepause" value="">
-                                            </form>
-                                            {{!-- End currentTime pause video --}}
-                                        </div>
-                                        <!-- Plyr resources and browser polyfills are specified in the pen settings -->
-                                    </div>
-                                </div>
-                                
-                                <a class="btn_2 text-uppercase" data-toggle="collapse"
-                                    href="#collapseExample{{lesson.id}}" role="button" aria-expanded="false"
-                                    aria-controls="collapseExample{{lesson.id}}">View
-                                    Details</a>
-                                {{#if ../data.isAuthor}}
-                                    <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
-                                        data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
-                                        data-title="{{lesson.title}}" data-order = {{lesson.order}} data-des="{{lesson.description}}"
-                                        style="margin-left: 20px">
-                                        <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
-                                    </a>
-
-
-                                    <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
-                                        data-id="{{lesson.id}}" data-course="{{lesson.courseid}}" style="margin-left: 20px">
-                                        <img src="/assets/client/images/icon/del.png" style="width: 30px;">
-                                    </a>
-
-                                    <a class="add-video" href="#videoModal" data-toggle="modal" data-id="{{lesson.id}}"
-                                        data-courseid="{{lesson.courseid}}" role="button">
-                                        <img src="/assets/client/images/icon/video.png"
-                                            style="width: 50px; padding-left:15px">
-                                    </a>
-                                {{/if}}
-
-                            </li>
-
-
-                            {{/each}}
-                            {{/if}}
-                            {{#if data.isAuthor}}
-                            <button class = "add-lesson btn btn-primary" type="button" data-toggle="modal" data-target="#lessonModal"
-                                style="margin-left:10px; margin-bottom: 50px;" data-id = "{{data.thisCourse.id}}">Add
-                            </button>
-                            {{/if}}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 right-contents">
-                <div class="sidebar_top">
-                    <ul>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Trainer’s Name</p>
-                                <span class="color">{{data.author.fullname}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Course Fee </p>
-                                <span>{{data.thisCourse.price}}$</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Update day</p>
-                                <span>{{data.thisCourse.uploaddate}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Last Update</p>
-                                <span>{{data.thisCourse.lastupdate}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Quantity purchased</p>
-                                <span>{{data.thisCourse.getscount}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>View</p>
-                                <span>{{data.thisCourse.viewscount}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Number lessons</p>
-                                <span>{{data.thisCourse.lessonscount}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Number of reviews</p>
-                                <span>{{data.thisCourse.ratingscount}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                    {{#if data.hasThisCourse}}
-                    {{else}}
-                        {{#if data.isAuthor}}
-                        {{else}}
-                            {{#if data.isInCart}}
-                                <form id="removeFromCart" action="/cart?_method=DELETE" method="POST" hidden>
-                                    <label>
-                                        <input id="courseid" type="number" name="courseid">
-                                    </label>
-                                </form>
-                                <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();"
-                                   class="btn_1 d-block">Remove from cart</a>
+                    <div class="content_wrapper">
+                        <h4 class="title_top">Description</h4>
+                        <div>
+                            {{#if data.thisCourse.description}}
+                            <div
+                                style="background-color: rgb(255, 255, 255);border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                                {{{data.thisCourse.description}}}
+                            </div>
                             {{else}}
-                                <form id="addToCart" action="/cart" method="POST" hidden>
-                                    <label>
-                                        <input id="courseid" type="number" name="courseid">
-                                    </label>
-                                </form>
-                                <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
-                                   class="btn_1 d-block">Add to cart</a>
+                            <p>No description</p>
+                            {{/if}}
+                        </div>
+
+
+                        <h4 class="title">Course Outline</h4>
+                        <div>
+                            <ul class="course_list">
+                                {{#if data.lessons.length}}
+                                    {{#each data.lessons as |lesson|}}
+                                    <li class="justify-content-between align-items-center d-flex">
+                                        <p style="padding-left: 20px;">{{lesson.title}}</p>
+                                        <div class="row" style="display: flex;text-align: center; align-items: center;">
+
+                                            <div class="collapse multi-collapse" id="collapseExample{{lesson.id}}">
+                                                {{#if lesson.description}}
+                                                <div
+                                                    style="background-color: rgb(255, 255, 255);max-width: 600px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                                                    {{{lesson.description}}}
+                                                </div>
+                                                {{/if}}
+                                                <div class="video-container">
+                                                    <video id = "id-video" class = "js-player"controls crossorigin playsinline autopause
+                                                        poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+                                                        width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;" data-id = "{{lesson.id}}" data-courseid="{{lesson.courseid}}"
+                                                        data-order="{{lesson.order}}">
+                                                        <source
+                                                            src="{{lesson.videourl}}"
+                                                            type="video/mp4" size="576">
+                                                        <source
+                                                            src="{{lesson.videourl}}"
+                                                            type="video/mp4" size="720">
+                                                        <source
+                                                            src="{{lesson.videourl}}"
+                                                            type="video/mp4" size="1080">
+
+                                                        <!-- Caption files -->
+                                                        <track kind="captions" label="English" srclang="en"
+                                                            src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+                                                            default>
+                                                        <track kind="captions" label="Français" srclang="fr"
+                                                            src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+                                                        <!-- Fallback for browsers that don't support the <video> element -->
+                                                        <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+                                                            download>Download</a>
+                                                    </video>
+                                                    {{!-- Start currentTime pause video --}}
+                                                    <form action ="" method = "POST" class="time-pause-video" data-id ="{{lesson.id}}" data-courseid="{{lesson.courseid}}">
+                                                        <input type="hidden" name="pause"  class = "timepause" value="">
+                                                    </form>
+                                                    {{!-- End currentTime pause video --}}
+                                                </div>
+                                                <!-- Plyr resources and browser polyfills are specified in the pen settings -->
+                                            </div>
+                                        </div>
+                                        
+                                            <a class="btn_2 text-uppercase" data-toggle="collapse"
+                                            href="#collapseExample{{lesson.id}}" role="button" aria-expanded="false"
+                                            aria-controls="collapseExample{{lesson.id}}">View
+                                            Details</a>
+                                        {{#if ../data.isAuthor}}
+                                            <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
+                                                data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
+                                                data-title="{{lesson.title}}" data-order = {{lesson.order}} data-des="{{lesson.description}}"
+                                                style="margin-left: 20px">
+                                                <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
+                                            </a>
+
+
+                                            <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
+                                                data-id="{{lesson.id}}" data-course="{{lesson.courseid}}" style="margin-left: 20px">
+                                                <img src="/assets/client/images/icon/del.png" style="width: 30px;">
+                                            </a>
+
+                                            <a class="add-video" href="#videoModal" data-toggle="modal" data-id="{{lesson.id}}"
+                                                data-courseid="{{lesson.courseid}}" role="button">
+                                                <img src="/assets/client/images/icon/video.png"
+                                                    style="width: 50px; padding-left:15px">
+                                            </a>
+                                        {{/if}}
+
+                                    </li>
+
+
+                                    {{/each}}
+                                {{/if}}
+                                {{#if data.isAuthor}}
+                                <button class = "add-lesson btn btn-primary" type="button" data-toggle="modal" data-target="#lessonModal"
+                                    style="margin-left:10px; margin-bottom: 50px;" data-id = "{{data.thisCourse.id}}">Add
+                                </button>
+                                {{/if}}
+                            </ul>
+                        </div>
+                        <h3 class=""><strong>Feedback</strong></h3>
+                        <div>
+                            <div class="feedeback">
+                                <h6>Your Feedback</h6>
+                                <textarea name="feedback" class="form-control" cols="10" rows="10"></textarea>
+                                <div class="mt-10 text-right">
+                                    <a href="#" class="btn_1">Submit</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 right-contents">
+                    <div class="product-summary">
+                        <h2 class="product-title">{{data.thisCourse.name}}</h2>
+                        <div class="product_review">
+                            <ul class="review_text list-inline">
+                                <li>
+                                    <div title="Rated 4.50 out of 5" class="star-rating"><span style="width: 90%;">{{data.thisCourse.rating}}</span></div>
+                                </li>
+                                <li><a href="#"><span>2 </span>Reviews</a></li>
+                                <li><a href="#">Add reviews</a></li>
+                            </ul>
+                        </div>
+                        <div class="price"> <ins><span class="amount">{{data.thisCourse.price}} VND</span></ins> </div>
+                        <div class="short-description">
+                            <p>{{{data.thisCourse.description}}}</p>
+                        </div>
+                        <div class="tags"><strong>Number lessons:     </strong>{{data.thisCourse.lessonscount}}</div>
+                        <div class="category"><strong>Quantity purchased:     </strong><a href="#">{{data.thisCourse.getscount}}</a></div>
+                        <div class="tags"><strong>View:   </strong><a href="#">{{data.thisCourse.viewscount}}</a></div>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        {{#if data.hasThisCourse}}
+                        {{else}}
+                            {{#if data.isAuthor}}
+                            {{else}}
+                                {{#if data.isInCart}}
+                                    <form id="removeFromCart" action="/cart?_method=DELETE" method="POST" hidden>
+                                        <label>
+                                            <input id="courseid" type="number" name="courseid">
+                                        </label>
+                                    </form>
+                                    <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();"
+                                    class="btn_1 d-block">Remove from cart</a>
+                                {{else}}
+                                    <form id="addToCart" action="/cart" method="POST" hidden>
+                                        <label>
+                                            <input id="courseid" type="number" name="courseid">
+                                        </label>
+                                    </form>
+                                    <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
+                                    class="btn_1 d-block">Add to cart</a>
+                                {{/if}}
                             {{/if}}
                         {{/if}}
-                    {{/if}}
-                    <div class="d-flex justify-content-center">
-                        <div class="content text-center">
-                            <div class="ratings">
+                    </div>
+                        <div class="d-flex justify-content-center">
+                            <div class="text-center" style="margin-top: 20px;">
+                                <div class="ratings">
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <h4 class="title">Reviews</h4>
-                    <div class="content">
-                        <div class="review-top row pt-40">
-                            <div class="col-lg-12">
-                                <div class="d-flex flex-row reviews justify-content-between">
-                                    <span>Quality</span>
-                                    <div class="rating">
-                                        <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                        <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                        <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                        <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                        <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                                    </div>
-                                    <span>Outstanding</span>
+                         <h4 class="title">Reviews</h4>
+                    <div class="review-top row pt-40">
+                        <div class="col-lg-12">
+                            <h6 class="mb-15">Provide Your Rating</h6>
+                            <div class="d-flex flex-row reviews justify-content-between">
+                                <span>Quality</span>
+                                <div class="rating">
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/star.svg" alt=""></a>
                                 </div>
                                 <span>Outstanding</span>
                             </div>
                             <div class="d-flex flex-row reviews justify-content-between">
                                 <span>Puncuality</span>
                                 <div class="rating">
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/star.svg" alt=""></a>
                                 </div>
                                 <span>Outstanding</span>
                             </div>
                             <div class="d-flex flex-row reviews justify-content-between">
                                 <span>Quality</span>
                                 <div class="rating">
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
+                                    <a href="#"><img src="img/icon/star.svg" alt=""></a>
                                 </div>
                                 <span>Outstanding</span>
                             </div>
                         </div>
                     </div>
-                    <div class="feedeback">
-                        <h6>Your Feedback</h6>
-                        <textarea name="feedback" class="form-control" cols="10" rows="10"></textarea>
-                        <div class="mt-10 text-right">
-                            <a href="#" class="btn_1">Read more</a>
-                        </div>
-                    </div>
-                    <div class="comments-area mb-30">
-                        <div class="comment-list">
-                            <div class="single-comment single-reviews justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="/assets/client/images/cource/cource_1.png" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Emilly Blunt</a>
-                                        </h5>
-                                        <div class="rating">
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                                        </div>
-                                        <p class="comment">
-                                            Blessed made of meat doesn't lights doesn't was dominion and sea earth
-                                            form
-                                        </p>
-                                    </div>
-                                </div>
+
+                </div>
+                {{#if data.isAuthor}}
+                <!-- Modal of add image-->
+                <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="videoModalLabel">Edit</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                        </div>
-                        <div class="comment-list">
-                            <div class="single-comment single-reviews justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="/assets/client/images/cource/cource_2.png" alt="">
-                                    </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Elsie Cunningham</a>
-                                        </h5>
-                                        <div class="rating">
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
+                            <div class="modal-body">
+                                <form action="" method="POST" enctype="multipart/form-data" id="addVideo-form">
+                                    <div class="image"
+                                        style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                        <div class="form-group">
+                                            <input id="fuMain" name="fuMain" class="file" type="file" multiple>
                                         </div>
-                                        <p class="comment">
-                                            Blessed made of meat doesn't lights doesn't was dominion and sea earth
-                                            form
-                                        </p>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="comment-list">
-                            <div class="single-comment single-reviews justify-content-between d-flex">
-                                <div class="user justify-content-between d-flex">
-                                    <div class="thumb">
-                                        <img src="/assets/client/images/cource/cource_3.png" alt="">
+                                    <div class="editor-footer"
+                                        style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
+                                        <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+                                            <i class="fa fa-check " aria-hidden="true"></i>
+                                            Upload
+                                        </button>
                                     </div>
-                                    <div class="desc">
-                                        <h5><a href="#">Maria Luna</a>
-                                        </h5>
-                                        <div class="rating">
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/color_star.svg" alt=""></a>
-                                            <a href="#"><img src="/assets/client/images/icon/star.svg" alt=""></a>
-                                        </div>
-                                        <p class="comment">
-                                            Blessed made of meat doesn't lights doesn't was dominion and sea earth
-                                            form
-                                        </p>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {{#if data.isAuthor}}
-            <!-- Modal of add image-->
-            <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="videoModalLabel">Edit</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" enctype="multipart/form-data" id="addVideo-form">
-                                <div class="image"
-                                    style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                <!-- Modal of add lesson-->
+                <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="lessonModalLabel">Input Course</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id = "add-lesson">
+                                
                                     <div class="form-group">
-                                        <input id="fuMain" name="fuMain" class="file" type="file" multiple>
+                                        <label for="title">Title</label>
+                                        <input class = "form-control" type="input" name="title" id="title"
+                                            placeholder="ex: Introduction lesson" value="">
+                                        <br>
+                                        <div class="form-message">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="editor-footer"
-                                    style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
-                                    <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+
+                                    <div class="form-group">
+                                        <label for="order">Order</label>
+                                        <input class = "form-control" type="input" name="order" id="order"
+                                            placeholder="ex: 1" value="">
+                                        <br>
+                                    <div class="form-message">
+                                    </div>
+
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <label for="txtDesLesson">Description</label>
+                                        <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
+                                            value=""></textarea>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
+                    aria-labelledby="delLessonModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id="delete-form">
+                                    <h3>Are you sure about delete ?</h3>
+                                    <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
                                         <i class="fa fa-check " aria-hidden="true"></i>
-                                        Upload
+                                        Delete
                                     </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal of add lesson-->
-            <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="lessonModalLabel">Input Course</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id = "add-lesson">
-                              
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input class = "form-control" type="input" name="title" id="title"
-                                        placeholder="ex: Introduction lesson" value="">
-                                    <br>
-                                    <div class="form-message">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="order">Order</label>
-                                    <input class = "form-control" type="input" name="order" id="order"
-                                        placeholder="ex: 1" value="">
-                                    <br>
-                                <div class="form-message">
-                                </div>
-
-                                </div>
-                                    
-                                <div class="form-group">
-                                    <label for="txtDesLesson">Description</label>
-                                    <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
-                                        value=""></textarea>
-                                </div>
-
-                                <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
-                aria-labelledby="delLessonModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id="delete-form">
-                                <h3>Are you sure about delete ?</h3>
-                                <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-                                    <i class="fa fa-check " aria-hidden="true"></i>
-                                    Delete
+                <!-- Modal of edit lesson-->
+                <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
+                    aria-labelledby="lessonEditModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                </button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id="edit-lesson">
+                                    <div class="form-group">
+                                        <label for="title-edit">Title</label>
+                                        <input class = "form-control" type="input" name="title" id="title-edit"
+                                            placeholder="ex: Introduction lesson" value="">
+                                        <br>
+                                        <div class="form-message">
+                                        </div>
+                                    </div>
 
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal of edit lesson-->
-            <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
-                aria-labelledby="lessonEditModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id="edit-lesson">
-                                <div class="form-group">
-                                    <label for="title-edit">Title</label>
-                                    <input class = "form-control" type="input" name="title" id="title-edit"
-                                        placeholder="ex: Introduction lesson" value="">
-                                    <br>
+                                    <div class="form-group">
+                                        <label for="order-edit">Order</label>
+                                        <input class = "form-control" type="input" name="order" id="order-edit"
+                                            placeholder="ex: 1" value="">
+                                        <br>
                                     <div class="form-message">
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="order-edit">Order</label>
-                                    <input class = "form-control" type="input" name="order" id="order-edit"
-                                        placeholder="ex: 1" value="">
-                                    <br>
-                                <div class="form-message">
-                                </div>
-
-                                </div>
-                                    
-                                <div class="form-group">
-                                    <label for="des-edit">Description</label>
-                                    <textarea class="txtDes" name="des" id="des-edit" cols="30" rows="10"
-                                        value=""></textarea>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Save changes
-                                    </button>
-                                </div>
-                            </form>
+                                    </div>
+                                        
+                                    <div class="form-group">
+                                        <label for="des-edit">Description</label>
+                                        <textarea class="txtDes" name="des" id="des-edit" cols="30" rows="10"
+                                            value=""></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Save changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            
-            {{/if}}
+                
+                {{/if}}
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 {{else}}
 <p>Khóa học không tồn tại</p>
 {{/if}}
