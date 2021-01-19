@@ -118,9 +118,9 @@ module.exports = {
         const query = `SELECT * FROM ${TBL_COURSES} ORDER BY viewscount DESC, rating DESC LIMIT 10`
         return await database.query(query)
     },
-    async getTopThreeGetsCountCoursesLastWeek(connection) {
-        const getTopThreeIdsQuery = `SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC LIMIT 3`;
-        const ids = (await database.query(getTopThreeIdsQuery,connection)).map(id => id.courseid);
+    async getTopFiveGetsCountCoursesLastWeek(connection) {
+        const getTopFiveIdsQuery = `SELECT courseid FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC LIMIT 5`;
+        const ids = (await database.query(getTopFiveIdsQuery,connection)).map(id => id.courseid);
         return this.getAvailableCoursesByIds(ids, connection);
     },
     async getTopTenViewsCount(connection) {
@@ -150,5 +150,22 @@ module.exports = {
                 return thisCourse;
             }
         }));
+    },
+    async getCoursesListByUserId(userId, connection) {
+        const courseIds = await user_courseModel.getCourseIdsByUserId(userId, connection);
+        return await Promise.all(courseIds.map(async courseId => {
+            const thisCourse = await this.getByIdAvailable(courseId, connection);
+            if (thisCourse) {
+                thisCourse.userCourse = await user_courseModel.getOne(userId, courseId, connection);
+                return thisCourse;
+            }
+        }));
+    },
+    async getFiveRelativeCourses(courseId, connection) {
+        // const fieldIds = await field_courseModel.getListFieldIDByCourseID(courseId, connection);
+        // const courseIds = [];
+        // fieldIds.map(async fieldId => {
+        //
+        // });
     }
 }

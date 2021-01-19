@@ -1,103 +1,198 @@
 <section>
-      <div class="container">
+    <div class="container">
         <div class="section-content">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="thumb">
-                <img src="{{user.imgpath}}" alt="">
-              </div>
-            </div>
-            <div class="col-md-8">
-             <div style="display: flex; flex-direction:row">
-                  <h4 class="name font-24 mt-0 mb-0 col-1">{{{user.fullname}}}</h4>
-                  <a style="margin-left: 5px;" class="col-1" href="/users/detail/edit/{{authUser.id}}"><i class="fa fa-pencil-square-o"></i></a>
-            </div>
-              <h5 class="mt-5 text-theme-color-2">{{{user.role}}}</h5>
-              <p>{{{user.teachingdescription}}}</p>
-              <ul class="styled-icons icon-dark icon-theme-colored icon-sm mt-15 mb-0">
-               <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-               <li><a href="#"><i class="fa fa-skype"></i></a></li>
-               <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-             </ul>
-            </div>
-          </div>
-          <div class="row mt-30">
-            <div class="col-md-4">
-              <h4 class="line-bottom">About Me:</h4>
-              <div class="volunteer-address">
-                <ul>
-                  <li>
-                    <div class="bg-light media border-bottom p-15 mb-20">
-                      <div class="media-left">
-                        <i class="pe-7s-pen text-theme-colored font-24 mt-5"></i>
-                      </div>
-                      <div class="media-body">
-                        <h5 class="mt-0 mb-0">Experiences:</h5>
-                        <p>Chemistry (BSc), Computer Science (BSc), English and Creative Writing (BA)</p>
-                      </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="thumb">
+                        <img src="{{user.imgpath}}" alt="">
                     </div>
-                  </li>
-                  <li>
-                    <div class="bg-light media border-bottom p-15 mb-20">
-                      <div class="media-left">
-                        <i class="fa fa-map-marker text-theme-colored font-24 mt-5"></i>
-                      </div>
-                      <div class="media-body">
-                        <h5 class="mt-0 mb-0">Address:</h5>
-                        <p>{{{user.address}}}</p>
-                      </div>
+                </div>
+                <div class="col-md-8">
+                    <div style="display: flex; flex-direction:row">
+                        <h4 class="name font-24 mt-0 mb-0 col-1">{{{user.fullname}}}</h4>
+                        <a style="margin-left: 5px;" class="col-1" href="/users/detail/edit/{{authUser.id}}"><i
+                                class="fa fa-pencil-square-o"></i></a>
                     </div>
-                  </li>
-                  <li>
-                    <div class="bg-light media border-bottom p-15">
-                      <div class="media-left">
-                        <i class="fa fa-phone text-theme-colored font-24 mt-5"></i>
-                      </div>
-                      <div class="media-body">
-                        <h5 class="mt-0 mb-0">Contact:</h5>
-                        <p><span>Phone:</span> {{{user.phone}}}<br><span>Email:</span> ngovantai1999@gmail.com</p>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                    <h5 class="mt-5 text-theme-color-2">{{{user.role}}}</h5>
+                    <p>{{{user.teachingdescription}}}</p>
+                    <ul class="styled-icons icon-dark icon-theme-colored icon-sm mt-15 mb-0">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-skype"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-md-4">
-              <h4 class="line-bottom">Find Location:</h4>
+            {{#if watchList.length}}
+                <form action="/users/{{{authUser.id}}}/watch-list?_method=DELETE" method="POST" id="removeFromWatchList" hidden>
+                    <label for="courseid">Course Id</label><input type="text" name="courseId" id="courseid">
+                </form>
+                <div class="section-title mb-10" id="watchList">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="mt-0 text-uppercase font-28 line-bottom line-height-1">MY <span
+                                    class="text-theme-color-2 font-weight-400">WATCH LIST</span></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="owl-carousel-4col" data-dots="true">
+                                {{#each watchList}}
+                                    <div class="item">
+                                        <div class="service-block bg-white">
+                                            <div class="thumb"><img alt="featured project"
+                                                                    src="/assets/client/images/courses/{{this.id}}.png"
+                                                                    class="img-fullwidth" height="150"
+                                                                    onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
+                                                <h4 class="text-white mt-0 mb-0"><span class="price">YOUR PROCESS {{{this.lessonscount}}}/{{{this.userCourse.process}}}</span></h4>
+                                            </div>
+                                            <div class="content text-left flip p-25 pt-0 actionButton"
+                                                 data-id="{{{this.id}}}">
+                                                <h4 style="height: 55px;"
+                                                    class="line-bottom mb-10">{{{this.name}}}</h4>
+                                                <p>Some quick example text to build on
+                                                    the card title and make up the bulk of the card's content.</p>
+                                                <a class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
+                                                   href="/courses/{{this.id}}">view details</a>
+                                                <a class="btn btn-warning btn-theme-colored btn-sm text-uppercase mt-10"
+                                                   href="javascript: $('form#removeFromWatchList input').val({{{this.id}}}); $('form#removeFromWatchList').submit();">remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+            {{#if userCourses.length}}
+                <div class="section-title mb-10" id="userCourses">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h2 class="mt-0 text-uppercase font-28 line-bottom line-height-1">MY <span
+                                    class="text-theme-color-2 font-weight-400">ENROLLED COURSES</span></h2>
+                        </div>
 
-              <!-- Google Map HTML Codes --><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5456.163483134849!2d144.95177475051227!3d-37.81589041361766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4dd5a05d97%3A0x3e64f855a564844d!2s121+King+St%2C+Melbourne+VIC+3000%2C+Australia!5e0!3m2!1sen!2sbd!4v1556130803137!5m2!1sen!2sbd" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="section-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="owl-carousel-4col" data-dots="true">
+                                {{#each userCourses}}
+                                    <div class="item ">
+                                        <div class="service-block bg-white">
+                                            <div class="thumb"><img alt="featured project"
+                                                                    src="/assets/client/images/courses/{{this.id}}.png"
+                                                                    class="img-fullwidth" height="150"
+                                                                    onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
+                                                <h4 class="text-white mt-0 mb-0"><span class="price">YOUR PROCESS {{{this.lessonscount}}}/{{{this.userCourse.process}}}</span></h4>
+                                            </div>
+                                            <div class="content text-left flip p-25 pt-0 actionButton"
+                                                 data-id="{{{this.id}}}">
+                                                <h4 style="height: 55px;"
+                                                    class="line-bottom mb-10">{{{this.name}}}</h4>
+                                                <p>Some quick example text to build on
+                                                    the card title and make up the bulk of the card's content.</p>
+                                                <a class="btn btn-dark btn-theme-colored btn-sm text-uppercase mt-10"
+                                                   href="/courses/{{this.id}}">view details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{/if}}
+            <div class="row mt-30">
+                <div class="col-md-4">
+                    <h4 class="line-bottom">About Me:</h4>
+                    <div class="volunteer-address">
+                        <ul>
+                            <li>
+                                <div class="bg-light media border-bottom p-15 mb-20">
+                                    <div class="media-left">
+                                        <i class="pe-7s-pen text-theme-colored font-24 mt-5"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="mt-0 mb-0">Experiences:</h5>
+                                        <p>Chemistry (BSc), Computer Science (BSc), English and Creative Writing
+                                            (BA)</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="bg-light media border-bottom p-15 mb-20">
+                                    <div class="media-left">
+                                        <i class="fa fa-map-marker text-theme-colored font-24 mt-5"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="mt-0 mb-0">Address:</h5>
+                                        <p>{{{user.address}}}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="bg-light media border-bottom p-15">
+                                    <div class="media-left">
+                                        <i class="fa fa-phone text-theme-colored font-24 mt-5"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="mt-0 mb-0">Contact:</h5>
+                                        <p><span>Phone:</span> {{{user.phone}}}<br><span>Email:</span>
+                                            ngovantai1999@gmail.com</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="line-bottom">Find Location:</h4>
+
+                    <!-- Google Map HTML Codes -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5456.163483134849!2d144.95177475051227!3d-37.81589041361766!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4dd5a05d97%3A0x3e64f855a564844d!2s121+King+St%2C+Melbourne+VIC+3000%2C+Australia!5e0!3m2!1sen!2sbd!4v1556130803137!5m2!1sen!2sbd"
+                            width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+                <div class="col-md-4">
+                    <div class="clearfix">
+                        <h4 class="line-bottom">Quick Contact:</h4>
+                    </div>
+                    <form id="contact-form" class="contact-form-transparent">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Name" id="contact_name" name="contact_name"
+                                           required="" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Email" id="contact_email" name="contact_email"
+                                           class="form-control" required="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Enter Subject" id="contact_subject"
+                                           name="contact_subject" class="form-control" required="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <textarea rows="5" placeholder="Enter Message" id="contact_message" name="contact_message"
+                                      required class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button data-loading-text="Please wait..."
+                                    class="btn btn-flat btn-dark btn-theme-colored mt-5" type="submit">Send your message
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="col-md-4">
-              <div class="clearfix">
-                <h4 class="line-bottom">Quick Contact:</h4>
-              </div>
-              <form id="contact-form" class="contact-form-transparent">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="form-group">
-                      <input type="text" placeholder="Enter Name" id="contact_name" name="contact_name" required="" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <input type="text" placeholder="Enter Email" id="contact_email" name="contact_email" class="form-control" required="">
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="form-group">
-                      <input type="text" placeholder="Enter Subject" id="contact_subject" name="contact_subject" class="form-control" required="">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <textarea rows="5" placeholder="Enter Message" id="contact_message" name="contact_message" required class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                  <button data-loading-text="Please wait..." class="btn btn-flat btn-dark btn-theme-colored mt-5" type="submit">Send your message</button>
-                </div>
-              </form>
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
+    </div>
+</section>
