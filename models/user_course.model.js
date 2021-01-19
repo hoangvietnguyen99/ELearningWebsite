@@ -23,7 +23,6 @@ module.exports = {
   async getOne(userId, courseId, connection) {
     const query = `SELECT * FROM ${TBL_USER_COURSE} WHERE userid = ${userId} AND courseid = ${courseId}`;
     const rows = await database.query(query, connection);
-    console.table(rows);
     if (rows.length) return rows[0];
     return null;
   }
