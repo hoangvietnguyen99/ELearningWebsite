@@ -14,6 +14,7 @@ exports.addLesson = async function (req, res, next) {
 		order: thisCourse.currenlessonorder
 	}
 	thisCourse.currenlessonorder++;
+	thisCourse.lessonscount = thisCourse.lessonscount < lesson.order + 1 ? lesson.order + 1 : thisCourse.lessonscount;
 	const result = await lessonsModel.addOneByCourseId(lesson);
 	if (result !== null) {
 		await courseModel.update(thisCourse);
