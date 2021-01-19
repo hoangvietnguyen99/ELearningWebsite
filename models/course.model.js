@@ -129,6 +129,7 @@ module.exports = {
 		return await Promise.all(userCourses.map(async userCourse => {
 			const thisCourse = await this.getByIdAvailable(userCourse.courseid, connection);
 			if (thisCourse) {
+				thisCourse.isFinish = thisCourse.lessonscount == userCourse.process;
 				thisCourse.userCourse = userCourse;
 				return thisCourse;
 			}
@@ -139,16 +140,11 @@ module.exports = {
 		return await Promise.all(courseIds.map(async courseId => {
 			const thisCourse = await this.getByIdAvailable(courseId, connection);
 			if (thisCourse) {
-				thisCourse.userCourse = await user_courseModel.getOne(userId, courseId, connection);
+				const userCourse = await user_courseModel.getOne(userId, courseId, connection);
+				thisCourse.isFinish = thisCourse.lessonscount == userCourse.process;
+				thisCourse.userCourse = userCourse;
 				return thisCourse;
 			}
 		}));
-	},
-	async getFiveRelativeCourses(courseId, connection) {
-		// const fieldIds = await field_courseModel.getListFieldIDByCourseID(courseId, connection);
-		// const courseIds = [];
-		// fieldIds.map(async fieldId => {
-		//
-		// });
 	}
 }
