@@ -28,12 +28,8 @@ module.exports = {
 			return result.length;
 		} return 0;
 	},
-	async updateOne(fieldId ,courseId, connection) {
-		const result = await database.update([{fieldid: fieldId}, {courseid: courseId}], TBL_FIELD_COURSE, connection);
-		return result.affectedRows;
-	},
 	async getListFieldIDByCourseID(courseId, connection){
 		const query = `SELECT fieldid FROM ${TBL_FIELD_COURSE} WHERE courseid = ${courseId}`;
 		return (await database.query(query, connection)).map(item => item.fieldid);
-	}
+	},
 }

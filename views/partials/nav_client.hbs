@@ -20,6 +20,20 @@
                     </li>
                     <li class="active"><a href="/courses">All courses</a>
                     </li>
+                    {{#if isAuth}}
+                        <li><a href="/users/detail/{{{authUser.id}}}#watchList">Your watch list</a>
+                            <ul class="dropdown">
+                                {{#each watchList}}
+                                    <li><a href="/courses/{{this.id}}">{{this.name}}</a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                    {{#if (isTeacher authUser.role)}}
+                        <li class="active"><a href="/teacher/courses">Manage uploaded courses</a>
+                        </li>
+                    {{/if}}
                 </ul>
                 <div id="top-search-bar" class="collapse">
                     <div class="container">

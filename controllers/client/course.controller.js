@@ -12,6 +12,7 @@ module.exports = {
 		let keyword = req.query.keyword;
 		let pageIndex = req.query.pageIndex ? req.query.pageIndex : 1;
 		let pageSize = req.query.pageSize ? req.query.pageSize : 12;
+		const searchType = req.query.searchType;
 		let ids = null;
 		let title = null;
 		const categoryId = req.query.categoryid;
@@ -34,7 +35,7 @@ module.exports = {
 		}
 		const userId = req.session.authUser ? req.session.authUser.id : null;
 		let [coursesObject, userCourseIds, userUploadIds] = await Promise.all([
-			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, ids),
+			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, searchType, ids),
 			userId ? user_courseModel.getCourseIdsByUserId(userId) : [],
 			userId ? courseModel.getCourseIdsByAuthorId(userId) : []
 		]);
@@ -52,7 +53,8 @@ module.exports = {
 				totalPages,
 				userCourseIds,
 				userUploadIds,
-				keyword
+				keyword,
+				searchType
 			}
 		});
 	},
@@ -128,4 +130,59 @@ module.exports = {
 		});
 	},
 
+	async addToWatchList(req, res) {
+		const connection = await database.getConnection();
+		connection.beginTransaction(async err => {
+			if (err) throw err;
+			try {
+				const userCourse = await user_courseModel.getOne(req.session.authUser.id, req.body.courseId, connection);
+				if (!userCourse) throw `userCourse not found: userId ${req.session.authUser.id} & courseId ${req.body.courseid}`;
+				if (userCourse.isinwatchlist) return `This course in your watch list`;
+				userCourse.isinwatchlist = true;
+				const result = await user_courseModel.updateOne(userCourse, connection);
+				if (result) {
+					connection.commit(commitError => {
+						connection.release();
+						if (commitError) throw commitError;
+						res.redirect(req.headers.referer || '/');
+					});
+				} else throw "Can not update";
+			} catch (err) {
+				console.log(err);
+				connection.rollback(rollbackError => {
+					connection.release();
+					if (rollbackError) throw rollbackError;
+					res.redirect(req.headers.referer || '/');
+				});
+			}
+		});
+	},
+
+	async removeFromWatchList(req, res) {
+		const connection = await database.getConnection();
+		connection.beginTransaction(async err => {
+			if (err) throw err;
+			try {
+				const userCourse = await user_courseModel.getOne(req.session.authUser.id, req.body.courseId, connection);
+				if (!userCourse) throw `userCourse not found: userId ${req.session.authUser.id} & courseId ${req.body.courseid}`;
+				if (!userCourse.isinwatchlist) throw `This course not in your watchlist`;
+				userCourse.isinwatchlist = false;
+				const result = await user_courseModel.updateOne(userCourse, connection);
+				if (result) {
+					connection.commit(commitError => {
+						connection.release();
+						if (commitError) throw commitError;
+						res.redirect(req.headers.referer || '/');
+					});
+				} else throw "Can not update";
+			} catch (err) {
+				console.log(err);
+				connection.rollback(rollbackError => {
+					connection.release();
+					if (rollbackError) throw rollbackError;
+					res.redirect(req.headers.referer || '/');
+				});
+			}
+		});
+	}
 }
