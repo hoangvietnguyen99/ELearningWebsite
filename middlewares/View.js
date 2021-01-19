@@ -12,6 +12,9 @@ module.exports = function (app) {
       section: hbs_sections(),
       format(val) {
         return numeral(val).format('0,0');
+      },
+      isTeacher(role) {
+        return role === 'TEACHER'
       }
     }
   }));

@@ -1,131 +1,132 @@
 {{#section 'css'}}
-<link rel="stylesheet" href="https://cdn.plyr.io/3.6.3/plyr.css" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.3/plyr.css"/>
 
-<link rel="stylesheet"
-    href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006288/BBBootstrap/choices.min.css?version=7.0.0">
+    <link rel="stylesheet"
+          href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006288/BBBootstrap/choices.min.css?version=7.0.0">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/css/fileinput.min.css">
 
-<style>
-    @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Open Sans', serif;
-        background: #eee
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', serif;
+            background: #eee
+        }
 
-    .content {
-        width: 420px;
-        margin-top: 100px
-    }
+        .content {
+            width: 420px;
+            margin-top: 100px
+        }
 
-    .ratings {
-        background-color: #fff;
-        padding: 54px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0px 10px 10px #E0E0E0
-    }
+        .ratings {
+            background-color: #fff;
+            padding: 54px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 10px 10px #E0E0E0
+        }
 
-    .product-rating {
-        font-size: 50px
-    }
+        .product-rating {
+            font-size: 50px
+        }
 
-    .stars i {
-        font-size: 18px;
-        color: #28a745
-    }
+        .stars i {
+            font-size: 18px;
+            color: #28a745
+        }
 
-    .rating-text {
-        margin-top: 10px
-    }
+        .rating-text {
+            margin-top: 10px
+        }
 
-    .video-container {
-        margin: 20px auto;
-        max-width: 500px;
-    }
-</style>
+        .video-container {
+            margin: 20px auto;
+            max-width: 500px;
+        }
+    </style>
 {{/section}}
 
 {{#section 'js'}}
-<script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+    <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
 
-<script
-    src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006273/BBBootstrap/choices.min.js?version=7.0.0"></script>
-<script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
-    referrerpolicy="origin"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
-<script>
-    tinymce.init({
-        editor_selector: 'txtDes',
-        height: 600,
-        mode: "specific_textareas",
-        plugins: 'paste image link autolink lists table media',
-        menubar: false,
-        toolbar: [
-            'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
-        ],
-    });
-</script>
-<script>
-    $('#fuMain').fileinput({
-        theme: 'fa',
-        dropZoneEnabled: false,
-        allowedFileExtensions: ['mp4'],
-    });
-</script>
-<script>
-    $('a.add-video').on('click', function () {
-        let id = $(this).attr('data-id');
-        let courseId = $(this).attr('data-courseid');
-        
-        $('form#addVideo-form').on('submit', function (e) {
-            
-            $('#addVideo-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=POST`);
+    <script
+            src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1569006273/BBBootstrap/choices.min.js?version=7.0.0"></script>
+    <script src="https://cdn.tiny.cloud/1/o4dikek5c6dsuwbmp60ubupm9bbaqq6vdgyl6kpm4qhvd5iy/tinymce/5/tinymce.min.js"
+            referrerpolicy="origin"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/js/fileinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.1.3/themes/fa/theme.min.js"></script>
+    <script>
+        tinymce.init({
+            editor_selector: 'txtDes',
+            height: 600,
+            mode: "specific_textareas",
+            plugins: 'paste image link autolink lists table media',
+            menubar: false,
+            toolbar: [
+                'undo redo | bold italic underline strikethrough | numlist bullist | alignleft aligncenter alignright | forecolor backcolor | table link image media',
+            ],
         });
+    </script>
+    <script>
+        $('#fuMain').fileinput({
+            theme: 'fa',
+            dropZoneEnabled: false,
+            allowedFileExtensions: ['mp4'],
+        });
+    </script>
+    <script>
+        $('a.add-video').on('click', function () {
+            let id = $(this).attr('data-id');
+            let courseId = $(this).attr('data-courseid');
 
-    });
-</script>
-<script>
-    $('a.edit-lesson').on('click', function () {
-        let id = $(this).attr('data-id');
-        let title = $(this).attr('data-title');
-        let des = $(this).attr('data-des');
-        let courseId = $(this).attr('data-courseid');
-        $('#edit-lesson #title-edit').attr('value', `${title}`);
-        $('form#edit-lesson').on('submit', function () {
-             $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
-        });
-        tinymce.get('des-edit').setContent(des);
-    });
-</script>
-<script>
-    $('button.add-lesson').on('click', function () {
-        let id = $(this).attr('data-id');
-        $('#add-lesson').on('submit', function () {
-             $('#add-lesson').attr('action', `/courses/${id}/lessons`);
-        });
-       
-    });
-</script>
-<script>
-    $('a.delete-lesson').on('click', function () {
-        let id = $(this).attr('data-id');
-        let courseId = $(this).attr('data-course');
-        $('#delete-form').on('submit', function () {
-            $('#delete-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=DELETE`);
-        });
-      
+            $('form#addVideo-form').on('submit', function (e) {
 
-    });
-</script>
-<script>
-    
-    const players = Plyr.setup('.js-player');
-    window.player = players;
-</script>
+                $('#addVideo-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=POST`);
+            });
+
+        });
+    </script>
+    <script>
+        $('a.edit-lesson').on('click', function () {
+            let id = $(this).attr('data-id');
+            let title = $(this).attr('data-title');
+            let des = $(this).attr('data-des');
+            let courseId = $(this).attr('data-courseid');
+            $('#edit-lesson #title-edit').attr('value', `${title}`);
+            $('form#edit-lesson').on('submit', function () {
+                $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
+            });
+            tinymce.get('des-edit').setContent(des);
+        });
+    </script>
+    <script>
+        $('button.add-lesson').on('click', function () {
+            let id = $(this).attr('data-id');
+            $('#add-lesson').on('submit', function () {
+                $('#add-lesson').attr('action', `/courses/${id}/lessons`);
+            });
+
+        });
+    </script>
+    <script>
+        $('a.delete-lesson').on('click', function () {
+            let id = $(this).attr('data-id');
+            let courseId = $(this).attr('data-course');
+            $('#delete-form').on('submit', function () {
+                $('#delete-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=DELETE`);
+            });
+
+
+        });
+    </script>
+    <script>
+
+        const players = Plyr.setup('.js-player');
+        window.player = players;
+    </script>
 
     <script>
         $(document).ready(function () {
@@ -137,169 +138,179 @@
             `);
             for (let i = 1; i <= 5; i++) {
                 if (i <= Math.round(courseRating))
-                	$("div.ratings div.stars").append(`<i class="fa fa-star">`);
+                    $("div.ratings div.stars").append(`<i class="fa fa-star">`);
             }
         })
     </script>
 {{/section}}
 {{#if data.thisCourse}}
-<section class="course_details_area section_padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 course_details_left">
-                <h1>{{data.thisCourse.name}}</h1>
-                <div class="main_image">
-                    <img class="img-fluid" src="/assets/client/images/courses/{{data.thisCourse.id}}.png"
-                        alt="course image" onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
-                </div>
-                <div class="content_wrapper">
-                    <h4 class="title_top">Description</h4>
-                    <div class="content">
-                        {{#if data.thisCourse.description}}
-                        <div
-                            style="background-color: rgb(255, 255, 255);border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
-                            {{{data.thisCourse.description}}}
-                        </div>
-                        {{else}}
-                        <p>No description</p>
-                        {{/if}}
+    <section class="course_details_area section_padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 course_details_left">
+                    <h1>{{data.thisCourse.name}}</h1>
+                    <div class="main_image">
+                        <img class="img-fluid" src="/assets/client/images/courses/{{data.thisCourse.id}}.png"
+                             alt="course image"
+                             onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
                     </div>
-
-
-                    <h4 class="title">Course Outline</h4>
-                    <div class="content" style="margin-top: 0;">
-                        <ul class="course_list">
-                            {{#if data.lessons.length}}
-                            {{#each data.lessons as |lesson|}}
-                            <li class="justify-content-between align-items-center d-flex">
-                                <p style="padding-left: 20px;">{{lesson.title}}</p>
-                                <div class="row" style="display: flex;text-align: center; align-items: center;">
-
-                                    <div class="collapse multi-collapse" id="collapseExample{{lesson.id}}">
-                                        {{#if lesson.description}}
-                                        <div
-                                            style="background-color: rgb(255, 255, 255);max-width: 600px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
-                                            {{{lesson.description}}}
-                                        </div>
-                                        {{/if}}
-                                        <div class="video-container">
-                                            <video id = "id-video" class = "js-player"controls crossorigin playsinline
-                                                poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
-                                                width="720" height="450" style = " width: 100%; height: auto ;max-height: 100%;" data-id = "{{lesson.id}}" data-courseid="{{lesson.courseid}}">
-                                                <source
-                                                    src="{{lesson.videourl}}"
-                                                    type="video/mp4" size="576">
-                                                <source
-                                                    src="{{lesson.videourl}}"
-                                                    type="video/mp4" size="720">
-                                                <source
-                                                    src="{{lesson.videourl}}"
-                                                    type="video/mp4" size="1080">
-
-                                                <!-- Caption files -->
-                                                <track kind="captions" label="English" srclang="en"
-                                                    src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
-                                                    default>
-                                                <track kind="captions" label="Français" srclang="fr"
-                                                    src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
-                                                <!-- Fallback for browsers that don't support the <video> element -->
-                                                <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
-                                                    download>Download</a>
-                                            </video>
-                                        </div>
-                                        <!-- Plyr resources and browser polyfills are specified in the pen settings -->
-                                    </div>
+                    <div class="content_wrapper">
+                        <h4 class="title_top">Description</h4>
+                        <div class="content">
+                            {{#if data.thisCourse.description}}
+                                <div
+                                        style="background-color: rgb(255, 255, 255);border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                                    {{{data.thisCourse.description}}}
                                 </div>
-                                
-                                <a class="btn_2 text-uppercase" data-toggle="collapse"
-                                    href="#collapseExample{{lesson.id}}" role="button" aria-expanded="false"
-                                    aria-controls="collapseExample{{lesson.id}}">View
-                                    Details</a>
-                                <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
-                                    data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
-                                    data-title="{{lesson.title}}" data-des="{{lesson.description}}"
-                                    style="margin-left: 20px">
-                                    <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
-                                </a>
-
-
-                                <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
-                                    data-id="{{lesson.id}}" data-course="{{lesson.courseid}}" style="margin-left: 20px">
-                                    <img src="/assets/client/images/icon/del.png" style="width: 30px;">
-                                </a>
-
-                                <a class="add-video" href="#videoModal" data-toggle="modal" data-id="{{lesson.id}}"
-                                    data-courseid="{{lesson.courseid}}" role="button">
-                                    <img src="/assets/client/images/icon/video.png"
-                                        style="width: 50px; padding-left:15px">
-                                </a>
-
-                            </li>
-
-
-                            {{/each}}
+                            {{else}}
+                                <p>No description</p>
                             {{/if}}
-                            <button class = "add-lesson btn btn-primary" type="button" data-toggle="modal" data-target="#lessonModal"
-                                style="margin-left:10px; margin-bottom: 50px;" data-id = "{{data.thisCourse.id}}">Add
-                            </button>
+                        </div>
+
+
+                        <h4 class="title">Course Outline</h4>
+                        <div class="content" style="margin-top: 0;">
+                            <ul class="course_list">
+                                {{#if data.lessons.length}}
+                                    {{#each data.lessons as |lesson|}}
+                                        <li class="justify-content-between align-items-center d-flex">
+                                            <p style="padding-left: 20px;">{{lesson.title}}</p>
+                                            <div class="row"
+                                                 style="display: flex;text-align: center; align-items: center;">
+
+                                                <div class="collapse multi-collapse" id="collapseExample{{lesson.id}}">
+                                                    {{#if lesson.description}}
+                                                        <div
+                                                                style="background-color: rgb(255, 255, 255);max-width: 600px;border: 1px solid rgb(179, 179, 179);padding: 30px;margin: 20px; border-radius: 5%;">
+                                                            {{{lesson.description}}}
+                                                        </div>
+                                                    {{/if}}
+                                                    <div class="video-container">
+                                                        <video id="id-video" class="js-player" controls crossorigin
+                                                               playsinline
+                                                               poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
+                                                               width="720" height="450"
+                                                               style=" width: 100%; height: auto ;max-height: 100%;"
+                                                               data-id="{{lesson.id}}"
+                                                               data-courseid="{{lesson.courseid}}">
+                                                            <source
+                                                                    src="{{lesson.videourl}}"
+                                                                    type="video/mp4" size="576">
+                                                            <source
+                                                                    src="{{lesson.videourl}}"
+                                                                    type="video/mp4" size="720">
+                                                            <source
+                                                                    src="{{lesson.videourl}}"
+                                                                    type="video/mp4" size="1080">
+
+                                                            <!-- Caption files -->
+                                                            <track kind="captions" label="English" srclang="en"
+                                                                   src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+                                                                   default>
+                                                            <track kind="captions" label="Français" srclang="fr"
+                                                                   src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+                                                            <!-- Fallback for browsers that don't support the <video> element -->
+                                                            <a href="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4"
+                                                               download>Download</a>
+                                                        </video>
+                                                    </div>
+                                                    <!-- Plyr resources and browser polyfills are specified in the pen settings -->
+                                                </div>
+                                            </div>
+
+                                            <a class="btn_2 text-uppercase" data-toggle="collapse"
+                                               href="#collapseExample{{lesson.id}}" role="button" aria-expanded="false"
+                                               aria-controls="collapseExample{{lesson.id}}">View
+                                                Details</a>
+                                            <a class="edit-lesson" href="#lessonEditModal" data-toggle="modal"
+                                               data-id="{{lesson.id}}" data-courseid="{{lesson.courseid}}"
+                                               data-title="{{lesson.title}}" data-des="{{lesson.description}}"
+                                               style="margin-left: 20px">
+                                                <img src="/assets/client/images/icon/edit.png" style="width: 30px;"/>
+                                            </a>
+
+
+                                            <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
+                                               data-id="{{lesson.id}}" data-course="{{lesson.courseid}}"
+                                               style="margin-left: 20px">
+                                                <img src="/assets/client/images/icon/del.png" style="width: 30px;">
+                                            </a>
+
+                                            <a class="add-video" href="#videoModal" data-toggle="modal"
+                                               data-id="{{lesson.id}}"
+                                               data-courseid="{{lesson.courseid}}" role="button">
+                                                <img src="/assets/client/images/icon/video.png"
+                                                     style="width: 50px; padding-left:15px">
+                                            </a>
+
+                                        </li>
+
+
+                                    {{/each}}
+                                {{/if}}
+                                <button class="add-lesson btn btn-primary" type="button" data-toggle="modal"
+                                        data-target="#lessonModal"
+                                        style="margin-left:10px; margin-bottom: 50px;" data-id="{{data.thisCourse.id}}">
+                                    Add
+                                </button>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 right-contents">
+                    <div class="sidebar_top">
+                        <ul>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Trainer’s Name</p>
+                                    <span class="color">{{data.author.fullname}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Course Fee </p>
+                                    <span>{{data.thisCourse.price}}$</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Update day</p>
+                                    <span>{{data.thisCourse.uploaddate}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Last Update</p>
+                                    <span>{{data.thisCourse.lastupdate}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Quantity purchased</p>
+                                    <span>{{data.thisCourse.getscount}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>View</p>
+                                    <span>{{data.thisCourse.viewscount}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Number lessons</p>
+                                    <span>{{data.thisCourse.lessonscount}}</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="justify-content-between d-flex" href="#">
+                                    <p>Number of reviews</p>
+                                    <span>{{data.thisCourse.ratingscount}}</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 right-contents">
-                <div class="sidebar_top">
-                    <ul>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Trainer’s Name</p>
-                                <span class="color">{{data.author.fullname}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Course Fee </p>
-                                <span>{{data.thisCourse.price}}$</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Update day</p>
-                                <span>{{data.thisCourse.uploaddate}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Last Update</p>
-                                <span>{{data.thisCourse.lastupdate}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Quantity purchased</p>
-                                <span>{{data.thisCourse.getscount}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>View</p>
-                                <span>{{data.thisCourse.viewscount}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Number lessons</p>
-                                <span>{{data.thisCourse.lessonscount}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="justify-content-between d-flex" href="#">
-                                <p>Number of reviews</p>
-                                <span>{{data.thisCourse.ratingscount}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
                     {{#if data.hasThisCourse}}
                     {{else}}
                         {{#if data.isAuthor}}
@@ -454,141 +465,141 @@
                 </div>
             </div>
             {{#if data.isAuthor}}
-            <!-- Modal of add image-->
-            <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="videoModalLabel">Edit</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" enctype="multipart/form-data" id="addVideo-form">
-                                <div class="image"
-                                    style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                    <div class="form-group">
-                                        <input id="fuMain" name="fuMain" class="file" type="file" multiple>
+                <!-- Modal of add image-->
+                <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="videoModalLabel">Edit</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" enctype="multipart/form-data" id="addVideo-form">
+                                    <div class="image"
+                                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                        <div class="form-group">
+                                            <input id="fuMain" name="fuMain" class="file" type="file" multiple>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="editor-footer"
-                                    style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
-                                    <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+                                    <div class="editor-footer"
+                                         style="display: inline-block; display: flex; justify-content: center; padding: 10px;">
+                                        <button type='submit' class="btn btn-primary" style="margin-right: 5px;">
+                                            <i class="fa fa-check " aria-hidden="true"></i>
+                                            Upload
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal of add lesson-->
+                <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="lessonModalLabel">Input Course</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id="add-lesson">
+                                    <div class="lesson"
+                                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                        <div class="form-group">
+                                            <label for="name">Title</label>
+                                            <input type="input" name="title" id="title"
+                                                   placeholder="ex: Introduction lesson" style="width: 100%;" value="">
+                                            <br><br>
+
+                                            <label for="txtDesLesson">Description</label>
+                                            <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
+                                                      value=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
+                     aria-labelledby="delLessonModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id="delete-form">
+                                    <h3>Are you sure about delete ?</h3>
+                                    <button id="btnDelete" type='submit' class="btn btn-primary"
+                                            style="margin-right: 5px;">
                                         <i class="fa fa-check " aria-hidden="true"></i>
-                                        Upload
+                                        Delete
                                     </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Modal of add lesson-->
-            <div class="modal fade" id="lessonModal" tabindex="-1" role="dialog" aria-labelledby="lessonModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="lessonModalLabel">Input Course</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id = "add-lesson">
-                                <div class="lesson"
-                                    style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                    <div class="form-group">
-                                        <label for="name">Title</label>
-                                        <input type="input" name="title" id="title"
-                                            placeholder="ex: Introduction lesson" style="width: 100%;" value="">
-                                        <br><br>
-
-                                        <label for="txtDesLesson">Description</label>
-                                        <textarea class="txtDes" name="Des" id="txtDesLesson" cols="30" rows="10"
-                                            value=""></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
-                aria-labelledby="delLessonModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id="delete-form">
-                                <h3>Are you sure about delete ?</h3>
-                                <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-                                    <i class="fa fa-check " aria-hidden="true"></i>
-                                    Delete
+                <!-- Modal of edit lesson-->
+                <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
+                     aria-labelledby="lessonEditModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                </button>
-                            </form>
-                        </div>
+                            </div>
+                            <div class="modal-body">
+                                <form action="" method="POST" id="edit-lesson">
+                                    <div class="lesson"
+                                         style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
+                                        <div class="form-group">
+                                            <label for="title-edit">Title</label>
+                                            <input type="text" name="title" id="title-edit"
+                                                   placeholder="ex: Introduction lesson" style="width: 100%;" value="">
+                                            <br><br>
 
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal of edit lesson-->
-            <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
-                aria-labelledby="lessonEditModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="lessonEditModalLabel">Input Course</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="" method="POST" id="edit-lesson">
-                                <div class="lesson"
-                                    style=" width: 100%; display: flex; justify-content: center; padding: 10px;">
-                                    <div class="form-group">
-                                        <label for="title-edit">Title</label>
-                                        <input type="text" name="title" id="title-edit"
-                                            placeholder="ex: Introduction lesson" style="width: 100%;" value="">
-                                        <br><br>
-
-                                        <label for="des-edit">Description</label>
-                                        <textarea class="txtDes" name="des" id="des-edit" cols="30"
-                                            rows="10"></textarea>
+                                            <label for="des-edit">Description</label>
+                                            <textarea class="txtDes" name="des" id="des-edit" cols="30"
+                                                      rows="10"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Save changes
-                                    </button>
-                                </div>
-                            </form>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">Save changes
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {{/if}}
         </div>
-    </div>
-</section>
+    </section>
 {{else}}
-<p>Khóa học không tồn tại</p>
+    <p>Khóa học không tồn tại</p>
 {{/if}}

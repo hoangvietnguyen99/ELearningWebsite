@@ -41,5 +41,18 @@ module.exports = {
 	async getWithFullTextSearch(text, connection) {
 		const query = `SELECT * FROM ${TBL_FIELDS} WHERE MATCH(name) AGAINST('${text}')`;
 		return await database.query(query, connection);
+	},
+	async getTopFiveFieldsOfTheWeek(connection) {
+		const getCoursesAndCountQuery = `SELECT courseid, COUNT(courseid) as count FROM carts_courses WHERE cartid IN (SELECT id FROM carts WHERE ispaid = 1 AND DATEDIFF(CURRENT_DATE, paiddate) <= 7) GROUP BY courseid ORDER BY COUNT(courseid) DESC`;
+		const courses = await database.query(getCoursesAndCountQuery, connection);
+		const fields = await this.getAll(connection);
+		for (const course of courses) {
+			const fieldIds = await fieldCourseModel.getListFieldIDByCourseID(course.courseid, connection);
+			for (const id of fieldIds) {
+				const found = fields.find(field => field.id === id);
+				if (found) found.count ? found.count += course.count : found.count = 0 + course.count;
+			}
+		}
+		return fields.sort((a, b) => b.count - a.count).slice(0,5);
 	}
 }

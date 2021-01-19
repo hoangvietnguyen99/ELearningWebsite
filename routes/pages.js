@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const courseModel = require('../models/course.model')
-const userModel = require('../models/user.model')
+const courseModel = require('../models/course.model');
+const userModel = require('../models/user.model');
+const fieldModel = require('../models/field.model');
 const user_courseModel = require('../models/user_course.model');
 
 //Index
 router.get('/', async function (req, res) {
 	const topCourses = await courseModel.getTopCourses();
 	const topFiveCourses = await courseModel.getTopFiveGetsCountCoursesLastWeek();
+	const topFiveFields = await fieldModel.getTopFiveFieldsOfTheWeek();
 	const recentlyUploadCourses = await courseModel.getTopTenRecentlyUpload();
 	const teachers = await userModel.allByRole('TEACHER', 4)
 	const userId = req.session.authUser ? req.session.authUser.id : null;
@@ -22,6 +24,7 @@ router.get('/', async function (req, res) {
 		topFiveCourses,
 		userCourseIds,
 		userUploadIds,
+		topFiveFields,
 		teachers: teachers
 	});
 });
