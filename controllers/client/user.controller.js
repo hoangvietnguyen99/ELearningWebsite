@@ -1,5 +1,6 @@
 const userModel = require('../../models/user.model');
 const accountModel = require('../../models/account.model');
+const courseModel = require('../../models/course.model');
 
 module.exports = {
 	getUserByID: async function (req, res) {
@@ -25,9 +26,12 @@ module.exports = {
 
 	getDetail: async function (req, res) {
 		const user = await userModel.getById(req.params.id);
+		const thisUserId = req.session.authUser ? (req.session.authUser.id === user.id ? user.id : null) : null;
+		const userCourses = thisUserId ? await courseModel.getCoursesListByUserId(thisUserId) : [];
 		res.render('clients/user_profile', {
 			layout: 'layoutclient.hbs',
 			user: user,
+			userCourses,
 			isTeacher: user.role === "TEACHER"
 		});
 	},

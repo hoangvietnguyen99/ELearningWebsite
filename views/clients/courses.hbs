@@ -87,9 +87,19 @@ form.example::after {
         function sortUsingNestedTextAsc(parent, childSelector, keySelector) {
             const items = parent.children(childSelector).sort(function(a, b) {
                 let vA = $(keySelector, a).text();
-                vA = parseFloat(vA) ? parseFloat(vA) : vA;
+                if (vA.includes(' VND')) {
+                	vA = vA.split(' ');
+                	vA = vA.slice(0, vA.length - 1);
+                    vA = vA.join('').split(',').join('');
+                    vA = parseFloat(vA);
+                }
                 let vB = $(keySelector, b).text();
-                vB = parseFloat(vB) ? parseFloat(vB) : vB;
+                if (vB.includes(' VND')) {
+                    vB = vB.split(' ');
+                    vB = vB.slice(0, vB.length - 1);
+                    vB = vB.join('').split(',').join('');
+                    vB = parseFloat(vB);
+                }
                 return (vA < vB) ? -1 : (vA > vB) ? 1 : 0;
             });
             parent.append(items);
@@ -98,9 +108,19 @@ form.example::after {
         function sortUsingNestedTextDesc(parent, childSelector, keySelector) {
             const items = parent.children(childSelector).sort(function(a, b) {
                 let vA = $(keySelector, a).text();
-                vA = parseFloat(vA) ? parseFloat(vA) : vA;
+                if (vA.includes(' VND')) {
+                    vA = vA.split(' ');
+                    vA = vA.slice(0, vA.length - 1);
+                    vA = vA.join('').split(',').join('');
+                    vA = parseFloat(vA);
+                }
                 let vB = $(keySelector, b).text();
-                vB = parseFloat(vB) ? parseFloat(vB) : vB;
+                if (vB.includes(' VND')) {
+                    vB = vB.split(' ');
+                    vB = vB.slice(0, vB.length - 1);
+                    vB = vB.join('').split(',').join('');
+                    vB = parseFloat(vB);
+                }
                 return (vA < vB) ? 1 : (vA > vB) ? -1 : 0;
             });
             parent.append(items);
@@ -149,10 +169,9 @@ form.example::after {
         <div class="section-content">
             <div id="sortThis" class="row">
                 {{#each data.courses}}
-
                     <div class="col-md-3 col-sm-6 p-10 courseCard">
                         <div class="item ">
-                            <div class="service-block bg-white"">
+                            <div class="service-block bg-white">
                                 <div class="thumb"><img alt="featured project" src="/assets/client/images/courses/{{this.id}}.png"
                                                         class="img-fullwidth" height="150"
                                     onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
@@ -168,25 +187,6 @@ form.example::after {
                             </div>
                         </div>
                     </div>
-                    {{!-- <div class="col-md-3 col-sm-6 p-10">
-                        <img src="/assets/client/images/courses/{{this.id}}.png"
-                             onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'"
-                             class="card-img-top" alt="courses image" style="display: block;">
-                        <div class="card-body">
-                            <h5 class="card-title">{{this.name}}</h5>
-                            <p class="card-text" style="width: auto; height: 8em">Some quick example text to build on
-                                the card title and make up the bulk of the card's content.</p>
-                            <div style="display: flex; justify-content: space-around">
-                                <i class="fa fa-eye" style="font-size: 1.2rem" aria-hidden="true"> {{this.viewscount}}</i>
-                                <i class="fa fa-star" style="font-size: 1.2rem" aria-hidden="true"> {{this.rating}}</i>
-                                <i class="fa fa-download" aria-hidden="true" style="font-size: 1.2rem"> {{this.getscount}}</i>
-                                <i class="fa fa-comment" aria-hidden="true" style="font-size: 1.2rem"> {{this.commentscount}}</i>
-                            </div>
-                        </div>
-                        <div class="actionButton" data-id="{{this.id}}">
-                            <a href="/courses/{{this.id}}" class="btn btn-primary">View detail</a>
-                        </div>
-                    </div> --}}
                 {{/each}}
             </div>
         </div>
