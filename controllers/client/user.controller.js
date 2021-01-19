@@ -1,6 +1,8 @@
 const userModel = require('../../models/user.model');
 const accountModel = require('../../models/account.model');
 const courseModel = require('../../models/course.model');
+const database = require('../../utils/database');
+const UserModel = require('../../models/admin/UserModel');
 
 module.exports = {
 	getUserByID: async function (req, res) {
@@ -53,5 +55,28 @@ module.exports = {
 		const thisAccount = await accountModel.single(req.session.authAccount.id);
 		await accountModel.getOtp(req.hostname, req.protocol, thisAccount);
 		res.redirect('/');
+	},
+
+	getUpdateAccount: async function (req, res) {
+		const user_account = await userModel.getAccount(req.params.id);
+		console.log(user_account)
+		res.render('clients/user_account', {
+			layout: 'layoutclient.hbs',
+			user: user_account
+		})
+	},
+
+	postUpdateAccount: async function (req, res){
+		const connection = await database.getConnection();
+		let id = req.params.id
+		let user_account = await userModel.getAccount(id)
+		
+		var data = {}
+		data.id = user_account.accountid
+		accountModel.setPassword(req.body.password,data)
+		data.email = req.body.email
+		
+		const ret = await accountModel.update(data,connection)	
+		res.redirect('/users/detail/' + req.params.id)
 	}
 }
