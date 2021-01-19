@@ -7,6 +7,7 @@ const lessonModel = require('../../models/lesson.model');
 exports.addLesson = async function (req, res, next) {
 	const courseID = req.params.id;
 	const thisCourse = await courseModel.getByIdAvailable(courseID);
+	console.log(thisCourse);
 	if (!thisCourse) return res.redirect(req.headers.referer || '/');
 	const {title, Des} = req.body;
 	const lesson = {
@@ -15,6 +16,7 @@ exports.addLesson = async function (req, res, next) {
 		description: Des,
 		order: thisCourse.currenlessonorder
 	}
+	console.log(lesson);
 	thisCourse.currenlessonorder++;
 	thisCourse.lessonscount = thisCourse.lessonscount < lesson.order + 1 ? lesson.order + 1 : thisCourse.lessonscount;
 	const result = await lessonsModel.addOneByCourseId(lesson);
@@ -22,14 +24,6 @@ exports.addLesson = async function (req, res, next) {
 		await courseModel.update(thisCourse);
 		res.redirect('/courses/' + courseID);
 	}
-};
-
-exports.deleteLesson = async function (req, res, next) {
-	const lessonID = req.params.lid;
-	const courseID = req.params.id;
-	const result = await lessonsModel.removeLesson(lessonID);
-	if (result !== null)
-		res.redirect('/courses/' + courseID);
 };
 
 exports.editLesson = async function (req, res, next) {

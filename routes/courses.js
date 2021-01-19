@@ -11,11 +11,13 @@ router.route('/')
 router.route('/:id')
     .get(courseController.getCourse);
 
+router.route('/:id/lessons')
+	.post(lessonController.addLesson);
+	
 router.route('/:courseid/reviews')
     .post(isAuth, courseController.addReview);
 
-router.route('/:id/lessons')
-	.post(lessonController.addLesson)
+
 
 
 router.route('/:id/lessons/:lid')
