@@ -79,8 +79,7 @@
             $('#number').attr('value', `${number}`);
             $('#price').attr('value', `${price}`);
             tinymce.get('des').setContent(des);
-            //$('#edit-choice').append('')
-            $('#edit-form').attr('action', `/teacher/courses/${id}?_method=PUT`);
+            $('form#edit-form').attr('action', `/teacher/courses/${id}?_method=PUT`);
         });
     </script>
 
@@ -91,23 +90,7 @@
 
         });
     </script>
-    <script>
-        $('a.delete-course').on('click', function () {
-            let id = $(this).attr('data-id');
-            $('#delete-form').attr('action', `/teacher/courses/${id}?_method=DELETE`);
-
-        });
-    </script>
-
-    {{!-- <script>
-	 $('#edit-choice').on('change',function(){
-
-		alert('value '+$('#edit-choice').val())
-	//console.log('text '+$('#edit-choice').text())
-	//console.log('index '+$('#edit-choice').index())
-
-	})
-	</script> --}}
+    
 
     <script>
         $(document).ready(function () {
@@ -216,10 +199,6 @@
                             <img src="/assets/client/images/icon/edit.png" style="width: 30px;">
                         </a>
 
-                        <a class="delete-course" href="#delModal" data-toggle="modal" data-id="{{course.id}}">
-                            <img src="/assets/client/images/icon/del.png" style="width: 30px;">
-                        </a>
-
                         <a href="/courses/{{course.id}}">
                             <img src="/assets/client/images/icon/open.png" style="width: 30px;">
                         </a>
@@ -266,35 +245,6 @@
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal of delete-->
-    <div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="delModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="delModalLabel">Delete</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="" method="POST" id="delete-form">
-                        <h3>Are you sure about delete ?</h3>
-                        <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-                            <i class="fa fa-check " aria-hidden="true"></i>
-                            Delete
-                        </button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </form>
                 </div>
             </div>
         </div>

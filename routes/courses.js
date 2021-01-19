@@ -19,7 +19,6 @@ router.route('/:id/lessons')
 
 
 router.route('/:id/lessons/:lid')
-	.delete(lessonController.deleteLesson)
 	.put(lessonController.editLesson)
 	.post(lessonController.addVideo);
 	

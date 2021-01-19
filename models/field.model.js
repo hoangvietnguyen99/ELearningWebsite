@@ -26,7 +26,7 @@ module.exports = {
 	async getAllCoursesByFieldId(fieldId, connection) {
 		const courseIds = await fieldCourseModel.getListCourseIdsByFieldId(fieldId, connection);
 		return await Promise.all(courseIds.map(async courseId => {
-			return await courseModel.getById(courseId, connection);
+			return await courseModel.getByIdAvailable(courseId, connection);
 		}));
 	},
 	async getAllByIds(ids, connection) {

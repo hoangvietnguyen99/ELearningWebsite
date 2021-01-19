@@ -96,32 +96,17 @@
         let courseId = $(this).attr('data-courseid');
         $('#edit-lesson #title-edit').attr('value', `${title}`);
         tinymce.get('des-edit').setContent(des);
-        $('form#edit-lesson').on('submit', function () {
-             $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
-        });
-        
+        $('form#edit-lesson').attr('action', `/courses/${courseId}/lessons/${id}?_method=PUT`);
     });
 </script>
 <script>
     $('button.add-lesson').on('click', function () {
         let id = $(this).attr('data-id');
-        $('#add-lesson').on('submit', function () {
-             $('#add-lesson').attr('action', `/courses/${id}/lessons`);
-        });
+        $('#add-lesson').attr('action', `/courses/${id}/lessons`);
+    });
        
-    });
 </script>
-<script>
-    $('a.delete-lesson').on('click', function () {
-        let id = $(this).attr('data-id');
-        let courseId = $(this).attr('data-course');
-        $('#delete-form').on('submit', function () {
-            $('#delete-form').attr('action', `/courses/${courseId}/lessons/${id}?_method=DELETE`);
-        });
-      
 
-    });
-</script>
 <script>
     $(document).ready(function(){
         const players = Plyr.setup('.js-player');
@@ -307,12 +292,6 @@
                                                 <img src="/assets/client/images/icon/edit.png" style="width: 30px;" />
                                             </a>
 
-
-                                            <a class="delete-lesson" href="#delLessonModal" data-toggle="modal"
-                                                data-id="{{lesson.id}}" data-course="{{lesson.courseid}}" style="margin-left: 20px">
-                                                <img src="/assets/client/images/icon/del.png" style="width: 30px;">
-                                            </a>
-
                                             <a class="add-video" href="#videoModal" data-toggle="modal" data-id="{{lesson.id}}"
                                                 data-courseid="{{lesson.courseid}}" role="button">
                                                 <img src="/assets/client/images/icon/video.png"
@@ -372,20 +351,10 @@
                             {{#if data.isAuthor}}
                             {{else}}
                                 {{#if data.isInCart}}
-                                    <form id="removeFromCart" action="/cart?_method=DELETE" method="POST" hidden>
-                                        <label>
-                                            <input id="courseid" type="number" name="courseid">
-                                        </label>
-                                    </form>
-                                    <a href="javascript: $('form#removeFromCart input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCart').submit();"
+                                    <a href="javascript: $('form#removeFromCartHeader input#courseid').val({{data.thisCourse.id}}); $('form#removeFromCartHeader').submit();"
                                     class="btn_1 d-block">Remove from cart</a>
                                 {{else}}
-                                    <form id="addToCart" action="/cart" method="POST" hidden>
-                                        <label>
-                                            <input id="courseid" type="number" name="courseid">
-                                        </label>
-                                    </form>
-                                    <a href="javascript: $('form#addToCart input#courseid').val({{data.thisCourse.id}}); $('form#addToCart').submit();"
+                                    <a href="javascript: $('form#addToCartHeader input#courseid').val({{data.thisCourse.id}}); $('form#addToCartHeader').submit();"
                                     class="btn_1 d-block">Add to cart</a>
                                 {{/if}}
                             {{/if}}
@@ -424,17 +393,7 @@
                                 </div>
                                 <span>Outstanding</span>
                             </div>
-                            <div class="d-flex flex-row reviews justify-content-between">
-                                <span>Quality</span>
-                                <div class="rating">
-                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="img/icon/color_star.svg" alt=""></a>
-                                    <a href="#"><img src="img/icon/star.svg" alt=""></a>
-                                </div>
-                                <span>Outstanding</span>
-                            </div>
+                            
                         </div>
                     </div>
 
@@ -513,32 +472,6 @@
                     </div>
                 </div>
 
-                <div class="modal fade" id="delLessonModal" tabindex="-1" role="dialog"
-                    aria-labelledby="delLessonModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="delLessonModalLabel">Delete</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="" method="POST" id="delete-form">
-                                    <h3>Are you sure about delete ?</h3>
-                                    <button id="btnDelete" type='submit' class="btn btn-primary" style="margin-right: 5px;">
-                                        <i class="fa fa-check " aria-hidden="true"></i>
-                                        Delete
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                    </button>
-                                </form>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Modal of edit lesson-->
                 <div class="modal fade" id="lessonEditModal" tabindex="-1" role="dialog"
                     aria-labelledby="lessonEditModalLabel" aria-hidden="true">
@@ -551,7 +484,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <form action="" method="POST" id="edit-lesson">
+                                <form action="" method = "POST" id="edit-lesson">
                                     <div class="form-group">
                                         <label for="title-edit">Title</label>
                                         <input class = "form-control" type="input" name="title" id="title-edit"
