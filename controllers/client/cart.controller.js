@@ -58,7 +58,7 @@ module.exports = {
 			if (err) throw err;
 			try {
 				const result = await CartModel.checkOut(userId, connection);
-				if (!result) throw new Error('Cannot checkout course');
+				if (!result) throw 'Cannot checkout course';
 				connection.commit(commitError => {
 					connection.release();
 					if (commitError) throw commitError;

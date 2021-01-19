@@ -59,7 +59,6 @@ module.exports = {
 
 	getUpdateAccount: async function (req, res) {
 		const user_account = await userModel.getAccount(req.params.id);
-		console.log(user_account)
 		res.render('clients/user_account', {
 			layout: 'layoutclient.hbs',
 			user: user_account
@@ -70,13 +69,13 @@ module.exports = {
 		const connection = await database.getConnection();
 		let id = req.params.id
 		let user_account = await userModel.getAccount(id)
-		
+
 		var data = {}
 		data.id = user_account.accountid
 		accountModel.setPassword(req.body.password,data)
 		data.email = req.body.email
-		
-		const ret = await accountModel.update(data,connection)	
+
+		const ret = await accountModel.update(data,connection)
 		res.redirect('/users/detail/' + req.params.id)
 	}
 }
