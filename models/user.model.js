@@ -42,7 +42,7 @@ module.exports = {
     },
 
     async hasCourseIdCheck(userId, courseId, connection) {
-        const courseIds = await user_courseModel.getCourseIdsByUserId(userId, connection);
+        const courseIds = await user_courseModel.getCourseIdsByUserId(userId, connection); 
         return courseIds.includes(courseId);
     }
 }
