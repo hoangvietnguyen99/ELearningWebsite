@@ -77,5 +77,6 @@ module.exports = {
 		req.session.authAccount = null;
 		req.session.authUser = null;
 		res.redirect(req.headers.referer);
-	}
+	},
+
 }
