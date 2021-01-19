@@ -4,6 +4,7 @@ const CartsCoursesModel = require("./carts_courses.model");
 const UserModel = require("./user.model");
 const courseModel = require('./course.model');
 const user_courseModel = require('./user_course.model');
+const lessonModel = require('./lesson.model');
 const field_courseModel = require('./field_course.model');
 const fieldModel = require('./field.model');
 
@@ -68,11 +69,13 @@ module.exports = {
 				field.getscount++;
 				return await fieldModel.update(field, connection);
 			}));
+			const firstLesson = await lessonModel.getLessonsByCourseIdAndOrder(course.id, 0, connection);
 			const userCourseDTO = {
 				userid: userId,
 				courseid: course.id,
 				purchasedat: paidDate,
-				amount: course.price
+				amount: course.price,
+				currentlesson: firstLesson ? firstLesson.id : 0
 			};
 			const result = await Promise.all([
 				user_courseModel.addOne(userCourseDTO, connection),

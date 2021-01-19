@@ -13,6 +13,12 @@
                             <li>
                                 <a class="text-white" href="javascript: $('#frmLogout').submit();">Logout</a>
                             </li>
+                            {{#if (isAdmin authUser.role)}}
+                                <li class="text-white">|</li>
+                                <li>
+                                    <a class="text-white" href="/admin">Admin page</a>
+                                </li>
+                            {{/if}}
                         {{else}}
                             <li>
                                 <a class="text-white" href="/auth">Login Or Register</a>
