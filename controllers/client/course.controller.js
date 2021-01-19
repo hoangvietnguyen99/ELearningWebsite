@@ -2,6 +2,7 @@ const courseModel = require('../../models/course.model');
 const userModel = require('../../models/user.model');
 const database = require('../../utils/database');
 const lessonModel = require('../../models/lesson.model');
+const field_courseModel = require('../../models/field_course.model');
 const user_courseModel = require('../../models/user_course.model');
 const reviewModel = require('../../models/review.model');
 const fieldModel = require('../../models/field.model');
@@ -28,14 +29,24 @@ module.exports = {
 			let field;
 			[field, courses] = await Promise.all([
 				fieldModel.getById(fieldId),
-				fieldModel.getAllCoursesByFieldId(fieldId)
+				field_courseModel.getListCourseIdsByFieldId(fieldId)
 			]);
 			title = field.name;
-			ids = courses.map(course => course.id);
+			ids = courses;
+		}
+		if (searchType && searchType == 1 && keyword) {
+			ids = []
+			const fields = await fieldModel.getWithFullTextSearch(keyword);
+			await Promise.all(fields.map(async field => {
+				const courseIds = await field_courseModel.getListCourseIdsByFieldId(field.id);
+				ids.push(...courseIds);
+			}));
+			ids = [...new Set(ids)];
+			keyword = '';
 		}
 		const userId = req.session.authUser ? req.session.authUser.id : null;
 		let [coursesObject, userCourseIds, userUploadIds] = await Promise.all([
-			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, searchType, ids),
+			courseModel.getAllAvailable(null, pageIndex, pageSize, keyword, ids),
 			userId ? user_courseModel.getCourseIdsByUserId(userId) : [],
 			userId ? courseModel.getCourseIdsByAuthorId(userId) : []
 		]);
@@ -76,7 +87,7 @@ module.exports = {
 					point: parseFloat(req.body.point) || 5,
 					comment: req.body.comment
 				}
-				
+
 				const result = await reviewModel.addOne(review, connection);
 				if (result) {
 					const reviews = await reviewModel.getAllByCourseId(thisCourse.id, connection);
