@@ -18,6 +18,11 @@ module.exports = function (app) {
       },
       isAdmin(role) {
         return role === 'ADMIN'
+      },
+      formatDate(date) {
+        date = new Date(date);
+        date = date.toISOString().split('T');
+        return `${date[0]} at ${date[1].slice(0,8)}`
       }
     }
   }));

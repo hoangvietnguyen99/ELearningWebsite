@@ -89,7 +89,6 @@ exports.endVideo = async function(req,res,next){
   }
   const updateEnd = await user_courseModel.updateOne(process);
   const nextlesson = await lessonModel.getNextLesson(end.courseid,end.lessonorder);
-  console.log(nextlesson);
   if(nextlesson){
     const update = {
       userid: req.session.authUser.id,

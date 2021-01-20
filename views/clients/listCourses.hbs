@@ -92,7 +92,7 @@
 
         });
     </script>
-    
+
 
     <script>
         $(document).ready(function () {
@@ -105,7 +105,7 @@
         });
     </script>
     <script src = "/assets/client/js/input-validator.js">
-        
+
     </script>
     <script type = "text/javascript">
         Validator({
@@ -179,15 +179,15 @@
             {{#each courses as |course|}}
                 <tr>
                     <td>{{course.name}}</td>
-                    <td>{{course.uploaddate}}</td>
-                    <td>{{course.lastupdatedat}}</td>
+                    <td>{{formatDate course.uploaddate}}</td>
+                    <td>{{formatDate course.lastupdatedat}}</td>
                     <td>{{course.viewscount}}</td>
                     <td>{{course.lessonscount}}</td>
                     <td>{{course.getscount}}</td>
                     <td>{{course.ratingscount}}</td>
                     <td>{{course.rating}}</td>
                     <td>{{course.statuscode}}</td>
-                    <td>{{course.price}}</td>
+                    <td>{{format course.price}}</td>
 
                     <td>
                         {{#if course.approvedby}}
@@ -203,7 +203,7 @@
                            data-id="{{course.id}}"
                            data-name="{{course.name}}"
                            data-number="{{course.lessonscount}}" data-price="{{course.price}}"
-                           data-des="{{course.description}}" data-fieldids="{{course.fieldIds}}" 
+                           data-des="{{course.description}}" data-fieldids="{{course.fieldIds}}"
                             data-tinydes = "{{course.tinydes}}">
                             <img src="/assets/client/images/icon/edit.png" style="width: 30px;">
                         </a>
@@ -298,7 +298,7 @@
                         </div>
 
                         <div class="form-group">
-                        
+
                             <label for="price">Price</label>
                             <input type="text" class = "form-control" name="price" id="price" placeholder="ex: 20"
                             value=""><br>
@@ -313,7 +313,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="form-group"></div>
                             <label for="des">Description</label>
                             <textarea class="txtDes" name="Des" id="des" cols="30" rows="10"
@@ -345,7 +345,7 @@
             </div>
             <div class="modal-body">
                 <form action="" method="POST" id = "add-course">
-                    
+
                     <div class="form-group">
                         <label for="add-name">Name</label>
                         <input class = "form-control" type="input" name="name" id = 'add-name' placeholder="ex: Python online..."
@@ -366,25 +366,25 @@
                         </div>
                     </div>
                     <div class="form-group">
-                       
+
                         <label for="add-number">Number lessons</label>
                         <input class = "form-control" type="input" name="number" id = 'add-number' placeholder="ex: 40"
                             value="0"><br>
                         <div class="form-message">
                         </div>
-                            
+
                     </div>
 
                     <div class="form-group">
-                       
+
                         <label for="add-price">Price</label>
                         <input class = "form-control" type="input" name="price" id = 'add-price' placeholder="ex: 20"
                             value="0"><br>
-                       
+
                         <div class="form-message">
                             </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="add-tinydes">Short Description</label>
                         <input class = "form-control" type="text" name="tinydes" id = 'add-tinydes' placeholder="ex: Short description"
@@ -396,7 +396,7 @@
                     <div class="form-group">
                         <label for="txtDes">Description</label>
                         <textarea class="txtDes" name="Des" cols="30" rows="10" value=""></textarea>
-                    </div>    
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save changes</button>

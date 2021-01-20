@@ -51,6 +51,14 @@ module.exports = {
 			userId ? courseModel.getCourseIdsByAuthorId(userId) : []
 		]);
 		const totalPages = Math.ceil(coursesObject.count / pageSize);
+		const [topCourses, recentlyUploadCourses] = await Promise.all([
+			courseModel.getTopCourses(),
+			courseModel.getTopTenRecentlyUpload(),
+		]);
+		for (const course of coursesObject.courses) {
+			course.isTopTenRecentUpload = !!recentlyUploadCourses.find(item => item.id === course.id);
+			course.isTopCourse = !!topCourses.find(item => item.id === course.id);
+		}
 		res.render('clients/courses', {
 			layout: 'layoutclient',
 			data: {
@@ -128,6 +136,8 @@ module.exports = {
 		const author = await userModel.getById(thisCourse.author);
 		let lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
+		let hasReviewed = reviews.find(review => review.userid == req.session.authUser.id);
+		hasReviewed = !!hasReviewed;
 		const hasThisCourse = userCourseIds.includes(thisCourse.id);
 		const isAuthor = req.session.authUser ? req.session.authUser.id === author.id : false;
 		let user_lesson = null;
@@ -151,6 +161,7 @@ module.exports = {
 				isInWatchList,
 				thisCourse,
 				author,
+				hasReviewed,
 				isAuthor,
 				lessons,
 				reviews,

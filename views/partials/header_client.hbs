@@ -19,6 +19,13 @@
                                     <a class="text-white" href="/admin">Admin page</a>
                                 </li>
                             {{/if}}
+                            {{#if authUser.isvalid}}
+                            {{else}}
+                                <li class="text-white">|</li>
+                                <li>
+                                    <a class="text-white" href="/users/otp">Resend email OTP</a>
+                                </li>
+                            {{/if}}
                         {{else}}
                             <li>
                                 <a class="text-white" href="/auth">Login Or Register</a>
@@ -77,10 +84,7 @@
                                                     <form id="checkoutCartHeader"
                                                           action="/cart/checkout" method="POST" hidden>
                                                     </form>
-                                                    <form id="viewCartHeader" action="/cart" hidden></form>
                                                     <div class="cart-btn text-right">
-                                                        <a class="btn btn-theme-colored btn-xs" href="javascript: $('form#viewCartHeader').submit();"> View
-                                                            cart</a>
                                                         <a class="btn btn-dark btn-xs" href="javascript: $('form#checkoutCartHeader').submit();">
                                                             Checkout</a>
                                                     </div>
