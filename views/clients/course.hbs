@@ -341,11 +341,14 @@
                                 <div class="reviews-members pt-4 pb-4">
                                     <div class="media">
                                         <div class="media-body">
+                                            <div>
+                                                <input value="{{{point}}}" data-readonly style="margin-top: 5px;" name="point" type="hidden" class="rating"/>
+                                            </div>
                                             <div class="reviews-members-header">
                                                 <p class="text-gray">{{{fullname}}} - {{{formatDate createddat}}}</p>
                                             </div>
                                             <div class="reviews-members-body">
-                                                <p><i class="fa fa-star fa-2x" aria-hidden="true">{{{point}}}</i>{{{comment}}}</p>
+                                                <p>{{{comment}}}</p>
                                             </div>
 
                                         </div>
