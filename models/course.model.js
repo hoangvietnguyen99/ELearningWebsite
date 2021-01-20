@@ -185,5 +185,11 @@ module.exports = {
 				return thisCourse;
 			}
 		}));
+	},
+	async getTotalGetsCountOfAuthor(id, connection) {
+		const query = `SELECT SUM(getscount) as getscount FROM ${TBL_COURSES} WHERE author = ${id} GROUP BY author`;
+		const rows = await database.query(query, connection);
+		if (rows.length === 0) return 0;
+		return rows[0].getscount;
 	}
 }

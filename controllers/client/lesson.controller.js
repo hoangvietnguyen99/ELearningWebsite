@@ -66,7 +66,11 @@ exports.addVideo = async function (req, res, next) {
 	  });
 };
 
-exports.saveCurrentimeVideo = async function(req,res,next){
+exports.saveCurrentimeVideo = async function(req, res){
+	const userCourse = await user_courseModel.getOneByLessonID(req.session.authUser.id,req.params.id,req.params.lid);
+	if (userCourse.process == userCourse.lessonorder) {
+		return;
+	}
   const currentpause = {
     userid: req.session.authUser.id,
     courseid: req.params.id,
@@ -74,32 +78,33 @@ exports.saveCurrentimeVideo = async function(req,res,next){
     currentpause: parseFloat(req.body.pause),
     lessonorder: parseInt(req.params.orderid)
   }
-  console.log(currentpause);
   const result = await user_courseModel.updateOne(currentpause);
-  if(result!==null) console.log('Save time pause');
-
+  if(result !== null) console.log('Save time pause');
 };
 
-exports.endVideo = async function(req,res,next){
-  const end = await user_courseModel.getOneByLessonID(req.session.authUser.id,req.params.id,req.params.lid);
+exports.endVideo = async function(req,res){
+  const userCourse = await user_courseModel.getOneByLessonID(req.session.authUser.id,req.params.id,req.params.lid);
+  if (userCourse.process == userCourse.lessonorder) {
+  	return;
+  }
   const process = {
     userid: req.session.authUser.id,
     courseid: req.params.id,
     process: req.params.lid
   }
   const updateEnd = await user_courseModel.updateOne(process);
-  const nextlesson = await lessonModel.getNextLesson(end.courseid,end.lessonorder);
+  const nextlesson = await lessonModel.getNextLesson(userCourse.courseid,userCourse.lessonorder);
   if(nextlesson){
     const update = {
       userid: req.session.authUser.id,
       courseid: req.params.id,
-      process: req.params.lid,
+	 //process: req.params.lid,
+	  process: req.params.orderid,
       currentlesson: nextlesson.id,
       lessonorder: nextlesson.order,
       currentpause: 0
     }
     const result = await user_courseModel.updateOne(update);
-    console.log(result);
     return res.status(200).send({result: 'redirect', url:+ req.params.id});
   }
 }

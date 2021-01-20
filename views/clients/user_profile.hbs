@@ -20,7 +20,7 @@
                     </ul>
                 </div>
             </div>
-            {{#if watchList.length}}
+            {{#if thisWatchList.length}}
                 <form action="/users/{{{authUser.id}}}/watch-list?_method=DELETE" method="POST" id="removeFromWatchList" hidden>
                     <label for="courseid">Course Id</label><input type="text" name="courseId" id="courseid">
                 </form>
