@@ -89,6 +89,9 @@ module.exports = {
 		}));
 	},
 	async update(course, connection) {
+		delete course.discount;
+		delete course.discountAmount;
+		delete course.newPrice;
 		const result = await database.update(course, {id: course.id}, TBL_COURSES, connection);
 		return result.changedRows;
 	},
