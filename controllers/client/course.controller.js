@@ -153,6 +153,7 @@ module.exports = {
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
+		const totalGetsCount = await courseModel.getTotalGetsCountOfAuthor(author.id);
 		res.render('clients/course', {
 			layout: 'layoutclient.hbs',
 			data: {
@@ -161,6 +162,7 @@ module.exports = {
 				isInWatchList,
 				thisCourse,
 				author,
+				totalGetsCount,
 				hasReviewed,
 				isAuthor,
 				lessons,

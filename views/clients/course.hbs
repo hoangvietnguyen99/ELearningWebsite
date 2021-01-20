@@ -383,6 +383,40 @@
                                 href="#">{{data.thisCourse.getscount}}</a></div>
                         <div class="tags"><strong>View: </strong><a href="#">{{data.thisCourse.viewscount}}</a></div>
                     </div>
+                    <b>About author:</b>
+                    <div class="item">
+                        <article class="post clearfix maxwidth600 mb-sm-30">
+                            <div class="entry-header">
+                                <div class="post-thumb thumb">
+                                    <img style="height: 250px;" src="{{{data.author.imgpath}}}" alt="course pic"
+                                         class="img-responsive img-fullwidth"
+                                         onerror="this.onerror=null; this.src='/assets/client/images/not-found.jpg'">
+                                </div>
+                                <div class="entry-meta meta-absolute text-center pl-15 pr-15">
+                                    <div class="display-table">
+                                        <div class="display-table-cell">
+                                            <ul>
+                                                <li><a class="text-white" href="#"><i class="fa fa-arrow-down"></i>
+                                                    {{{data.totalGetsCount}}} <br> Enrolled count</a></li>
+                                                <li><a class="text-white" href="#"><i class="fa fa-arrow-up"></i>
+                                                    {{{data.author.uploadedcount}}} <br> Courses upload</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="entry-content border-1px p-20">
+                                <h5 class="entry-title mt-0 pt-0"><i class="fa fa-bell" aria-hidden="true">JOIN DATE: {{{formatDate data.author.joinedat}}}</i></h5>
+
+                                <a class="btn btn-flat btn-dark btn-theme-colored btn-sm pull-left" href="/users/detail/{{{data.author.id}}}">View profile</a>
+                                <ul class="list-inline entry-date pull-right font-12 mt-5">
+                                    <li><a class="text-theme-colored" href="#">{{{data.author.fullname}}} | {{{data.author.role}}}</a></li>
+                                    <li><span class="text-theme-colored"></span></li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                        </article>
+                    </div>
                     <div style="margin-top: 20px;">
                         {{#if data.hasThisCourse}}
                             {{#if data.isInWatchList}}
@@ -403,6 +437,9 @@
                             {{/if}}
                         {{/if}}
                     </div>
+                    <strong>
+                    Course rating:
+                    </strong>
                     <div class="d-flex justify-content-center">
                         <div class="text-center" style="margin-top: 20px;">
                             <div class="ratings">
