@@ -136,14 +136,18 @@ module.exports = {
 		const author = await userModel.getById(thisCourse.author);
 		let lessons = await lessonModel.getAllByCourseId(thisCourse.id);
 		const reviews = await reviewModel.getAllByCourseId(thisCourse.id);
-		let hasReviewed = reviews.find(review => review.userid == req.session.authUser.id);
-		hasReviewed = !!hasReviewed;
+		let hasReviewed = true;
+		if (req.session.authUser) {
+			hasReviewed = !!reviews.find(review => review.userid == req.session.authUser.id);
+		}
 		const hasThisCourse = userCourseIds.includes(thisCourse.id);
 		const isAuthor = req.session.authUser ? req.session.authUser.id === author.id : false;
 		let user_lesson = null;
 		if (hasThisCourse) {
 			user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id,req.params.id);
-			lessons = [lessons.find(lesson => lesson.id == user_lesson.currentlesson)];
+			if (user_lesson.process != user_lesson.lessonorder) {
+				lessons = [lessons.find(lesson => lesson.id == user_lesson.currentlesson)];
+			}
 		}
 		else {
 			if(!isAuthor){

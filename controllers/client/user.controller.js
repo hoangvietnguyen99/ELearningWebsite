@@ -29,10 +29,15 @@ module.exports = {
 		const user = await userModel.getById(req.params.id);
 		const thisUserId = req.session.authUser ? (req.session.authUser.id === user.id ? user.id : null) : null;
 		const userCourses = thisUserId ? await courseModel.getCoursesListByUserId(thisUserId) : [];
+		let thisWatchList = [];
+		if (req.session.authUser && req.params.id == req.session.authUser.id) {
+			thisWatchList = await courseModel.getWatchListByUserId(req.session.authUser.id);
+		}
 		res.render('clients/user_profile', {
 			layout: 'layoutclient.hbs',
 			user: user,
 			userCourses,
+			thisWatchList,
 			isTeacher: user.role === "TEACHER"
 		});
 	},
