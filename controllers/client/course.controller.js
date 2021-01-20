@@ -146,7 +146,9 @@ module.exports = {
 		if (hasThisCourse) {
 			user_lesson = await user_courseModel.getLessonIdByUserId(req.session.authUser.id,req.params.id);
 			if (user_lesson.process != user_lesson.lessonorder) {
+				console.log(lessons);
 				lessons = [lessons.find(lesson => lesson.id == user_lesson.currentlesson)];
+				console.log(lessons);
 			}
 		}
 		else {
@@ -154,8 +156,8 @@ module.exports = {
 				lessons = [lessons[0]];
 			}
 		}
-		console.log(user_lesson);
-
+		//console.log(user_lesson);
+		//console.log(lessons);
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
