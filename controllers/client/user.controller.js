@@ -2,7 +2,6 @@ const userModel = require('../../models/user.model');
 const accountModel = require('../../models/account.model');
 const courseModel = require('../../models/course.model');
 const database = require('../../utils/database');
-const UserModel = require('../../models/admin/UserModel');
 
 module.exports = {
 	getUserByID: async function (req, res) {
