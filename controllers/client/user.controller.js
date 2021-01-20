@@ -21,7 +21,7 @@ module.exports = {
 		const result = await userModel.update(user);
 
 		if (result !== null)
-			res.redirect('/user/detail/' + req.params.id);
+			res.redirect('/users/detail/' + req.params.id);
 	},
 
 	getDetail: async function (req, res) {
