@@ -150,6 +150,8 @@ module.exports = {
 				lessons = [lessons[0]];
 			}
 		}
+		console.log(user_lesson);
+
 		let isInCart = false;
 		const found = req.session.authUser ? res.locals.cart.courses.find(course => course.id === thisCourse.id) : null;
 		if (found) isInCart = true;
