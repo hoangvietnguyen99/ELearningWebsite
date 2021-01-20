@@ -168,7 +168,7 @@ module.exports = {
 		return await Promise.all(userCourses.map(async userCourse => {
 			const thisCourse = await this.getByIdAvailable(userCourse.courseid, connection);
 			if (thisCourse) {
-				thisCourse.isFinish = thisCourse.lessonscount == userCourse.process;
+				thisCourse.isFinish = (thisCourse.lessonscount - 1) == userCourse.process;
 				thisCourse.userCourse = userCourse;
 				return thisCourse;
 			}
@@ -180,7 +180,7 @@ module.exports = {
 			const thisCourse = await this.getByIdAvailable(courseId, connection);
 			if (thisCourse) {
 				const userCourse = await user_courseModel.getOne(userId, courseId, connection);
-				thisCourse.isFinish = thisCourse.lessonscount == userCourse.process;
+				thisCourse.isFinish = (thisCourse.lessonscount - 1) == userCourse.process;
 				thisCourse.userCourse = userCourse;
 				return thisCourse;
 			}

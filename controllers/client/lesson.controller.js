@@ -68,7 +68,7 @@ exports.addVideo = async function (req, res, next) {
 
 exports.saveCurrentimeVideo = async function(req, res){
 	const userCourse = await user_courseModel.getOneByLessonID(req.session.authUser.id,req.params.id,req.params.lid);
-	if (userCourse.process == userCourse.lessonorder) {
+	if (!userCourse || userCourse.process == userCourse.lessonorder) {
 		return;
 	}
   const currentpause = {
@@ -84,13 +84,13 @@ exports.saveCurrentimeVideo = async function(req, res){
 
 exports.endVideo = async function(req,res){
   const userCourse = await user_courseModel.getOneByLessonID(req.session.authUser.id,req.params.id,req.params.lid);
-  if (userCourse.process == userCourse.lessonorder) {
+  if (!userCourse || userCourse.process == userCourse.lessonorder) {
   	return;
   }
   const process = {
     userid: req.session.authUser.id,
     courseid: req.params.id,
-    process: req.params.lid
+    process: req.params.orderid
   }
   const updateEnd = await user_courseModel.updateOne(process);
   const nextlesson = await lessonModel.getNextLesson(userCourse.courseid,userCourse.lessonorder);
@@ -106,5 +106,8 @@ exports.endVideo = async function(req,res){
     }
     const result = await user_courseModel.updateOne(update);
     return res.status(200).send({result: 'redirect', url:+ req.params.id});
+  }
+  else{
+	return res.status(200).send({result: 'redirect', url:+ req.params.id});
   }
 }
