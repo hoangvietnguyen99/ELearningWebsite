@@ -93,7 +93,8 @@ exports.endVideo = async function(req,res,next){
     const update = {
       userid: req.session.authUser.id,
       courseid: req.params.id,
-      process: req.params.lid,
+	 //process: req.params.lid,
+	  process: req.params.orderid,
       currentlesson: nextlesson.id,
       lessonorder: nextlesson.order,
       currentpause: 0

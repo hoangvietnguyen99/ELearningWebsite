@@ -116,7 +116,7 @@
             {{#if data.isAuthor}}
 
             {{else}}
-                {{#if data.user_lesson.lessonorder}}
+                {{#if data.user_lesson.currentlesson}
                     players[0].on('loadeddata', event => {
                         players[0].currentTime =  {{data.user_lesson.currentpause}};
                     });
@@ -371,6 +371,9 @@
                                 <li><a href="#"><span>{{{this.data.totalReview}}} </span>Reviews</a></li>
 
                             </ul>
+                        </div>
+                        <div>
+                            <h5 class="product-title">Author: {{data.author.fullname}}</h5>
                         </div>
                         <div class="price">
                             <ins><span class="amount">{{format data.thisCourse.price}} VND</span></ins>

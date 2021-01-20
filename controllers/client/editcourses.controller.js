@@ -43,6 +43,7 @@ exports.addImage = function (req, res, next) {
 exports.addCourse = async function (req, res, next) {
 	const author = req.session.authUser.id;
 	const {name, number, price, Des, selection ,tinydes} = req.body;
+	
 	const course = {
 		name: name,
 		author: author,
