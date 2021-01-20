@@ -116,7 +116,7 @@
             {{#if data.isAuthor}}
 
             {{else}}
-                {{#if data.user_lesson.currentlesson}}
+                {{#if data.user_lesson.currentlesson}
                     players[0].on('loadeddata', event => {
                         players[0].currentTime =  {{data.user_lesson.currentpause}};
                     });
